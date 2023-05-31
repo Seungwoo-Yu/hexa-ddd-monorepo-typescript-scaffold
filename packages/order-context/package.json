@@ -1,0 +1,21 @@
+{
+  "name": "@hexa/order-context",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.3.0",
+    "@types/node": "^20.2.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@hexa/common": "file:../common",
+    "immutable": "^4.3.0",
+    "luxon": "^3.3.0"
+  }
+}

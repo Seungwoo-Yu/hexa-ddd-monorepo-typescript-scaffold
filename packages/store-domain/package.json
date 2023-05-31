@@ -1,0 +1,23 @@
+{
+  "name": "@hexa/store-domain",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    "./*": "./src/*",
+    "./src": null,
+    "./src/*": null
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@hexa/common": "file:../common",
+    "@hexa/user-domain": "file:../user-domain",
+    "@hexa/store-domain": "file:../store-domain",
+    "immutable": "^4.3.0"
+  }
+}

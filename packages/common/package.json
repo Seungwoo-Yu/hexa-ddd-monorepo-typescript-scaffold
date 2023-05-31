@@ -1,0 +1,18 @@
+{
+  "name": "@hexa/common",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "deepmerge": "^4.3.1"
+  }
+}
