@@ -1,4 +1,4 @@
-import { IUser } from '../entities/user.entity';
+import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import { Enum, PickAndType } from '@hexa/common/types.ts';
 
 export const PointGainReason = [

@@ -1,17 +1,21 @@
+import { IUserAggCommand } from '@hexa/user-domain/ports/out/commands/user-agg.command.ts';
+import { IUserAggQuery, PointLogOptions } from '@hexa/user-domain/ports/out/queries/user-agg.query.ts';
 import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import {
-  IPointGainLog, IPointLog,
+  IPointGainLog,
+  IPointLog,
   IPointLossLog,
   PointGainReason,
   PointLossReason,
 } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
-import { Enum, PartialExcept, PickAndType } from '@hexa/common/types.ts';
-import { IUserCommand } from '@hexa/user-domain/ports/out/commands/user.command.ts';
-import { IUserAggCommand } from '../../ports/out/commands/user-agg.command';
-import { IUserAggQuery, PointLogOptions } from '../../ports/out/queries/user-agg.query';
+import { Enum, PartialExcept, PickAndType, ReadOnlyProperty } from '@hexa/common/types.ts';
 import { isValidOfEnum } from '@hexa/common/utils.ts';
+import { IUserCommand } from '../ports/out/commands/user.command';
+import { IUserQuery } from '../ports/out/queries/user.query';
+import { AssertStaticInterface } from '@hexa/common/decorators.ts';
+import { ClassOf } from '@hexa/common/interfaces.ts';
 
-class InMemoryUser implements IUser {
+export class InMemoryUser implements IUser {
   constructor(
     public readonly uid: string,
     public readonly id: string,
@@ -22,7 +26,8 @@ class InMemoryUser implements IUser {
   }
 }
 
-class InMemoryPointGainLog extends IPointGainLog<InMemoryUser> {
+@AssertStaticInterface<ClassOf<InMemoryPointGainLog>>()
+export class InMemoryPointGainLog extends IPointGainLog<InMemoryUser> {
   constructor(
     public readonly userId: PickAndType<InMemoryUser, 'uid'>,
     public readonly reason: Enum<typeof PointGainReason>,
@@ -32,7 +37,7 @@ class InMemoryPointGainLog extends IPointGainLog<InMemoryUser> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static is(target: any): target is InMemoryPointGainLog {
+  static isClassOf(target: any): target is InMemoryPointGainLog {
     return target != null &&
       target.userId != null && target.userId !== '' &&
       target.reason != null && PointGainReason.indexOf(target.reason) > -1 &&
@@ -40,7 +45,8 @@ class InMemoryPointGainLog extends IPointGainLog<InMemoryUser> {
   }
 }
 
-class InMemoryPointLossLog extends IPointLossLog<InMemoryUser> {
+@AssertStaticInterface<ClassOf<InMemoryPointLossLog>>()
+export class InMemoryPointLossLog extends IPointLossLog<InMemoryUser> {
   constructor(
     public readonly userId: PickAndType<InMemoryUser, 'uid'>,
     public readonly reason: Enum<typeof PointLossReason>,
@@ -50,7 +56,7 @@ class InMemoryPointLossLog extends IPointLossLog<InMemoryUser> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static is(target: any): target is InMemoryPointLossLog {
+  static isClassOf(target: any): target is InMemoryPointLossLog {
     return target != null &&
       target.userId != null && target.userId !== '' &&
       target.reason != null && PointLossReason.indexOf(target.reason) > -1 &&
@@ -58,57 +64,7 @@ class InMemoryPointLossLog extends IPointLossLog<InMemoryUser> {
   }
 }
 
-class InMemoryUserCommandRepo implements IUserCommand<InMemoryUser> {
-  private readonly users: Map<PickAndType<InMemoryUser, 'uid'>, InMemoryUser>;
-
-  constructor(
-    defaultUsers: [PickAndType<InMemoryUser, 'uid'>, InMemoryUser][] = [],
-  ) {
-    this.users = new Map<PickAndType<InMemoryUser, 'uid'>, InMemoryUser>(defaultUsers);
-  }
-
-  public async create(user: Omit<InMemoryUser, 'uid'>) {
-    if (Array.from(this.users.values()).findIndex(existedUser => existedUser.id === user.id) > -1) {
-      throw new Error('user id is duplicated');
-    }
-
-    const createdUser = new InMemoryUser(
-      user.id,
-      user.id,
-      user.password,
-      user.name,
-      user.balance,
-    );
-
-    this.users.set(createdUser.uid, createdUser);
-
-    return createdUser;
-  }
-
-  public async delete(userUid: PickAndType<InMemoryUser, 'uid'>): Promise<void> {
-    if (!this.users.delete(userUid)) {
-      throw new Error('user not found');
-    }
-  }
-
-  public async update(user: PartialExcept<InMemoryUser, 'uid' | 'id'>): Promise<void> {
-    const existedUser = this.users.get(user.uid);
-
-    if (existedUser == null) {
-      throw new Error('user not found');
-    }
-
-    this.users.set(user.uid, new InMemoryUser(
-      user.uid,
-      user.id,
-      user.password ?? existedUser.password,
-      user.name ?? existedUser.password,
-      user.balance ?? existedUser.balance,
-    ));
-  }
-}
-
-class InMemoryStatCommandRepo implements IUserAggCommand<InMemoryUser>,
+export class InMemoryUserAggRepo implements IUserAggCommand<InMemoryUser>,
   IUserAggQuery<InMemoryUser, InMemoryPointGainLog, InMemoryPointLossLog> {
   private readonly pointLogs: Map<PickAndType<InMemoryUser, 'uid'>, IPointLog<InMemoryUser>[]>;
 
@@ -127,7 +83,11 @@ class InMemoryStatCommandRepo implements IUserAggCommand<InMemoryUser>,
     return this.balance;
   }
 
-  public async createPointLog(userUid: PickAndType<InMemoryUser, 'uid'>, reason: Enum<typeof PointGainReason | typeof PointLossReason>, balance: number): Promise<void> {
+  public async createPointLog(
+    userUid: PickAndType<InMemoryUser, 'uid'>,
+    reason: Enum<typeof PointGainReason | typeof PointLossReason>,
+    balance: number,
+  ): Promise<void> {
     const userPointLogs = this.pointLogs.get(userUid) ?? [];
 
     if (isValidOfEnum(PointGainReason, reason)) {
@@ -149,7 +109,7 @@ class InMemoryStatCommandRepo implements IUserAggCommand<InMemoryUser>,
     }
 
     const filteredLogs = userPointLogs
-      .filter(log => InMemoryPointGainLog.is(log))
+      .filter(log => InMemoryPointGainLog.isClassOf(log))
       .map(log => log as InMemoryPointGainLog);
 
     if (options?.searchOption == null) {
@@ -182,7 +142,7 @@ class InMemoryStatCommandRepo implements IUserAggCommand<InMemoryUser>,
     }
 
     const filteredLogs = userPointLogs
-      .filter(log => InMemoryPointLossLog.is(log))
+      .filter(log => InMemoryPointLossLog.isClassOf(log))
       .map(log => log as InMemoryPointLossLog);
 
     if (options?.searchOption == null) {
@@ -193,6 +153,62 @@ class InMemoryStatCommandRepo implements IUserAggCommand<InMemoryUser>,
   }
 }
 
-describe('', () => {
+export class InMemoryUserCommandRepo implements IUserQuery<InMemoryUser>, IUserCommand<InMemoryUser> {
+  private readonly users: Map<PickAndType<InMemoryUser, 'uid'>, InMemoryUser>;
 
-});
+  constructor(
+    defaultUsers: [PickAndType<InMemoryUser, 'uid'>, InMemoryUser][] = [],
+  ) {
+    this.users = new Map<PickAndType<InMemoryUser, 'uid'>, InMemoryUser>(defaultUsers);
+  }
+
+  public async create(user: Omit<InMemoryUser, 'uid'>): Promise<InMemoryUser> {
+    if (this.users.has(user.id)) {
+      throw new Error('user id is duplicated');
+    }
+
+    const createdUser = new InMemoryUser(
+      user.id,
+      user.id,
+      user.password,
+      user.name,
+      user.balance,
+    );
+
+    this.users.set(user.id, createdUser);
+
+    return createdUser;
+  }
+
+  public async delete(userUid: PickAndType<InMemoryUser, 'uid'>): Promise<void> {
+    if (!this.users.delete(userUid)) {
+      throw new Error('user not found');
+    }
+  }
+
+  public async update(user: PartialExcept<InMemoryUser, 'uid' | 'id'>): Promise<void> {
+    const existedUser = this.users.get(user.uid);
+
+    if (existedUser == null) {
+      throw new Error('user not found');
+    }
+
+    this.users.set(existedUser.id, new InMemoryUser(
+      existedUser.uid,
+      existedUser.id,
+      existedUser.password,
+      existedUser.name,
+      existedUser.balance,
+    ));
+  }
+
+  public async exists(id: PickAndType<InMemoryUser, 'uid'>): Promise<boolean> {
+    return this.users.has(id);
+  }
+
+  public async readByUid(
+    id: PickAndType<InMemoryUser, 'uid'>,
+  ): Promise<ReadOnlyProperty<InMemoryUser, 'uid' | 'id'> | undefined> {
+    return this.users.get(id);
+  }
+}

@@ -1,7 +1,7 @@
 import { IStore } from '@hexa/store-domain/domains/entities/store.entity.ts';
 import { IItem } from '@hexa/store-domain/domains/entities/item.entity.ts';
 import { IStoreAggCommand } from '@hexa/store-domain/ports/out/commands/store-agg.command.ts';
-import { PickType } from '@hexa/common/types.ts';
+import { PickAndType, PickType } from '@hexa/common/types.ts';
 import { OrderedMap } from 'immutable';
 
 export class StoreAgg<T extends IStore, U extends IItem> {
@@ -34,14 +34,9 @@ export class StoreAgg<T extends IStore, U extends IItem> {
     return createdItems;
   }
   
-  public async removeItems(items: Pick<U, 'id'>[]) {
-    await this.storeAggCommand.deleteItems(items.map(item => {
-      return {
-        id: item.id,
-        storeId: this.store.id,
-      };
-    }));
-    this._items = this._items.removeIn(items.map(item => item.id));
+  public async removeItems(ids: PickAndType<U, 'id'>[]) {
+    await this.storeAggCommand.deleteItems(ids);
+    this._items = this._items.removeIn(ids);
     this.itemList = this._items.valueSeq().toArray();
   }
 

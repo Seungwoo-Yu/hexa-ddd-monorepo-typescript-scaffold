@@ -1,3 +1,4 @@
 export function AssertStaticInterface<T>() {
-  return <U extends { new(...args: never[]): V } & T, V>(_: U, __: ClassDecoratorContext) => undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return <U extends { new(...args: any[]): object } & T>(constructor: U) => constructor;
 }

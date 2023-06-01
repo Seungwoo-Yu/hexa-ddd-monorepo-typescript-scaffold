@@ -1,4 +1,4 @@
-import { IUser } from '../../../domains/entities/user.entity';
+import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import { PickAndType, ReadOnlyProperty } from '@hexa/common/types.ts';
 
 export interface IUserQuery<T extends IUser> {
