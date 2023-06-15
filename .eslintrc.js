@@ -39,6 +39,12 @@ module.exports = {
       ],
       rules: {
         '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+        '@typescript-eslint/explicit-member-accessibility': ['error', {
+          accessibility: 'explicit',
+          overrides: {
+            constructors: 'no-public',
+          },
+        }],
         '@typescript-eslint/member-delimiter-style': ['error', {
           multiline: {
             delimiter: 'comma',
@@ -99,6 +105,12 @@ module.exports = {
       ],
       rules: {
         '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+        '@typescript-eslint/explicit-member-accessibility': ['error', {
+          accessibility: 'explicit',
+          overrides: {
+            constructors: 'no-public',
+          },
+        }],
         '@typescript-eslint/member-delimiter-style': ['error', {
           multiline: {
             delimiter: 'comma',

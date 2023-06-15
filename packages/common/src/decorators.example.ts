@@ -9,7 +9,7 @@ class ClassOfExample {
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static isClassOf(target: any): target is ClassOfExample {
+  public static isClassOf(target: any): target is ClassOfExample {
     return typeof target.b != null && typeof target.b === 'string' &&
       target.b !== '';
   }
