@@ -2,9 +2,10 @@ import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import { Enum, PickAndType } from '@hexa/common/types.ts';
 import { z } from 'zod';
 import { isValid as isValidUlid } from 'ulidx';
-import { Equality } from '@hexa/common/interfaces.ts';
+import { ClassOf, Equality } from '@hexa/common/interfaces.ts';
 import { unifyZodMessages } from '@hexa/common/utils.ts';
 import { CompositeValError } from '@hexa/common/errors/composite.ts';
+import { AssertStaticInterface } from '@hexa/common/decorators.ts';
 
 export const PointGainReason = [
   'gained_by_admin',
@@ -20,8 +21,9 @@ export interface IPointLog<T extends IUser> extends Equality {
   amount: number,
 }
 
-// noinspection JSUnusedGlobalSymbols,TypeScriptAbstractClassConstructorCanBeMadeProtected
-export class IPointGainLog<T extends IUser> implements IPointLog<T> {
+// noinspection JSUnusedGlobalSymbols
+@AssertStaticInterface<ClassOf<PointGainLog<IUser>>>()
+export class PointGainLog<T extends IUser> implements IPointLog<T> {
   constructor(
     public readonly userUid: PickAndType<T, 'uid'>,
     public readonly reason: Enum<typeof PointGainReason>,
@@ -62,10 +64,19 @@ export class IPointGainLog<T extends IUser> implements IPointLog<T> {
     return other != null && this.userUid === other.userId &&
       this.reason === other.userId && this.amount === other.amount;
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public static isClassOf<T extends IUser>(target: any): target is PointGainLog<T> {
+    return target != null &&
+      target.userId != null && target.userId !== '' &&
+      target.reason != null && PointGainReason.indexOf(target.reason) > -1 &&
+      target.amount != null && !isNaN(Number(target.amount)) && target.amount > 0;
+  }
 }
 
-// noinspection JSUnusedGlobalSymbols,TypeScriptAbstractClassConstructorCanBeMadeProtected
-export class IPointLossLog<T extends IUser> implements IPointLog<T> {
+// noinspection JSUnusedGlobalSymbols
+@AssertStaticInterface<ClassOf<PointLossLog<IUser>>>()
+export class PointLossLog<T extends IUser> implements IPointLog<T> {
   constructor(
     public readonly userUid: PickAndType<T, 'uid'>,
     public readonly reason: Enum<typeof PointLossReason>,
@@ -103,5 +114,13 @@ export class IPointLossLog<T extends IUser> implements IPointLog<T> {
   public equals(other: any): other is this {
     return other != null && this.userUid === other.userId &&
       this.reason === other.userId && this.amount === other.amount;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public static isClassOf<T extends IUser>(target: any): target is PointLossLog<T> {
+    return target != null &&
+      target.userId != null && target.userId !== '' &&
+      target.reason != null && PointLossReason.indexOf(target.reason) > -1 &&
+      target.amount != null && !isNaN(Number(target.amount)) && target.amount > 0;
   }
 }

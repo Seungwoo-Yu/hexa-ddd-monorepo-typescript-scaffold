@@ -1,42 +1,37 @@
 import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import { IUserAggCommand } from '@hexa/user-domain/ports/out/commands/user-agg.command.ts';
-import { IUserAggQuery, PointLogOptions } from '@hexa/user-domain/ports/out/queries/user-agg.query.ts';
 import {
-  IPointGainLog, IPointLog,
-  IPointLossLog,
+  PointGainLog, IPointLog,
+  PointLossLog,
   PointGainReason,
   PointLossReason,
 } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
 import { Enum } from '@hexa/common/types.ts';
+import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
+import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
 
-export class UserAgg<T extends IUser, U extends IPointGainLog<T>, V extends IPointLossLog<T>> {
+export class UserAgg<T extends IUser> {
   constructor(
-    private readonly userAggQuery: IUserAggQuery<T, U, V>,
-    private readonly userAggCommand: IUserAggCommand<T>,
     public readonly user: T,
+    public readonly pointLogs: IPointLog<T>[],
   ) {}
 
-  public async deposit(reason: Enum<typeof PointGainReason>, amount: number) {
-    await this.userAggCommand.createPointLog(this.user.uid, reason, amount);
-    await this.userAggCommand.updateBalanceStat(amount);
+  public deposit(reason: Enum<typeof PointGainReason>, amount: number) {
     this.user.balance = this.user.balance.deposit(amount);
+    this.pointLogs.push(new PointGainLog(this.user.uid, reason, amount));
   }
 
-  public async withdraw(reason: Enum<typeof PointLossReason>, amount: number) {
-    await this.userAggCommand.createPointLog(this.user.uid, reason, amount);
-    await this.userAggCommand.updateBalanceStat(-amount);
+  public withdraw(reason: Enum<typeof PointLossReason>, amount: number) {
     this.user.balance = this.user.balance.withdraw(amount);
+    this.pointLogs.push(new PointLossLog(this.user.uid, reason, amount));
   }
 
-  public async readPointLogs(options?: PointLogOptions): Promise<IPointLog<T>[]> {
-    return this.userAggQuery.readPointLogs(this.user.uid, options);
+  public changeCredential(id: string, password: string) {
+    const credential = new Credential(id, password);
+    this.user.changeCredential(credential);
   }
 
-  public async readPointGainLogs(options?: PointLogOptions): Promise<U[]> {
-    return this.userAggQuery.readPointGainLogs(this.user.uid, options);
-  }
-
-  public async readPointLossLogs(options?: PointLogOptions): Promise<V[]> {
-    return this.userAggQuery.readPointLossLogs(this.user.uid, options);
+  public changeName(nickname: string) {
+    const credential = new Name(nickname);
+    this.user.changeName(credential);
   }
 }
