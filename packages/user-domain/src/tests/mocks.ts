@@ -103,8 +103,8 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
 
   private async readPointGainLogs(
     userId: PickAndType<InMemoryUser, 'uid'>,
-    options?: PointLogOptions<InMemoryUser> & {
-      searchOption: Exclude<PickAndType<PointLogOptions<InMemoryUser>, 'searchOption'>, 'none'>,
+    options?: PointLogOptions & {
+      searchOption: Exclude<PickAndType<PointLogOptions, 'searchOption'>, 'none'>,
     },
   ): Promise<PointGainLog<InMemoryUser>[]> {
     const userPointLogs = this.pointLogs.get(userId);
@@ -135,8 +135,8 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
 
   private async readPointLogs(
     userId: PickAndType<InMemoryUser, 'uid'>,
-    options?: PointLogOptions<InMemoryUser> & {
-      searchOption: Exclude<PickAndType<PointLogOptions<InMemoryUser>, 'searchOption'>, 'none'>,
+    options?: PointLogOptions & {
+      searchOption: Exclude<PickAndType<PointLogOptions, 'searchOption'>, 'none'>,
     },
   ): Promise<IPointLog<InMemoryUser>[]> {
     const userPointLogs = this.pointLogs.get(userId);
@@ -166,8 +166,8 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
 
   private async readPointLossLogs(
     userId: PickAndType<InMemoryUser, 'uid'>,
-    options?: PointLogOptions<InMemoryUser> & {
-      searchOption: Exclude<PickAndType<PointLogOptions<InMemoryUser>, 'searchOption'>, 'none'>,
+    options?: PointLogOptions & {
+      searchOption: Exclude<PickAndType<PointLogOptions, 'searchOption'>, 'none'>,
     },
   ): Promise<PointLossLog<InMemoryUser>[]> {
     const userPointLogs = this.pointLogs.get(userId);
@@ -236,7 +236,7 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
 
   public async readByUid(
     uid: PickAndType<InMemoryUser, 'uid'>,
-    options?: PointLogOptions<InMemoryUser>,
+    options?: PointLogOptions,
   ): Promise<UserAgg<ReadOnlyProperty<InMemoryUser, 'uid' | 'credential'>>> {
     const index = this.uidToIndexMap.get(uid);
     if (index == null) {
