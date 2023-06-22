@@ -4,6 +4,7 @@ import { isValid as isValidUlid, ulid } from 'ulidx';
 import { z } from 'zod';
 import { unifyZodMessages } from '@hexa/common/utils.ts';
 import { CompositeValError } from '@hexa/common/errors/composite.ts';
+import { UndefOrNullParamError } from '@hexa/common/errors/equality.ts';
 
 @AssertStaticInterface<IFactory<UlidUid>>()
 export class UlidUid implements Equality {
@@ -22,7 +23,11 @@ export class UlidUid implements Equality {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public equals(other: any): other is this {
-    return other != null && this.uid == other.uid;
+    if (other == null) {
+      throw new UndefOrNullParamError();
+    }
+
+    return this.uid == other.uid;
   }
 
   public static create() {
