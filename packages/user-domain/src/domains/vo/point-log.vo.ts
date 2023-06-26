@@ -1,4 +1,4 @@
-import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
+import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import { Enum, PickAndType } from '@hexa/common/types.ts';
 import { z } from 'zod';
 import { isValid as isValidUlid } from 'ulidx';
@@ -16,16 +16,16 @@ export const PointLossReason = [
   'lost_by_admin',
 ] as const;
 
-export interface IPointLog<T extends IUser> extends Equality {
-  userUid: PickAndType<T, 'uid'>,
+export interface IPointLog extends Equality {
+  userUid: PickAndType<User, 'uid'>,
   amount: number,
 }
 
 // noinspection JSUnusedGlobalSymbols
-@AssertStaticInterface<ClassOf<PointGainLog<IUser>>>()
-export class PointGainLog<T extends IUser> implements IPointLog<T> {
+@AssertStaticInterface<ClassOf<PointGainLog>>()
+export class PointGainLog implements IPointLog {
   constructor(
-    public readonly userUid: PickAndType<T, 'uid'>,
+    public readonly userUid: PickAndType<User, 'uid'>,
     public readonly reason: Enum<typeof PointGainReason>,
     public readonly amount: number,
   ) {
@@ -66,19 +66,19 @@ export class PointGainLog<T extends IUser> implements IPointLog<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static isClassOf<T extends IUser>(target: any): target is PointGainLog<T> {
+  public static isClassOf(target: any): target is PointGainLog {
     return target != null &&
-      target.userId != null && target.userId !== '' &&
+      target.userUid != null && target.userUid !== '' &&
       target.reason != null && PointGainReason.indexOf(target.reason) > -1 &&
       target.amount != null && !isNaN(Number(target.amount)) && target.amount > 0;
   }
 }
 
 // noinspection JSUnusedGlobalSymbols
-@AssertStaticInterface<ClassOf<PointLossLog<IUser>>>()
-export class PointLossLog<T extends IUser> implements IPointLog<T> {
+@AssertStaticInterface<ClassOf<PointLossLog>>()
+export class PointLossLog implements IPointLog {
   constructor(
-    public readonly userUid: PickAndType<T, 'uid'>,
+    public readonly userUid: PickAndType<User, 'uid'>,
     public readonly reason: Enum<typeof PointLossReason>,
     public readonly amount: number,
   ) {
@@ -117,9 +117,9 @@ export class PointLossLog<T extends IUser> implements IPointLog<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static isClassOf<T extends IUser>(target: any): target is PointLossLog<T> {
+  public static isClassOf(target: any): target is PointLossLog {
     return target != null &&
-      target.userId != null && target.userId !== '' &&
+      target.userUid != null && target.userUid !== '' &&
       target.reason != null && PointLossReason.indexOf(target.reason) > -1 &&
       target.amount != null && !isNaN(Number(target.amount)) && target.amount > 0;
   }

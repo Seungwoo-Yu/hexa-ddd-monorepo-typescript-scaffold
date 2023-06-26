@@ -1,18 +1,18 @@
-import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
+import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import {
   PointGainLog, IPointLog,
   PointLossLog,
   PointGainReason,
   PointLossReason,
 } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
-import { Enum } from '@hexa/common/types.ts';
+import { Enum, ReadOnlyProperty } from '@hexa/common/types.ts';
 import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
 import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
 
-export class UserAgg<T extends IUser> {
+export class UserAgg {
   constructor(
-    public readonly user: T,
-    public readonly pointLogs: IPointLog<T>[],
+    public readonly user: ReadOnlyProperty<User, 'uid'>,
+    public readonly pointLogs: IPointLog[],
   ) {}
 
   public deposit(reason: Enum<typeof PointGainReason>, amount: number) {
