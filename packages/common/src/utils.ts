@@ -33,3 +33,14 @@ export function unifyZodMessages(message: string) {
     };
   };
 }
+
+/**
+ * Use for test only
+ */
+export class IncrIntegerFactory {
+  private increment = 0;
+
+  public next() {
+    return this.increment++;
+  }
+}
