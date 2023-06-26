@@ -1,14 +1,14 @@
-import { InMemoryUser } from '@hexa/user-domain/tests/mocks.ts';
 import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg.ts';
 import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
 import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
 import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
 import { Balance } from '@hexa/user-domain/domains/vo/balance.vo.ts';
+import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
 
 describe('user-domain aggregate test', () => {
   it('should deposit positive amount', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -26,7 +26,7 @@ describe('user-domain aggregate test', () => {
 
   it('should not deposit add negative amount', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -42,7 +42,7 @@ describe('user-domain aggregate test', () => {
 
   it('should withdraw positive amount', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -58,7 +58,7 @@ describe('user-domain aggregate test', () => {
 
   it('should not withdraw negative amount', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -74,7 +74,7 @@ describe('user-domain aggregate test', () => {
 
   it('should not withdraw more than current balance', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -90,7 +90,7 @@ describe('user-domain aggregate test', () => {
 
   it('should change their credential', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -104,7 +104,7 @@ describe('user-domain aggregate test', () => {
 
   it('should not change id from their credential', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -119,7 +119,7 @@ describe('user-domain aggregate test', () => {
 
   it('should not change their credential because it is not changed actually', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -134,7 +134,7 @@ describe('user-domain aggregate test', () => {
 
   it('should change their name', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),
@@ -148,7 +148,7 @@ describe('user-domain aggregate test', () => {
 
   it('should not change their name because it is not changed actually', async () => {
     const userAgg = new UserAgg(
-      new InMemoryUser(
+      new User(
         UlidUid.create(),
         new Credential('id1234', 'pw1234'),
         new Name('name1234'),

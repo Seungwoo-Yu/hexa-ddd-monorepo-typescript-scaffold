@@ -1,34 +1,20 @@
-import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
+import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import {
   IPointLog, PointLossLog,
   PointGainReason,
   PointLossReason, PointGainLog,
 } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
-import { Enum, PickAndType, ReadOnlyProperty } from '@hexa/common/types.ts';
+import { Enum, PickAndType } from '@hexa/common/types.ts';
 import { isValidOfEnum } from '@hexa/common/utils.ts';
 import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
-import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
-import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
-import { Balance } from '@hexa/user-domain/domains/vo/balance.vo.ts';
 import { IUserCommand } from '@hexa/user-domain/domains/repositories/commands/user.command.ts';
 import { IUserQuery, PointLogOptions } from '@hexa/user-domain/domains/repositories/queries/user.query.ts';
 import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg.ts';
 
-export class InMemoryUser extends IUser {
-  constructor(
-    public readonly uid: UlidUid,
-    public readonly credential: Credential,
-    public readonly name: Name,
-    public readonly balance: Balance,
-  ) {
-    super(uid, credential, name, balance);
-  }
-}
-
-export class InMemoryPointGainLog extends PointGainLog<InMemoryUser> {
+export class InMemoryPointGainLog extends PointGainLog {
   constructor(
     public readonly index: number,
-    public readonly userUid: PickAndType<InMemoryUser, 'uid'>,
+    public readonly userUid: PickAndType<User, 'uid'>,
     public readonly reason: Enum<typeof PointGainReason>,
     public readonly amount: number,
   ) {
@@ -36,10 +22,10 @@ export class InMemoryPointGainLog extends PointGainLog<InMemoryUser> {
   }
 }
 
-export class InMemoryPointLossLog extends PointLossLog<InMemoryUser> {
+export class InMemoryPointLossLog extends PointLossLog {
   constructor(
     public readonly index: number,
-    public readonly userUid: PickAndType<InMemoryUser, 'uid'>,
+    public readonly userUid: PickAndType<User, 'uid'>,
     public readonly reason: Enum<typeof PointLossReason>,
     public readonly amount: number,
   ) {
@@ -47,17 +33,17 @@ export class InMemoryPointLossLog extends PointLossLog<InMemoryUser> {
   }
 }
 
-export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQuery<InMemoryUser> {
+export class InMemoryUserRepo implements IUserCommand, IUserQuery {
   private balance = 0;
   private increment = 0;
-  private readonly uidToIndexMap: Map<PickAndType<InMemoryUser, 'uid'>, number>;
-  private readonly idToIndexMap: Map<PickAndType<PickAndType<InMemoryUser, 'credential'>, 'id'>, number>;
-  private readonly users: Map<number, InMemoryUser>;
-  private readonly pointLogs: Map<PickAndType<InMemoryUser, 'uid'>, IPointLog<InMemoryUser>[]>;
+  private readonly uidToIndexMap: Map<PickAndType<User, 'uid'>, number>;
+  private readonly idToIndexMap: Map<PickAndType<PickAndType<User, 'credential'>, 'id'>, number>;
+  private readonly users: Map<number, User>;
+  private readonly pointLogs: Map<PickAndType<User, 'uid'>, IPointLog[]>;
 
   constructor(
-    private readonly defaultUsers: InMemoryUser[] = [],
-    private readonly defaultPointLogs: [PickAndType<InMemoryUser, 'uid'>, IPointLog<InMemoryUser>[]][] = [],
+    private readonly defaultUsers: User[] = [],
+    private readonly defaultPointLogs: [PickAndType<User, 'uid'>, IPointLog[]][] = [],
   ) {
     this.users = new Map(defaultUsers.map(user => [this.increment++, user]));
     const entries = Array.from(this.users.entries());
@@ -86,7 +72,7 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
   }
 
   public async createPointLog(
-    userUid: PickAndType<InMemoryUser, 'uid'>,
+    userUid: PickAndType<User, 'uid'>,
     reason: Enum<typeof PointGainReason | typeof PointLossReason>,
     balance: number,
   ): Promise<void> {
@@ -102,19 +88,18 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
   }
 
   private async readPointGainLogs(
-    userId: PickAndType<InMemoryUser, 'uid'>,
+    userUid: PickAndType<User, 'uid'>,
     options?: PointLogOptions & {
       searchOption: Exclude<PickAndType<PointLogOptions, 'searchOption'>, 'none'>,
     },
-  ): Promise<PointGainLog<InMemoryUser>[]> {
-    const userPointLogs = this.pointLogs.get(userId);
+  ): Promise<InMemoryPointGainLog[]> {
+    const userPointLogs = this.pointLogs.get(userUid);
     if (userPointLogs == null) {
       return [];
     }
 
     const filteredLogs = userPointLogs
-      .filter(log => PointGainLog.isClassOf(log))
-      .map(log => log as InMemoryPointGainLog);
+      .filter(log => PointGainLog.isClassOf(log)) as InMemoryPointGainLog[];
 
     if (options?.searchOption == null) {
       return filteredLogs.slice(undefined, options?.amount);
@@ -134,18 +119,17 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
   }
 
   private async readPointLogs(
-    userId: PickAndType<InMemoryUser, 'uid'>,
+    userUid: PickAndType<User, 'uid'>,
     options?: PointLogOptions & {
       searchOption: Exclude<PickAndType<PointLogOptions, 'searchOption'>, 'none'>,
     },
-  ): Promise<IPointLog<InMemoryUser>[]> {
-    const userPointLogs = this.pointLogs.get(userId);
+  ): Promise<IPointLog[]> {
+    const userPointLogs = this.pointLogs.get(userUid);
     if (userPointLogs == null) {
       return [];
     }
 
-    const castedLogs = userPointLogs
-      .map(log => log as InMemoryPointGainLog | InMemoryPointLossLog);
+    const castedLogs = userPointLogs as (InMemoryPointGainLog | InMemoryPointLossLog)[];
 
     if (options?.searchOption == null) {
       return castedLogs.slice(undefined, options?.amount);
@@ -165,19 +149,18 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
   }
 
   private async readPointLossLogs(
-    userId: PickAndType<InMemoryUser, 'uid'>,
+    userUid: PickAndType<User, 'uid'>,
     options?: PointLogOptions & {
       searchOption: Exclude<PickAndType<PointLogOptions, 'searchOption'>, 'none'>,
     },
-  ): Promise<PointLossLog<InMemoryUser>[]> {
-    const userPointLogs = this.pointLogs.get(userId);
+  ): Promise<InMemoryPointLossLog[]> {
+    const userPointLogs = this.pointLogs.get(userUid);
     if (userPointLogs == null) {
       return [];
     }
 
     const filteredLogs = userPointLogs
-      .filter(log => PointLossLog.isClassOf(log))
-      .map(log => log as InMemoryPointLossLog);
+      .filter(log => PointLossLog.isClassOf(log)) as InMemoryPointLossLog[];
 
     if (options?.searchOption == null) {
       return filteredLogs.slice(undefined, options?.amount);
@@ -196,12 +179,12 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
       : filteredLogs.slice(undefined, (options?.amount ?? 10));
   }
 
-  public async createUser(user: Omit<InMemoryUser, 'uid'>): Promise<void> {
+  public async createUser(user: Omit<User, 'uid'>) {
     if (this.idToIndexMap.has(user.credential.id)) {
       throw new Error('user id is duplicated');
     }
 
-    const createdUser = new InMemoryUser(
+    const createdUser = new User(
       UlidUid.create(),
       user.credential,
       user.name,
@@ -211,9 +194,11 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
     this.users.set(this.increment++, createdUser);
     this.uidToIndexMap.set(createdUser.uid, this.increment);
     this.idToIndexMap.set(createdUser.credential.id, this.increment);
+
+    return createdUser.uid;
   }
 
-  public deleteUser(userUid: PickAndType<InMemoryUser, 'uid'>): Promise<void> {
+  public deleteUser(userUid: PickAndType<User, 'uid'>): Promise<void> {
     const index = this.uidToIndexMap.get(userUid);
     if (index == null) {
       throw new Error('user not found');
@@ -230,14 +215,14 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
     return Promise.resolve(undefined);
   }
 
-  public async exists(uid: PickAndType<InMemoryUser, 'uid'>): Promise<boolean> {
+  public async exists(uid: PickAndType<User, 'uid'>): Promise<boolean> {
     return this.uidToIndexMap.has(uid);
   }
 
   public async readByUid(
-    uid: PickAndType<InMemoryUser, 'uid'>,
+    uid: PickAndType<User, 'uid'>,
     options?: PointLogOptions,
-  ): Promise<UserAgg<ReadOnlyProperty<InMemoryUser, 'uid' | 'credential'>>> {
+  ): Promise<UserAgg> {
     const index = this.uidToIndexMap.get(uid);
     if (index == null) {
       throw new Error('user not found');
@@ -250,27 +235,27 @@ export class InMemoryUserAggRepo implements IUserCommand<InMemoryUser>, IUserQue
 
     if (options != null) {
       if (options.searchOption === 'none') {
-        return new UserAgg<ReadOnlyProperty<InMemoryUser, 'uid' | 'credential'>>(user, []);
+        return new UserAgg(user, []);
       } else if (options.filteredBy === 'gain') {
-        return new UserAgg<ReadOnlyProperty<InMemoryUser, 'uid' | 'credential'>>(
+        return new UserAgg(
           user,
           await this.readPointGainLogs(user.uid, options),
         );
       } else if (options.filteredBy === 'loss') {
-        return new UserAgg<ReadOnlyProperty<InMemoryUser, 'uid' | 'credential'>>(
+        return new UserAgg(
           user,
           await this.readPointLossLogs(user.uid, options),
         );
       }
     }
 
-    return new UserAgg<ReadOnlyProperty<InMemoryUser, 'uid' | 'credential'>>(
+    return new UserAgg(
       user,
       await this.readPointLogs(user.uid, options),
     );
   }
 
-  public async updateUser(userAgg: UserAgg<ReadOnlyProperty<InMemoryUser, 'uid'>>): Promise<void> {
+  public async updateUser(userAgg: UserAgg): Promise<void> {
     const userIdx = this.uidToIndexMap.get(userAgg.user.uid);
     if (userIdx == null) {
       throw new Error('user not found');

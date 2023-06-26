@@ -1,5 +1,5 @@
-import { IUser } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import { PickAndType, ReadOnlyProperty } from '@hexa/common/types.ts';
+import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
+import { PickAndType } from '@hexa/common/types.ts';
 import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg.ts';
 
 export type PointLogOptions = {
@@ -20,10 +20,10 @@ export type PointLogOptions = {
   lastId: number,
 };
 
-export interface IUserQuery<T extends IUser> {
+export interface IUserQuery {
   readByUid(
-    uid: PickAndType<T, 'uid'>,
+    uid: PickAndType<User, 'uid'>,
     options?: PointLogOptions,
-  ): Promise<UserAgg<ReadOnlyProperty<T, 'uid' | 'credential'>>>,
-  exists(uid: PickAndType<T, 'uid'>): Promise<boolean>,
+  ): Promise<UserAgg>,
+  exists(uid: PickAndType<User, 'uid'>): Promise<boolean>,
 }

@@ -3,8 +3,8 @@ import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
 import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
 import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
 
-export abstract class IUser {
-  protected constructor(
+export class User {
+  constructor(
     public uid: UlidUid,
     public credential: Credential,
     public name: Name,
