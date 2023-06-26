@@ -1,12 +1,11 @@
 import { ZodError } from 'zod';
 import {
-  EmptyStringError,
   InvalidEnumError,
   MaxElementLenError,
   MaxLengthError,
   MaxValueError, MinElementLenError,
   MinLengthError,
-  MinValueError,
+  MinValueError, UndefOrNullVarError,
 } from '@hexa/common/errors/vo.ts';
 
 export class CompositeValError extends Error {
@@ -45,15 +44,14 @@ export class CompositeValError extends Error {
         return new InvalidEnumError(issue.received + '', name);
       }
       if (issue.code === 'invalid_type') {
-        if (issue.expected === 'string' &&
-          [
-            'null',
-            'undefined',
-            'never',
-            'unknown',
-            'void',
-          ].indexOf(issue.received) > -1) {
-          return new EmptyStringError(name);
+        if ([
+          'null',
+          'undefined',
+          'never',
+          'unknown',
+          'void',
+        ].indexOf(issue.received) > -1) {
+          return new UndefOrNullVarError(name);
         }
       }
 

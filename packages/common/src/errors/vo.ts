@@ -41,8 +41,8 @@ export class InvalidEnumError extends Error {
 }
 
 
-export class EmptyStringError extends Error {
+export class UndefOrNullVarError extends Error {
   constructor(name = 'variable') {
-    super(name + ' is empty string');
+    super(name + ' is undefined or null');
   }
 }
