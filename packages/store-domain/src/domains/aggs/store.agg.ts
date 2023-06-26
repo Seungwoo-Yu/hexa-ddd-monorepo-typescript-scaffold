@@ -1,46 +1,35 @@
-import { IStore } from '@hexa/store-domain/domains/entities/store.entity.ts';
-import { IItem } from '@hexa/store-domain/domains/entities/item.entity.ts';
-import { IStoreAggCommand } from '@hexa/store-domain/ports/out/commands/store-agg.command.ts';
-import { PickAndType, PickType } from '@hexa/common/types.ts';
+import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
+import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
+import { PickAndType, PickType, ReadOnlyProperty } from '@hexa/common/types.ts';
 import { OrderedMap } from 'immutable';
 
-export class StoreAgg<T extends IStore, U extends IItem> {
-  private itemList: U[];
+export class StoreAgg {
+  private itemList: Item[];
 
   constructor(
-    private readonly storeAggCommand: IStoreAggCommand<U>,
-    public readonly store: T,
-    private _items: OrderedMap<PickType<U, 'id'>, U>,
+    public readonly store: ReadOnlyProperty<Store, 'uid'>,
+    private _items: OrderedMap<PickType<Item, 'uid'>, Item>,
   ) {
     this.itemList = this._items.valueSeq().toArray();
   }
-  
-  public async addItems(_items: Omit<U, 'id' | 'storeId'>[]) {
-    const items = _items.map(item => {
-      return {
-        name: item.name,
-        description: item.description,
-        price: item.price,
-        storeId: this.store.id,
-      } as Omit<U, 'id'>;
-    });
-    const createdItems = await this.storeAggCommand.createItems(items);
 
-    createdItems.forEach(item => {
-      this._items = this._items.set(item.id, item);
+  public addItems(
+    items: Exclude<Item, 'storeUid' | 'uid'>[],
+  ): ReadOnlyProperty<Item, 'storeUid' | 'uid'>[] {
+    items.forEach(item => {
+      this._items = this._items.set(item.uid, item);
     });
     this.itemList = this._items.valueSeq().toArray();
 
-    return createdItems;
+    return items;
   }
-  
-  public async removeItems(ids: PickAndType<U, 'id'>[]) {
-    await this.storeAggCommand.deleteItems(ids);
+
+  public removeItems(ids: PickAndType<Item, 'uid'>[]) {
     this._items = this._items.removeIn(ids);
     this.itemList = this._items.valueSeq().toArray();
   }
 
-  public get items(): readonly U[] {
+  public get items(): ReadOnlyProperty<Item, 'storeUid' | 'uid'>[] {
     return this.itemList;
   }
 }
