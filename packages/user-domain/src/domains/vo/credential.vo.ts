@@ -51,7 +51,7 @@ export class Credential implements Equality {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): other is this {
+  public equals(other: any): boolean {
     return other != null && this.id === other.id && this.password === other.password;
   }
 }

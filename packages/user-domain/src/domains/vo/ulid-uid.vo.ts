@@ -22,7 +22,7 @@ export class UlidUid implements Equality {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): other is this {
+  public equals(other: any): boolean {
     if (other == null) {
       throw new UndefOrNullParamError();
     }

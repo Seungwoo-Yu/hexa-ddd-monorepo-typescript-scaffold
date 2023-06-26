@@ -22,7 +22,7 @@ export class Name implements Equality {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): other is this {
+  public equals(other: any): boolean {
     return other != null && this.nickname === other.nickname;
   }
 }

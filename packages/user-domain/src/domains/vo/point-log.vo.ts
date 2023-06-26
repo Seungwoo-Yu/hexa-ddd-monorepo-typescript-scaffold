@@ -60,9 +60,9 @@ export class PointGainLog<T extends IUser> implements IPointLog<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): other is this {
-    return other != null && this.userUid === other.userId &&
-      this.reason === other.userId && this.amount === other.amount;
+  public equals(other: any): boolean {
+    return other != null && this.userUid === other.userUid &&
+      this.reason === other.reason && this.amount === other.amount;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -111,9 +111,9 @@ export class PointLossLog<T extends IUser> implements IPointLog<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): other is this {
-    return other != null && this.userUid === other.userId &&
-      this.reason === other.userId && this.amount === other.amount;
+  public equals(other: any): boolean {
+    return other != null && this.userUid === other.userUid &&
+      this.reason === other.reason && this.amount === other.amount;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

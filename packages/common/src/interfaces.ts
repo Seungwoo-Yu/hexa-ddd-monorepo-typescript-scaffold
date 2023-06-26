@@ -18,5 +18,5 @@ export interface Equality {
    * @throws {UndefOrNullParamError} Will be thrown when other is either undefined or null
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  equals(other: any): other is this,
+  equals(other: any): boolean,
 }

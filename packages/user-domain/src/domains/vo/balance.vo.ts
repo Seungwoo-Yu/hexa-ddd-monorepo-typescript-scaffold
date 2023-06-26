@@ -45,7 +45,7 @@ export class Balance implements Equality {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): other is this {
+  public equals(other: any): boolean {
     return other != null && this.amount === other.amount;
   }
 }
