@@ -15,3 +15,8 @@ export type PartialExcept<T, U extends keyof T> = {
 export type PickType<T, U extends keyof T> = T[U];
 export type PickAndType<T, U extends keyof T> = PickType<Pick<T, U>, U>;
 export type Enum<T extends readonly unknown[]> = T extends readonly (infer U)[] ? U : never;
+export type FunctionPropertyNames<T> = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  [K in keyof T]: T[K] extends Function ? K : never;
+}[keyof T];
+export type OmitFuncs<T> = Omit<T, FunctionPropertyNames<T>>;
