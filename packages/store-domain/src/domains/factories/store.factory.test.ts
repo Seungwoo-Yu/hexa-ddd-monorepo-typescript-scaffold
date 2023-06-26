@@ -1,45 +1,55 @@
-import {
-  InMemoryItem,
-  InMemoryItemRepo,
-  InMemoryStore,
-  InMemoryStoreAggRepo,
-  InMemoryStoreRepo,
-} from '@hexa/store-domain/tests/mocks.ts';
 import { StoreFactory } from '@hexa/store-domain/domains/factories/store.factory.ts';
 import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg.ts';
+import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
+import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo.ts';
+import { IncrIntegerFactory } from '@hexa/common/utils.ts';
+import { StoreName } from '@hexa/store-domain/domains/vo/store-name.vo.ts';
+import { StoreDesc } from '@hexa/store-domain/domains/vo/store-desc.vo.ts';
+import { UlidUid } from '@hexa/store-domain/domains/vo/ulid-uid.vo.ts';
+import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
+import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo.ts';
+import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo.ts';
+import { Price } from '@hexa/store-domain/domains/vo/price.vo.ts';
 
 describe('store-domain factory test', () => {
   it('should be generated', async () => {
-    const storeRepo = new InMemoryStoreRepo();
-    const itemRepo = new InMemoryItemRepo(storeRepo);
-    const storeAggRepo = new InMemoryStoreAggRepo(itemRepo, storeRepo, itemRepo);
+    const incrIntegerFactory = new IncrIntegerFactory();
+    const store = new Store(new IntegerUid(incrIntegerFactory.next()), new StoreName('name'), new StoreDesc('description'), UlidUid.create());
 
-    const agg = await StoreFactory.create(
-      storeRepo,
-      storeAggRepo,
-      new InMemoryStore(1, 'name', 'description', 'adminId'),
-      [],
-    );
+    const storeAgg = await StoreFactory.create(store, []);
 
-    expect(agg).toBeInstanceOf(StoreAgg);
+    expect(storeAgg).toBeInstanceOf(StoreAgg);
+    expect(storeAgg.store.uid.uid).toStrictEqual(store.uid.uid);
   });
 
   it('should be generated with items', async () => {
-    const storeRepo = new InMemoryStoreRepo();
-    const itemRepo = new InMemoryItemRepo(storeRepo);
-    const storeAggRepo = new InMemoryStoreAggRepo(itemRepo, storeRepo, itemRepo);
+    const incrIntegerFactory = new IncrIntegerFactory();
+    const store = new Store(new IntegerUid(incrIntegerFactory.next()), new StoreName('name 2'), new StoreDesc('description 2'), UlidUid.create());
+    const items = [
+      new Item(
+        new IntegerUid(incrIntegerFactory.next()),
+        new ItemName('item 1'),
+        new ItemDesc('this is item 1'),
+        new Price(10000),
+        store.uid,
+      ),
+      new Item(
+        new IntegerUid(incrIntegerFactory.next()),
+        new ItemName('item 2'),
+        new ItemDesc('this is item 2'),
+        new Price(15000),
+        store.uid,
+      ),
+    ];
 
-    const agg = await StoreFactory.create(
-      storeRepo,
-      storeAggRepo,
-      new InMemoryStore(1, 'name', 'description', 'adminId'),
-      [
-        new InMemoryItem(1, 'item 1', 'description', 1000, 1),
-        new InMemoryItem(2, 'item 2', 'description', 2000, 1),
-      ],
+    const storeAgg = await StoreFactory.create(
+      store,
+      items,
     );
 
-    expect(agg).toBeInstanceOf(StoreAgg);
-    expect(agg.items.length).toStrictEqual(2);
+    expect(storeAgg).toBeInstanceOf(StoreAgg);
+    expect(storeAgg.items.length).toStrictEqual(2);
+    expect(storeAgg.items[0].name.name).toStrictEqual(items[0].name.name);
+    expect(storeAgg.items[1].name.name).toStrictEqual(items[1].name.name);
   });
 });

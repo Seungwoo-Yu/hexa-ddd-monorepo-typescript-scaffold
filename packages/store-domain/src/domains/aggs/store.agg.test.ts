@@ -1,101 +1,87 @@
-import { InMemoryItemRepo, InMemoryStoreAggRepo, InMemoryStoreRepo } from '@hexa/store-domain/tests/mocks.ts';
+import { StoreName } from '@hexa/store-domain/domains/vo/store-name.vo.ts';
+import { StoreDesc } from '@hexa/store-domain/domains/vo/store-desc.vo.ts';
+import { UlidUid } from '@hexa/store-domain/domains/vo/ulid-uid.vo.ts';
+import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo.ts';
+import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo.ts';
+import { Price } from '@hexa/store-domain/domains/vo/price.vo.ts';
+import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg.ts';
+import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
+import { IncrIntegerFactory } from '@hexa/common/utils.ts';
+import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo.ts';
+import { OrderedMap } from 'immutable';
+import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
 
 describe('store-domain aggregate test', () => {
-  it('store-domain adding items', async () => {
-    const storeRepo = new InMemoryStoreRepo();
-    const itemRepo = new InMemoryItemRepo(storeRepo);
-    const storeAggRepo = new InMemoryStoreAggRepo(itemRepo, storeRepo, itemRepo);
+  it('should add items', () => {
+    const incrIntegerFactory = new IncrIntegerFactory();
+    const storeAgg = new StoreAgg(
+      new Store(new IntegerUid(incrIntegerFactory.next()), new StoreName('test'), new StoreDesc('description'), UlidUid.create()),
+      OrderedMap(),
+    );
 
-    const store = await storeRepo.create({
-      name: 'test',
-      description: 'description',
-      adminId: 'adminId',
-    });
+    expect(storeAgg).not.toBeUndefined();
+    expect(storeAgg.store.name.name).toStrictEqual(storeAgg.store.name.name);
+    expect(storeAgg.store.description.desc).toStrictEqual(storeAgg.store.description.desc);
+    expect(storeAgg.store.adminUid.uid).toStrictEqual(storeAgg.store.adminUid.uid);
 
-    await expect(storeRepo.exists(store.id)).resolves.toStrictEqual(true);
+    const items = [
+      new Item(
+        new IntegerUid(incrIntegerFactory.next()),
+        new ItemName('item 1'),
+        new ItemDesc('this is item 1'),
+        new Price(10000),
+        storeAgg.store.uid,
+      ),
+    ];
 
-    const agg = (await storeAggRepo.readAggById(store.id))!;
+    storeAgg.addItems(items);
 
-    expect(agg).not.toBeUndefined();
-    expect(agg.store.name).toStrictEqual('test');
-
-    const items = await agg.addItems([
-      {
-        name: 'item 1',
-        description: 'this is item 1',
-        price: 10000,
-      },
-    ]);
-
-    expect(items.length).toStrictEqual(1);
-    expect(agg.items?.[0]?.name).toStrictEqual(items[0].name);
+    expect(storeAgg.items.length).toStrictEqual(1);
+    expect(storeAgg.items[0].name).toStrictEqual(items[0].name);
   });
 
-  it('should list items', async () => {
-    const storeRepo = new InMemoryStoreRepo([
-      {
-        id: 1,
-        name: 'test 2',
-        description: 'description',
-        adminId: 'adminId',
-      },
-    ]);
-    const itemRepo = new InMemoryItemRepo(storeRepo, [
-      [
-        1,
-        {
-          id: 1,
-          name: 'item 1',
-          description: 'this is item 1',
-          price: 10000,
-          storeId: 1,
-        },
-      ],
-    ]);
-    const storeAggRepo = new InMemoryStoreAggRepo(itemRepo, storeRepo, itemRepo);
+  it('should delete items', () => {
+    const incrIntegerFactory = new IncrIntegerFactory();
+    const storeAgg = new StoreAgg(
+      new Store(new IntegerUid(incrIntegerFactory.next()), new StoreName('test 2'), new StoreDesc('description'), UlidUid.create()),
+      OrderedMap(),
+    );
 
-    const agg = (await storeAggRepo.readAggById(1))!;
-
-    expect(agg.items[0].id).toStrictEqual(1);
-
-    const itemIds = await agg.addItems([
-      {
-        name: 'item 2',
-        description: 'this is item 2',
-        price: 5000,
-      },
+    const items = storeAgg.addItems([
+      new Item(
+        new IntegerUid(incrIntegerFactory.next()),
+        new ItemName('item 1'),
+        new ItemDesc('this is item 1'),
+        new Price(10000),
+        storeAgg.store.uid,
+      ),
     ]);
 
-    expect(agg.items.length).toStrictEqual(2);
-    expect(agg.items[1]).toStrictEqual(itemIds[0]);
+    storeAgg.removeItems(items.map(item => item.uid));
+
+    expect(storeAgg.items.length).toStrictEqual(0);
   });
 
-  it('should delete items', async () => {
-    const storeRepo = new InMemoryStoreRepo([
-      {
-        id: 1,
-        name: 'test 2',
-        description: 'description',
-        adminId: 'adminId',
-      },
-    ]);
-    const itemRepo = new InMemoryItemRepo(storeRepo);
-    const storeAggRepo = new InMemoryStoreAggRepo(itemRepo, storeRepo, itemRepo);
+  it('should do nothing after StoreAgg.removeItems is called', () => {
+    const incrIntegerFactory = new IncrIntegerFactory();
+    const storeAgg = new StoreAgg(
+      new Store(new IntegerUid(incrIntegerFactory.next()), new StoreName('test 3'), new StoreDesc('description'), UlidUid.create()),
+      OrderedMap(),
+    );
 
-    const agg = (await storeAggRepo.readAggById(1))!;
-
-    const itemIds = await agg.addItems([
-      {
-        name: 'item 2',
-        description: 'this is item 2',
-        price: 5000,
-      },
+    const items = storeAgg.addItems([
+      new Item(
+        new IntegerUid(incrIntegerFactory.next()),
+        new ItemName('item 1'),
+        new ItemDesc('this is item 1'),
+        new Price(10000),
+        storeAgg.store.uid,
+      ),
     ]);
 
-    expect(agg.items[0].id).toStrictEqual(itemIds[0].id);
+    storeAgg.removeItems([new IntegerUid(9999)]); // This uid doesn't exist so nothing is changed
 
-    await agg.removeItems([itemIds[0].id]);
-
-    expect(agg.items.length).toStrictEqual(0);
+    expect(storeAgg.items.length).toStrictEqual(1);
+    expect(storeAgg.items[0].name).toStrictEqual(items[0].name);
   });
 });
