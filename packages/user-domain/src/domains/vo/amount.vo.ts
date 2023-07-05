@@ -1,27 +1,31 @@
-import { z } from 'zod';
 import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
+import { z } from 'zod';
 import { unifyZodMessages } from '@hexa/common/utils.ts';
 import { CompositeValError } from '@hexa/common/errors/composite.ts';
 import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
 
-@AssertStaticInterface<ClassOf<Name>>()
+@AssertStaticInterface<ClassOf<Amount>>()
 @AssertStaticInterface<Validatable>()
-export class Name implements Equality {
+export class Amount implements Equality {
   constructor(
-    public readonly nickname: string,
+    public readonly amount: number,
   ) {
-    Name.validate(this);
+    Amount.validate(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public equals(other: any): boolean {
-    return other != null && this.nickname === other.nickname;
+    if (other == null) {
+      throw new UndefOrNullParamError();
+    }
+
+    return this.amount == other.amount;
   }
 
-  public static isClassOf(target: unknown): target is Name {
+  public static isClassOf(target: unknown): target is Amount {
     try {
-      Name.validate(target);
+      Amount.validate(target);
     } catch (ignored) {
       return false;
     }
@@ -32,21 +36,16 @@ export class Name implements Equality {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static validate(target: any) {
     if (target == null) {
-      throw new UndefOrNullParamError('Name');
+      throw new UndefOrNullParamError('Amount');
     }
 
-    const result = z.string({ errorMap: unifyZodMessages('nickname') })
-      .min(5)
-      .max(20)
-      .refine(
-        (id) => id === encodeURIComponent(id),
-        'nickname contains unacceptable characters',
-      )
-      .safeParse(target.nickname);
+    const result = z.number({ errorMap: unifyZodMessages('amount') })
+      .int()
+      .min(0)
+      .safeParse(target.amount);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);
     }
   }
 }
-

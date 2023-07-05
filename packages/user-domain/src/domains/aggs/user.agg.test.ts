@@ -37,7 +37,7 @@ describe('user-domain aggregate test', () => {
 
     expect(() => userAgg.deposit('gained_by_admin', -10))
       .toThrowError('composite validation error: 1 error(s) thrown.\n' +
-        'main error: amount must be greater than 0');
+        'main error: depositAmount must be greater than 0');
   });
 
   it('should withdraw positive amount', async () => {
@@ -69,7 +69,7 @@ describe('user-domain aggregate test', () => {
 
     expect(() => userAgg.withdraw('lost_by_admin', -10))
       .toThrowError('composite validation error: 1 error(s) thrown.\n' +
-        'main error: amount must be greater than 0');
+        'main error: withdrawAmount must be greater than 0');
   });
 
   it('should not withdraw more than current balance', async () => {
@@ -85,7 +85,7 @@ describe('user-domain aggregate test', () => {
 
     expect(() => userAgg.withdraw('lost_by_admin', 20))
       .toThrowError('composite validation error: 1 error(s) thrown.\n' +
-        'main error: amount must be less than 10');
+        'main error: withdrawAmount must be less than 10');
   });
 
   it('should change their credential', async () => {

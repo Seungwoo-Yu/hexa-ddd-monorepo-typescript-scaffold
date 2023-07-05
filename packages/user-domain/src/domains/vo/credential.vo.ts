@@ -1,13 +1,49 @@
 import { z } from 'zod';
-import { Equality } from '@hexa/common/interfaces.ts';
+import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
 import { CompositeValError } from '@hexa/common/errors/composite.ts';
 import { unifyZodMessages } from '@hexa/common/utils.ts';
+import { AssertStaticInterface } from '@hexa/common/decorators.ts';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
 
+@AssertStaticInterface<ClassOf<Credential>>()
+@AssertStaticInterface<Validatable>()
 export class Credential implements Equality {
   constructor(
     public readonly id: string,
     public readonly password: string,
   ) {
+    Credential.validate(this);
+  }
+
+  public updatePassword(newPassword: string) {
+    return new Credential(this.id, newPassword);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public equals(other: any): boolean {
+    if (other == null) {
+      throw new UndefOrNullParamError();
+    }
+
+    return this.id === other.id && this.password === other.password;
+  }
+
+  public static isClassOf(target: unknown): target is Credential {
+    try {
+      Credential.validate(target);
+    } catch (ignored) {
+      return false;
+    }
+
+    return true;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public static validate(target: any) {
+    if (target == null) {
+      throw new UndefOrNullParamError('Credential');
+    }
+
     const idResult = z.string({ errorMap: unifyZodMessages('id') })
       .nonempty()
       .min(1)
@@ -15,7 +51,7 @@ export class Credential implements Equality {
       .refine(
         (id) => id === encodeURIComponent(id),
         'id contains unacceptable characters',
-      ).safeParse(id);
+      ).safeParse(target.id);
 
     if (!idResult.success) {
       throw CompositeValError.fromZodError(idResult.error);
@@ -27,31 +63,10 @@ export class Credential implements Equality {
       .refine(
         (id) => id === encodeURIComponent(id),
         'password contains unacceptable characters',
-      ).safeParse(password);
+      ).safeParse(target.password);
 
     if (!pwResult.success) {
       throw CompositeValError.fromZodError(pwResult.error);
     }
-  }
-
-  public updatePassword(password: string) {
-    const pwResult = z.string({ errorMap: unifyZodMessages('password') })
-      .nonempty()
-      .min(1)
-      .refine(
-        (id) => id === encodeURIComponent(id),
-        'password contains unacceptable characters',
-      ).safeParse(password);
-
-    if (!pwResult.success) {
-      throw CompositeValError.fromZodError(pwResult.error);
-    }
-
-    return new Credential(this.id, password);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
-    return other != null && this.id === other.id && this.password === other.password;
   }
 }

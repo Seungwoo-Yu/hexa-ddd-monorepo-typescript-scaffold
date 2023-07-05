@@ -1,11 +1,14 @@
 import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import { Enum, PickAndType } from '@hexa/common/types.ts';
-import { z } from 'zod';
-import { isValid as isValidUlid } from 'ulidx';
-import { ClassOf, Equality } from '@hexa/common/interfaces.ts';
-import { unifyZodMessages } from '@hexa/common/utils.ts';
-import { CompositeValError } from '@hexa/common/errors/composite.ts';
+import { PickAndType } from '@hexa/common/types.ts';
+import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
 import { AssertStaticInterface } from '@hexa/common/decorators.ts';
+import { UndefOrNullVarError } from '@hexa/common/errors/vo.ts';
+import { Amount } from '@hexa/user-domain/domains/vo/amount.vo.ts';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
+import { GainReason } from '@hexa/user-domain/domains/vo/gain-reason.vo.ts';
+import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo.ts';
+import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
+import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
 
 export const PointGainReason = [
   'gained_by_admin',
@@ -18,109 +21,105 @@ export const PointLossReason = [
 
 export interface IPointLog extends Equality {
   userUid: PickAndType<User, 'uid'>,
-  amount: number,
+  amount: Amount,
 }
 
 // noinspection JSUnusedGlobalSymbols
 @AssertStaticInterface<ClassOf<PointGainLog>>()
+@AssertStaticInterface<Validatable>()
 export class PointGainLog implements IPointLog {
   constructor(
     public readonly userUid: PickAndType<User, 'uid'>,
-    public readonly reason: Enum<typeof PointGainReason>,
-    public readonly amount: number,
+    public readonly reason: GainReason,
+    public readonly amount: Amount,
+    public readonly createdAt: CreatedAt,
   ) {
-    const userUidResult = z.string({
-      errorMap: unifyZodMessages('userUid'),
-    }).nonempty()
-      .refine(_uid => {
-        return isValidUlid(_uid);
-      })
-      .safeParse(userUid.uid);
-
-    if (!userUidResult.success) {
-      throw CompositeValError.fromZodError(userUidResult.error);
-    }
-
-    const reasonResult = z.enum(PointGainReason, {
-      errorMap: unifyZodMessages('userUid'),
-    }).safeParse(reason);
-
-    if (!reasonResult.success) {
-      throw CompositeValError.fromZodError(reasonResult.error);
-    }
-
-    const amountResult = z.number({ errorMap: unifyZodMessages('amount') })
-      .int()
-      .gt(0)
-      .safeParse(amount);
-
-    if (!amountResult.success) {
-      throw CompositeValError.fromZodError(amountResult.error);
-    }
+    PointGainLog.validate(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public equals(other: any): boolean {
-    return other != null && this.userUid === other.userUid &&
-      this.reason === other.reason && this.amount === other.amount;
+    if (other?.createdAt == null) {
+      throw new UndefOrNullParamError('other');
+    }
+
+    return this.userUid.equals(other.userUid) &&
+      this.reason.equals(other.reason) && this.amount.equals(other.amount) &&
+      this.createdAt.equals(other.createdAt);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static isClassOf(target: any): target is PointGainLog {
-    return target != null &&
-      target.userUid != null && target.userUid !== '' &&
-      target.reason != null && PointGainReason.indexOf(target.reason) > -1 &&
-      target.amount != null && !isNaN(Number(target.amount)) && target.amount > 0;
+    try {
+      PointGainLog.validate(target);
+    } catch (ignored) {
+      return false;
+    }
+
+    return true;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public static validate(target: any) {
+    if (target == null) {
+      throw new UndefOrNullVarError('PointGainLog');
+    }
+
+    const assumed = target as PointGainLog;
+
+    UlidUid.validate(assumed.userUid);
+    GainReason.validate(assumed.reason);
+    Amount.validate(assumed.amount);
+    CreatedAt.validate(assumed.createdAt);
   }
 }
 
 // noinspection JSUnusedGlobalSymbols
 @AssertStaticInterface<ClassOf<PointLossLog>>()
+@AssertStaticInterface<Validatable>()
 export class PointLossLog implements IPointLog {
   constructor(
     public readonly userUid: PickAndType<User, 'uid'>,
-    public readonly reason: Enum<typeof PointLossReason>,
-    public readonly amount: number,
+    public readonly reason: LossReason,
+    public readonly amount: Amount,
+    public readonly createdAt: CreatedAt,
   ) {
-    const userUidResult = z.string({
-      errorMap: unifyZodMessages('userUid'),
-    }).nonempty()
-      .refine(_uid => isValidUlid(_uid))
-      .safeParse(userUid.uid);
-
-    if (!userUidResult.success) {
-      throw CompositeValError.fromZodError(userUidResult.error);
-    }
-
-    const reasonResult = z.enum(PointLossReason, {
-      errorMap: unifyZodMessages('userUid'),
-    }).safeParse(reason);
-
-    if (!reasonResult.success) {
-      throw CompositeValError.fromZodError(reasonResult.error);
-    }
-
-    const amountResult = z.number({ errorMap: unifyZodMessages('amount') })
-      .int()
-      .gt(0)
-      .safeParse(amount);
-
-    if (!amountResult.success) {
-      throw CompositeValError.fromZodError(amountResult.error);
-    }
+    PointLossLog.validate(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public equals(other: any): boolean {
-    return other != null && this.userUid === other.userUid &&
-      this.reason === other.reason && this.amount === other.amount;
+    if (other?.createdAt == null) {
+      throw new UndefOrNullParamError('other');
+    }
+
+    return this.userUid.uid === other.userUid.uid &&
+      this.reason === other.reason && this.amount.amount === other.amount.amount &&
+      this.createdAt.equals(other.createdAt);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static isClassOf(target: any): target is PointLossLog {
-    return target != null &&
-      target.userUid != null && target.userUid !== '' &&
-      target.reason != null && PointLossReason.indexOf(target.reason) > -1 &&
-      target.amount != null && !isNaN(Number(target.amount)) && target.amount > 0;
+    try {
+      PointLossLog.validate(target);
+    } catch (ignored) {
+      return false;
+    }
+
+    return true;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public static validate(target: any) {
+    if (target == null) {
+      throw new UndefOrNullParamError('PointLossLog');
+    }
+
+    const assumed = target as PointLossLog;
+
+    UlidUid.validate(assumed.userUid);
+    LossReason.validate(assumed.reason);
+    Amount.validate(assumed.amount);
+    CreatedAt.validate(assumed.createdAt);
   }
 }
