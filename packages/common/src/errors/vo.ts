@@ -1,12 +1,12 @@
 export class MinLengthError extends Error {
   constructor(minLength: number | bigint = 0, name = 'variable') {
-    super(name + ' must be more than ' + minLength);
+    super(name + ' must be longer than ' + minLength);
   }
 }
 
 export class MaxLengthError extends Error {
   constructor(maxLength: number | bigint = 0, name = 'variable') {
-    super(name + ' must be less than ' + maxLength);
+    super(name + ' must be shorter than ' + maxLength);
   }
 }
 
@@ -44,5 +44,23 @@ export class InvalidEnumError extends Error {
 export class UndefOrNullVarError extends Error {
   constructor(name = 'variable') {
     super(name + ' is undefined or null');
+  }
+}
+
+export class UnexpectedTypeError extends Error {
+  constructor(expected: string, received: string, name = 'variable') {
+    super(name + ' is ' + received + ' but ' + expected + ' is expected');
+  }
+}
+
+export class InvalidUTCTimezoneError extends Error {
+  constructor(name = 'variable') {
+    super(name + ' must be utc-based');
+  }
+}
+
+export class InvalidDateTimeError extends Error {
+  constructor(name = 'variable') {
+    super(name + ' is not DateTime');
   }
 }
