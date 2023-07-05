@@ -1,24 +1,24 @@
 import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import {
-  IPointLog, PointLossLog,
-  PointGainReason,
-  PointLossReason, PointGainLog,
-} from '@hexa/user-domain/domains/vo/point-log.vo.ts';
-import { Enum, PickAndType } from '@hexa/common/types.ts';
-import { isValidOfEnum } from '@hexa/common/utils.ts';
+import { IPointLog, PointLossLog, PointGainLog } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
+import { PickAndType } from '@hexa/common/types.ts';
 import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
 import { IUserCommand } from '@hexa/user-domain/domains/repositories/commands/user.command.ts';
 import { IUserQuery, PointLogOptions } from '@hexa/user-domain/domains/repositories/queries/user.query.ts';
 import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg.ts';
+import { Amount } from '@hexa/user-domain/domains/vo/amount.vo.ts';
+import { GainReason } from '@hexa/user-domain/domains/vo/gain-reason.vo.ts';
+import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
+import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo.ts';
 
 export class InMemoryPointGainLog extends PointGainLog {
   constructor(
     public readonly index: number,
     public readonly userUid: PickAndType<User, 'uid'>,
-    public readonly reason: Enum<typeof PointGainReason>,
-    public readonly amount: number,
+    public readonly reason: GainReason,
+    public readonly amount: Amount,
+    public readonly createdAt: CreatedAt,
   ) {
-    super(userUid, reason, amount);
+    super(userUid, reason, amount, createdAt);
   }
 }
 
@@ -26,15 +26,16 @@ export class InMemoryPointLossLog extends PointLossLog {
   constructor(
     public readonly index: number,
     public readonly userUid: PickAndType<User, 'uid'>,
-    public readonly reason: Enum<typeof PointLossReason>,
-    public readonly amount: number,
+    public readonly reason: LossReason,
+    public readonly amount: Amount,
+    public readonly createdAt: CreatedAt,
   ) {
-    super(userUid, reason, amount);
+    super(userUid, reason, amount, createdAt);
   }
 }
 
 export class InMemoryUserRepo implements IUserCommand, IUserQuery {
-  private balance = 0;
+  private totalBalance = 0;
   private increment = 0;
   private readonly uidToIndexMap: Map<PickAndType<User, 'uid'>, number>;
   private readonly idToIndexMap: Map<PickAndType<PickAndType<User, 'credential'>, 'id'>, number>;
@@ -53,38 +54,34 @@ export class InMemoryUserRepo implements IUserCommand, IUserQuery {
     defaultPointLogs.forEach(([_, logs]) => {
       logs.forEach(log => {
         if (PointGainLog.isClassOf(log)) {
-          this.balance += log.amount;
+          this.totalBalance += log.amount.amount;
         }
 
         if (PointLossLog.isClassOf(log)) {
-          this.balance -= log.amount;
+          this.totalBalance -= log.amount.amount;
         }
       });
     });
   }
 
-  public async updateBalanceStat(balance: number) {
-    this.balance += balance;
+  public async updateBalanceStat(amount: Amount, reason: GainReason | LossReason) {
+    if (GainReason.isClassOf(reason)) {
+      this.totalBalance += amount.amount;
+    } else {
+      this.totalBalance -= amount.amount;
+    }
   }
 
   public getStat() {
-    return this.balance;
+    return this.totalBalance;
   }
 
-  public async createPointLog(
-    userUid: PickAndType<User, 'uid'>,
-    reason: Enum<typeof PointGainReason | typeof PointLossReason>,
-    balance: number,
-  ): Promise<void> {
-    const userPointLogs = this.pointLogs.get(userUid) ?? [];
+  public async createPointLog(log: PointGainLog | PointLossLog): Promise<void> {
+    const userPointLogs = this.pointLogs.get(log.userUid) ?? [];
 
-    if (isValidOfEnum(PointGainReason, reason)) {
-      userPointLogs.push(new PointGainLog(userUid, reason, balance));
-    } else {
-      userPointLogs.push(new PointLossLog(userUid, reason, balance));
-    }
+    userPointLogs.push(log);
 
-    this.pointLogs.set(userUid, userPointLogs);
+    this.pointLogs.set(log.userUid, userPointLogs);
   }
 
   private async readPointGainLogs(
