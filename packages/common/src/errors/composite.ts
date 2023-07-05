@@ -1,11 +1,11 @@
-import { ZodError } from 'zod';
+import { ZodError, ZodIssueCode } from 'zod';
 import {
   InvalidEnumError,
   MaxElementLenError,
   MaxLengthError,
   MaxValueError, MinElementLenError,
   MinLengthError,
-  MinValueError, UndefOrNullVarError,
+  MinValueError, InvalidUTCTimezoneError, UndefOrNullVarError, UnexpectedTypeError, InvalidDateTimeError,
 } from '@hexa/common/errors/vo.ts';
 
 export class CompositeValError extends Error {
@@ -20,7 +20,7 @@ export class CompositeValError extends Error {
     const convertedErrors = error.errors.map(issue => {
       const name = issue.message.indexOf(' ') === -1 ? issue.message : undefined;
 
-      if (issue.code === 'too_big') {
+      if (issue.code === ZodIssueCode.too_big) {
         if (issue.type === 'number' || issue.type === 'bigint') {
           return new MaxValueError(issue.maximum, name);
         }
@@ -30,7 +30,8 @@ export class CompositeValError extends Error {
 
         return new MaxLengthError(issue.maximum, name);
       }
-      if (issue.code === 'too_small') {
+
+      if (issue.code === ZodIssueCode.too_small) {
         if (issue.type === 'number' || issue.type === 'bigint') {
           return new MinValueError(issue.minimum, name);
         }
@@ -40,10 +41,12 @@ export class CompositeValError extends Error {
 
         return new MinLengthError(issue.minimum, name);
       }
-      if (issue.code === 'invalid_enum_value') {
+
+      if (issue.code === ZodIssueCode.invalid_enum_value) {
         return new InvalidEnumError(issue.received + '', name);
       }
-      if (issue.code === 'invalid_type') {
+
+      if (issue.code === ZodIssueCode.invalid_type) {
         if ([
           'null',
           'undefined',
@@ -53,6 +56,8 @@ export class CompositeValError extends Error {
         ].indexOf(issue.received) > -1) {
           return new UndefOrNullVarError(name);
         }
+
+        return new UnexpectedTypeError(issue.expected, issue.received, name);
       }
 
       return Error(issue.message);
