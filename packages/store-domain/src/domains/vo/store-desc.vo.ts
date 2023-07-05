@@ -2,7 +2,7 @@ import { Equality } from '@hexa/common/interfaces.ts';
 import { z } from 'zod';
 import { unifyZodMessages } from '@hexa/common/utils.ts';
 import { CompositeValError } from '@hexa/common/errors/composite.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/equality.ts';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
 
 export class StoreDesc implements Equality {
   constructor(
