@@ -60,6 +60,16 @@ export class CompositeValError extends Error {
         return new UnexpectedTypeError(issue.expected, issue.received, name);
       }
 
+      if (issue.code === ZodIssueCode.custom && issue.params?.code != null) {
+        if (issue.params.code === 'INVALID_UTC_TIMEZONE') {
+          return new InvalidUTCTimezoneError(name ?? issue.params.name);
+        }
+
+        if (issue.params.code === 'INVALID_DATETIME_TYPE') {
+          return new InvalidDateTimeError(name ?? issue.params.name);
+        }
+      }
+
       return Error(issue.message);
     });
 
