@@ -93,9 +93,8 @@ export class PointLossLog implements IPointLog {
       throw new UndefOrNullParamError('other');
     }
 
-    return this.userUid.uid === other.userUid.uid &&
-      this.reason === other.reason && this.amount.amount === other.amount.amount &&
-      this.createdAt.equals(other.createdAt);
+    return this.userUid.equals(other.userUid) && this.reason.equals(other.reason) &&
+      this.amount.equals(other.amount) && this.createdAt.equals(other.createdAt);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
