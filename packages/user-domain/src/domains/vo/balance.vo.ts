@@ -43,7 +43,11 @@ export class Balance implements Equality {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public equals(other: any): boolean {
-    return other != null && this.amount === other.amount;
+    if (other == null) {
+      throw new UndefOrNullParamError('other');
+    }
+
+    return this.amount === other.amount;
   }
 
   public static isClassOf(target: unknown): target is Balance {

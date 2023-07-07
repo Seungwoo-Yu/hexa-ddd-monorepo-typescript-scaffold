@@ -16,7 +16,11 @@ export class Name implements Equality {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public equals(other: any): boolean {
-    return other != null && this.nickname === other.nickname;
+    if (other == null) {
+      throw new UndefOrNullParamError('other');
+    }
+
+    return this.nickname === other.nickname;
   }
 
   public static isClassOf(target: unknown): target is Name {

@@ -19,10 +19,10 @@ export class UlidUid implements Equality {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public equals(other: any): boolean {
     if (other == null) {
-      throw new UndefOrNullParamError();
+      throw new UndefOrNullParamError('other');
     }
 
-    return this.uid == other.uid;
+    return this.uid === other.uid;
   }
 
   public static create() {
