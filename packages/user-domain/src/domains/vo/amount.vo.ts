@@ -17,10 +17,10 @@ export class Amount implements Equality {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public equals(other: any): boolean {
     if (other == null) {
-      throw new UndefOrNullParamError();
+      throw new UndefOrNullParamError('other');
     }
 
-    return this.amount == other.amount;
+    return this.amount === other.amount;
   }
 
   public static isClassOf(target: unknown): target is Amount {
