@@ -5,7 +5,7 @@ import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo.ts';
 
 export class Store {
   constructor(
-    public uid: IntegerUid,
+    public readonly uid: IntegerUid,
     public name: StoreName,
     public description: StoreDesc,
     public adminUid: UlidUid,
