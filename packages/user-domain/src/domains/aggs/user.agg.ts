@@ -1,16 +1,12 @@
 import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import {
-  PointGainLog, IPointLog,
-  PointLossLog,
-  PointLossReason,
-} from '@hexa/user-domain/domains/vo/point-log.vo.ts';
+import { PointGainLog, IPointLog, PointLossLog } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
 import { Enum, ReadOnlyProperty } from '@hexa/common/types.ts';
 import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
 import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
 import { GainReason, PointGainReason } from '@hexa/user-domain/domains/vo/gain-reason.vo.ts';
 import { Amount } from '@hexa/user-domain/domains/vo/amount.vo.ts';
 import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo.ts';
-import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
+import { LossReason, PointLossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
 
 export class UserAgg {
   constructor(
