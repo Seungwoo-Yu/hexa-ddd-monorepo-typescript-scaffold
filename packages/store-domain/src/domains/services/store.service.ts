@@ -4,7 +4,7 @@ import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg.ts';
 import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
 import { Item } from '../entities/item.entity';
 import { StoreFactory } from '../factories/store.factory';
-import { OmitFuncs, PickAndType } from '@hexa/common/types.ts';
+import { OmitFuncs, PickType } from '@hexa/common/types.ts';
 
 export class StoreService {
   constructor(
@@ -50,7 +50,7 @@ export class StoreService {
     storeAgg.addItems(items);
   }
 
-  public async deleteItems(storeAgg: StoreAgg, itemIds: PickAndType<Item, 'uid'>[]) {
+  public async deleteItems(storeAgg: StoreAgg, itemIds: PickType<Item, 'uid'>[]) {
     await this.storeCommand.deleteItems(itemIds);
     storeAgg.removeItems(itemIds);
   }

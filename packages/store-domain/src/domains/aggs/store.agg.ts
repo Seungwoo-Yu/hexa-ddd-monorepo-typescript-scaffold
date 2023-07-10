@@ -1,6 +1,6 @@
 import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
 import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
-import { PickAndType, PickType, ReadOnlyProperty } from '@hexa/common/types.ts';
+import { PickType, ReadOnlyProperty } from '@hexa/common/types.ts';
 import { OrderedMap } from 'immutable';
 
 export class StoreAgg {
@@ -24,7 +24,7 @@ export class StoreAgg {
     return items;
   }
 
-  public removeItems(ids: PickAndType<Item, 'uid'>[]) {
+  public removeItems(ids: PickType<Item, 'uid'>[]) {
     this._items = this._items.removeIn(ids);
     this.itemList = this._items.valueSeq().toArray();
   }
