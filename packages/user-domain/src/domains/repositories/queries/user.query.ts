@@ -1,5 +1,5 @@
 import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import { PickAndType } from '@hexa/common/types.ts';
+import { PickType } from '@hexa/common/types.ts';
 import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg.ts';
 
 export type PointLogOptions = {
@@ -22,8 +22,8 @@ export type PointLogOptions = {
 
 export interface IUserQuery {
   readByUid(
-    uid: PickAndType<User, 'uid'>,
+    uid: PickType<User, 'uid'>,
     options?: PointLogOptions,
   ): Promise<UserAgg>,
-  exists(uid: PickAndType<User, 'uid'>): Promise<boolean>,
+  exists(uid: PickType<User, 'uid'>): Promise<boolean>,
 }

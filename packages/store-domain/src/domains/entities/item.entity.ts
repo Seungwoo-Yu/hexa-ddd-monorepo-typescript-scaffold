@@ -1,4 +1,4 @@
-import { PickAndType } from '@hexa/common/types.ts';
+import { PickType } from '@hexa/common/types.ts';
 import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
 import { Price } from '@hexa/store-domain/domains/vo/price.vo.ts';
 import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo.ts';
@@ -11,7 +11,7 @@ export class Item {
     public name: ItemName,
     public description: ItemDesc,
     public price: Price,
-    public storeUid: PickAndType<Store, 'uid'>,
+    public storeUid: PickType<Store, 'uid'>,
   ) {
   }
 

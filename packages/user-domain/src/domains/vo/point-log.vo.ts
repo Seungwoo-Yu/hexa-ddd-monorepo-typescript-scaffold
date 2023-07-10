@@ -1,5 +1,5 @@
 import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import { PickAndType } from '@hexa/common/types.ts';
+import { PickType } from '@hexa/common/types.ts';
 import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
 import { AssertStaticInterface } from '@hexa/common/decorators.ts';
 import { UndefOrNullVarError } from '@hexa/common/errors/vo.ts';
@@ -11,7 +11,7 @@ import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
 import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
 
 export interface IPointLog extends Equality {
-  userUid: PickAndType<User, 'uid'>,
+  userUid: PickType<User, 'uid'>,
   amount: Amount,
 }
 
@@ -20,7 +20,7 @@ export interface IPointLog extends Equality {
 @AssertStaticInterface<Validatable>()
 export class PointGainLog implements IPointLog {
   constructor(
-    public readonly userUid: PickAndType<User, 'uid'>,
+    public readonly userUid: PickType<User, 'uid'>,
     public readonly reason: GainReason,
     public readonly amount: Amount,
     public readonly createdAt: CreatedAt,
@@ -70,7 +70,7 @@ export class PointGainLog implements IPointLog {
 @AssertStaticInterface<Validatable>()
 export class PointLossLog implements IPointLog {
   constructor(
-    public readonly userUid: PickAndType<User, 'uid'>,
+    public readonly userUid: PickType<User, 'uid'>,
     public readonly reason: LossReason,
     public readonly amount: Amount,
     public readonly createdAt: CreatedAt,

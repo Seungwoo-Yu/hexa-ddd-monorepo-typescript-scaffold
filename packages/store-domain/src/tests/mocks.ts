@@ -1,6 +1,6 @@
 import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
 import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
-import { OmitFuncs, PickAndType } from '@hexa/common/types.ts';
+import { OmitFuncs, PickType } from '@hexa/common/types.ts';
 import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg.ts';
 import { IncrIntegerFactory } from '@hexa/common/utils.ts';
 import { IStoreQuery } from '@hexa/store-domain/domains/repositories/queries/store.query.ts';
@@ -10,17 +10,17 @@ import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo.ts';
 
 export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
   private readonly incrIntFactory = new IncrIntegerFactory();
-  private readonly stores: Map<PickAndType<Store, 'uid'>, StoreAgg>;
-  private readonly itemIdxToAggIdx: Map<PickAndType<Item, 'uid'>, [PickAndType<Store, 'uid'>, number]>;
+  private readonly stores: Map<PickType<Store, 'uid'>, StoreAgg>;
+  private readonly itemIdxToAggIdx: Map<PickType<Item, 'uid'>, [PickType<Store, 'uid'>, number]>;
 
   constructor(
     defaultStores: StoreAgg[] = [],
   ) {
-    this.stores = new Map<PickAndType<Store, 'uid'>, StoreAgg>(
+    this.stores = new Map<PickType<Store, 'uid'>, StoreAgg>(
       defaultStores.map(agg => [agg.store.uid, agg]),
     );
-    this.itemIdxToAggIdx = new Map<PickAndType<Item, 'uid'>, [PickAndType<Store, 'uid'>, number]>(
-      ([] as [PickAndType<Item, 'uid'>, [PickAndType<Store, 'uid'>, number]][]).concat(
+    this.itemIdxToAggIdx = new Map<PickType<Item, 'uid'>, [PickType<Store, 'uid'>, number]>(
+      ([] as [PickType<Item, 'uid'>, [PickType<Store, 'uid'>, number]][]).concat(
         ...defaultStores.map((agg, aggIdx) => {
           return agg.items.map(item => {
             if (agg.store.uid !== item.storeUid) {
@@ -28,18 +28,18 @@ export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
             }
 
             return [item.uid, [item.storeUid, aggIdx]] as
-              [PickAndType<Item, 'uid'>, [PickAndType<Store, 'uid'>, number]];
+              [PickType<Item, 'uid'>, [PickType<Store, 'uid'>, number]];
           });
         }),
       ),
     );
   }
 
-  public async exists(uid: PickAndType<Store, 'uid'>): Promise<boolean> {
+  public async exists(uid: PickType<Store, 'uid'>): Promise<boolean> {
     return this.stores.has(uid);
   }
 
-  public async readById(uid: PickAndType<Store, 'uid'>): Promise<StoreAgg | undefined> {
+  public async readById(uid: PickType<Store, 'uid'>): Promise<StoreAgg | undefined> {
     return this.stores.get(uid);
   }
 
@@ -52,7 +52,7 @@ export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
     return createdStore.uid;
   }
 
-  public async deleteStore(storeId: PickAndType<Store, 'uid'>): Promise<void> {
+  public async deleteStore(storeId: PickType<Store, 'uid'>): Promise<void> {
     const storeAgg = this.stores.get(storeId);
     if (storeAgg == null) {
       throw new Error('store not found');
@@ -89,7 +89,7 @@ export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
     });
   }
 
-  public async createItems(items: Omit<OmitFuncs<Item>, 'uid'>[]): Promise<PickAndType<Item, 'uid'>[]> {
+  public async createItems(items: Omit<OmitFuncs<Item>, 'uid'>[]): Promise<PickType<Item, 'uid'>[]> {
     const storeToItemsMap = (await Promise.all(items.map(item => {
       const store = this.stores.get(item.storeUid);
 
@@ -111,7 +111,7 @@ export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
       pr.set(cv.storeUid, list);
 
       return pr;
-    }, new Map<PickAndType<Store, 'uid'>, Item[]>());
+    }, new Map<PickType<Store, 'uid'>, Item[]>());
     const storeToItemsEntries = Array.from(storeToItemsMap.entries());
 
     storeToItemsEntries.forEach(([storeId, items]) => {
@@ -143,8 +143,8 @@ export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
     return ([] as Item[]).concat(...Array.from(storeToItemsMap.values())).map(item => item.uid);
   }
 
-  public async deleteItems(itemUids: PickAndType<Item, 'uid'>[]): Promise<void> {
-    const aggIndices: [PickAndType<Item, 'uid'>, PickAndType<Store, 'uid'>, number][] = itemUids.map(uid => {
+  public async deleteItems(itemUids: PickType<Item, 'uid'>[]): Promise<void> {
+    const aggIndices: [PickType<Item, 'uid'>, PickType<Store, 'uid'>, number][] = itemUids.map(uid => {
       const aggIdx = this.itemIdxToAggIdx.get(uid);
       if (aggIdx == null) {
         throw new Error('item not found');
@@ -180,7 +180,7 @@ export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
 
         return pr;
       },
-      new Map<PickAndType<Store, 'uid'>, Set<number>>(),
+      new Map<PickType<Store, 'uid'>, Set<number>>(),
     );
 
     storeAggs.forEach(agg => {
