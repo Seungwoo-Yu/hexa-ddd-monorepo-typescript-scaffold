@@ -5,7 +5,7 @@ import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
 
 export class User {
   constructor(
-    public uid: UlidUid,
+    public readonly uid: UlidUid,
     public credential: Credential,
     public name: Name,
     public balance: Balance,
