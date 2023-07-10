@@ -1,13 +1,10 @@
 import { IUserCommand } from '@hexa/user-domain/domains/repositories/commands/user.command.ts';
 import { IUserQuery } from '@hexa/user-domain/domains/repositories/queries/user.query.ts';
-import {
-  PointGainLog,
-  PointLossLog,
-  PointLossReason,
-} from '@hexa/user-domain/domains/vo/point-log.vo.ts';
+import { PointGainLog, PointLossLog } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
 import { Enum } from '@hexa/common/types.ts';
 import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg.ts';
 import { PointGainReason } from '@hexa/user-domain/domains/vo/gain-reason.vo.ts';
+import { PointLossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
 
 export class UserService {
   constructor(

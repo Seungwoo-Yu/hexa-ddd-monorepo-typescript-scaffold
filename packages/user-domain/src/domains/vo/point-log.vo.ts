@@ -10,11 +10,6 @@ import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo.ts';
 import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
 import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
 
-export const PointLossReason = [
-  'bought_item',
-  'lost_by_admin',
-] as const;
-
 export interface IPointLog extends Equality {
   userUid: PickAndType<User, 'uid'>,
   amount: Amount,
