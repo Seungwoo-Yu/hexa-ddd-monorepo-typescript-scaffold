@@ -330,4 +330,4 @@ tags
 .swc
 
 # Exclude hexagonal out ports
-!packages/**/src/ports/out
+!packages/**/src/app/ports/out
