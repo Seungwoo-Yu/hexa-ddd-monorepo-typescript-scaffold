@@ -1,11 +1,14 @@
 import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
 import { AssertStaticInterface } from '@hexa/common/decorators.ts';
 import { Enum } from '@hexa/common/types.ts';
-import { PointGainReason } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
 import { z } from 'zod';
 import { unifyZodMessages } from '@hexa/common/utils.ts';
 import { CompositeValError } from '@hexa/common/errors/composite.ts';
+
+export const PointGainReason = [
+  'gained_by_admin',
+] as const;
 
 @AssertStaticInterface<ClassOf<GainReason>>()
 @AssertStaticInterface<Validatable>()
