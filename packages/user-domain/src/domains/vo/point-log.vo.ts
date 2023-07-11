@@ -40,7 +40,7 @@ export class PointGainLog implements IPointLog {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static isClassOf(target: any): target is PointGainLog {
+  public static isClassOf(target: unknown): target is PointGainLog {
     try {
       PointGainLog.validate(target);
     } catch (ignored) {
@@ -89,7 +89,7 @@ export class PointLossLog implements IPointLog {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static isClassOf(target: any): target is PointLossLog {
+  public static isClassOf(target: unknown): target is PointLossLog {
     try {
       PointLossLog.validate(target);
     } catch (ignored) {
