@@ -1,6 +1,6 @@
 import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import { PointGainLog, IPointLog, PointLossLog } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
-import { Enum, ReadOnlyProperty } from '@hexa/common/types.ts';
+import { Enum } from '@hexa/common/types.ts';
 import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
 import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
 import { GainReason, PointGainReason } from '@hexa/user-domain/domains/vo/gain-reason.vo.ts';
@@ -10,7 +10,7 @@ import { LossReason, PointLossReason } from '@hexa/user-domain/domains/vo/loss-r
 
 export class UserAgg {
   constructor(
-    public readonly user: ReadOnlyProperty<User, 'uid'>,
+    public readonly user: User,
     public readonly pointLogs: IPointLog[],
   ) {}
 
