@@ -8,15 +8,19 @@ import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg.ts';
 import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
 import { IncrIntegerFactory } from '@hexa/common/utils.ts';
 import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo.ts';
-import { OrderedMap } from 'immutable';
 import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
 
 describe('store-domain aggregate test', () => {
   it('should add items', () => {
     const incrIntegerFactory = new IncrIntegerFactory();
     const storeAgg = new StoreAgg(
-      new Store(new IntegerUid(incrIntegerFactory.next()), new StoreName('test'), new StoreDesc('description'), UlidUid.create()),
-      OrderedMap(),
+      new Store(
+        new IntegerUid(incrIntegerFactory.next()),
+        new StoreName('test'),
+        new StoreDesc('description'),
+        UlidUid.create(),
+      ),
+      [],
     );
 
     expect(storeAgg).not.toBeUndefined();
@@ -43,11 +47,16 @@ describe('store-domain aggregate test', () => {
   it('should delete items', () => {
     const incrIntegerFactory = new IncrIntegerFactory();
     const storeAgg = new StoreAgg(
-      new Store(new IntegerUid(incrIntegerFactory.next()), new StoreName('test 2'), new StoreDesc('description'), UlidUid.create()),
-      OrderedMap(),
+      new Store(
+        new IntegerUid(incrIntegerFactory.next()),
+        new StoreName('test 2'),
+        new StoreDesc('description'),
+        UlidUid.create(),
+      ),
+      [],
     );
 
-    const items = storeAgg.addItems([
+    const items = [
       new Item(
         new IntegerUid(incrIntegerFactory.next()),
         new ItemName('item 1'),
@@ -55,7 +64,8 @@ describe('store-domain aggregate test', () => {
         new Price(10000),
         storeAgg.store.uid,
       ),
-    ]);
+    ];
+    storeAgg.addItems(items);
 
     storeAgg.removeItems(items.map(item => item.uid));
 
@@ -65,11 +75,16 @@ describe('store-domain aggregate test', () => {
   it('should do nothing after StoreAgg.removeItems is called', () => {
     const incrIntegerFactory = new IncrIntegerFactory();
     const storeAgg = new StoreAgg(
-      new Store(new IntegerUid(incrIntegerFactory.next()), new StoreName('test 3'), new StoreDesc('description'), UlidUid.create()),
-      OrderedMap(),
+      new Store(
+        new IntegerUid(incrIntegerFactory.next()),
+        new StoreName('test 3'),
+        new StoreDesc('description'),
+        UlidUid.create(),
+      ),
+      [],
     );
 
-    const items = storeAgg.addItems([
+    const items = [
       new Item(
         new IntegerUid(incrIntegerFactory.next()),
         new ItemName('item 1'),
@@ -77,11 +92,43 @@ describe('store-domain aggregate test', () => {
         new Price(10000),
         storeAgg.store.uid,
       ),
-    ]);
+    ];
+    storeAgg.addItems(items);
 
     storeAgg.removeItems([new IntegerUid(9999)]); // This uid doesn't exist so nothing is changed
 
     expect(storeAgg.items.length).toStrictEqual(1);
     expect(storeAgg.items[0].name).toStrictEqual(items[0].name);
+  });
+
+  it('should not create aggregate because there are one or more duplicated item ids', function () {
+    const storeAgg = new StoreAgg(
+      new Store(
+        new IntegerUid(0),
+        new StoreName('test 3'),
+        new StoreDesc('description'),
+        UlidUid.create(),
+      ),
+      [],
+    );
+
+    const items = [
+      new Item(
+        new IntegerUid(1),
+        new ItemName('item 1'),
+        new ItemDesc('this is item 1'),
+        new Price(10000),
+        storeAgg.store.uid,
+      ),
+      new Item(
+        new IntegerUid(1),
+        new ItemName('duplicated item 1'),
+        new ItemDesc('this is duplicated item 1'),
+        new Price(10000),
+        storeAgg.store.uid,
+      ),
+    ];
+
+    expect(() => storeAgg.addItems(items)).toThrowError('item id 1 is duplicated');
   });
 });
