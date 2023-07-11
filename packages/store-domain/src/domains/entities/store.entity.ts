@@ -13,7 +13,7 @@ export class Store {
     public readonly uid: IntegerUid,
     public name: StoreName,
     public description: StoreDesc,
-    public adminUid: UlidUid,
+    public readonly adminUid: UlidUid,
   ) {
   }
 
