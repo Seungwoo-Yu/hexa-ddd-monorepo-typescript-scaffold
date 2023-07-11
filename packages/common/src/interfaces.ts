@@ -1,11 +1,9 @@
 export interface ClassOf<T extends object> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  isClassOf(target: any): target is T,
+  isClassOf(target: unknown): target is T,
 }
 
 export interface IFactory<T extends object> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  create(...any: any[]): T | Promise<T>,
+  create(...args: never[]): T | Promise<T>,
 }
 
 export interface Validatable {
