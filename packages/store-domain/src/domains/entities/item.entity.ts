@@ -16,7 +16,7 @@ export class Item {
     public name: ItemName,
     public description: ItemDesc,
     public price: Price,
-    public storeUid: PickType<Store, 'uid'>,
+    public readonly storeUid: PickType<Store, 'uid'>,
   ) {
     Item.validate(this);
   }

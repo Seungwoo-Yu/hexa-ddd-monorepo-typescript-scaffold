@@ -4,7 +4,7 @@ import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg.ts';
 import { OrderedMap } from 'immutable';
 import { IFactory } from '@hexa/common/interfaces.ts';
 import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { PickType, ReadOnlyProperty } from '@hexa/common/types.ts';
+import { PickType } from '@hexa/common/types.ts';
 
 export class StoreIdNotMatchedError extends Error {
   constructor(
@@ -18,11 +18,7 @@ export class StoreIdNotMatchedError extends Error {
 
 @AssertStaticInterface<IFactory<StoreAgg>>()
 export class StoreFactory {
-  public static create(
-    store: ReadOnlyProperty<Store, 'uid'>,
-    items: ReadOnlyProperty<Item, 'uid' | 'storeUid'>[],
-  ) {
-
+  public static create(store: Store, items: Item[]) {
     items.forEach(item => {
       if (!store.uid.equals(item.storeUid)) {
         throw new StoreIdNotMatchedError(store.uid, item.uid, item.storeUid);
