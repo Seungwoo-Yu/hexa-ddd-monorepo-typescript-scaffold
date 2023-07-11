@@ -1,33 +1,40 @@
 import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
 import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
-import { PickType } from '@hexa/common/types.ts';
+import { PickNestedType, PickType } from '@hexa/common/types.ts';
 import { OrderedMap } from 'immutable';
 
+export class DuplicatedItemIdError extends Error {
+  constructor(
+    itemId: PickType<Item, 'uid'>,
+  ) {
+    super('item id ' + itemId.uid + ' is duplicated');
+  }
+}
+
 export class StoreAgg {
-  private itemList: Item[];
+  public items: Item[] = [];
+  private itemIdxMap = OrderedMap<PickNestedType<Item, ['uid', 'uid']>, Item>();
 
   constructor(
     public readonly store: Store,
-    private _items: OrderedMap<PickType<Item, 'uid'>, Item>,
+    items: Item[],
   ) {
-    this.itemList = this._items.valueSeq().toArray();
+    this.addItems(items);
   }
 
   public addItems(items: Item[]) {
     items.forEach(item => {
-      this._items = this._items.set(item.uid, item);
-    });
-    this.itemList = this._items.valueSeq().toArray();
+      if (this.itemIdxMap.has(item.uid.uid)) {
+        throw new DuplicatedItemIdError(item.uid);
+      }
 
-    return items;
+      this.itemIdxMap = this.itemIdxMap.set(item.uid.uid, item);
+    });
+    this.items.push(...items);
   }
 
   public removeItems(ids: PickType<Item, 'uid'>[]) {
-    this._items = this._items.removeIn(ids);
-    this.itemList = this._items.valueSeq().toArray();
-  }
-
-  public get items(): Item[] {
-    return this.itemList;
+    this.itemIdxMap = this.itemIdxMap.removeIn(ids);
+    this.items = this.items.filter(item => ids.findIndex(id => item.uid.equals(id)) === -1);
   }
 }
