@@ -10,12 +10,12 @@ export class UserAgg {
   ) {}
 
   public deposit(log: PointGainLog) {
-    this.user.balance = this.user.balance.deposit(log.amount.amount);
+    this.user.balance = this.user.balance.deposit(log.amount);
     this.pointLogs.push(log);
   }
 
   public withdraw(log: PointLossLog) {
-    this.user.balance = this.user.balance.withdraw(log.amount.amount);
+    this.user.balance = this.user.balance.withdraw(log.amount);
     this.pointLogs.push(log);
   }
 
