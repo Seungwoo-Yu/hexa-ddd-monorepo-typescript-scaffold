@@ -41,7 +41,7 @@ export class Amount implements Equality {
 
     const result = z.number({ errorMap: unifyZodMessages('amount') })
       .int()
-      .min(0)
+      .min(1)
       .safeParse(target.amount);
 
     if (!result.success) {
