@@ -13,6 +13,7 @@ import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
 export interface IPointLog extends Equality {
   userUid: PickType<User, 'uid'>,
   amount: Amount,
+  createdAt: CreatedAt,
 }
 
 // noinspection JSUnusedGlobalSymbols
