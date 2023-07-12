@@ -4,6 +4,11 @@ import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
 import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
 import { Balance } from '@hexa/user-domain/domains/vo/balance.vo.ts';
 import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
+import { PointGainLog, PointLossLog } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
+import { GainReason } from '@hexa/user-domain/domains/vo/gain-reason.vo.ts';
+import { Amount } from '@hexa/user-domain/domains/vo/amount.vo.ts';
+import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo.ts';
+import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
 
 describe('user-domain aggregate test', () => {
   it('should deposit positive amount', async () => {
@@ -19,7 +24,13 @@ describe('user-domain aggregate test', () => {
 
     expect(userAgg.user.balance.amount).toEqual(10);
 
-    userAgg.deposit('gained_by_admin', 10);
+    const log = new PointGainLog(
+      userAgg.user.uid,
+      new GainReason('gained_by_admin'),
+      new Amount(10),
+      CreatedAt.create(),
+    );
+    userAgg.deposit(log);
 
     expect(userAgg.user.balance.amount).toEqual(20);
   });
@@ -35,9 +46,15 @@ describe('user-domain aggregate test', () => {
       [],
     );
 
-    expect(() => userAgg.deposit('gained_by_admin', -10))
-      .toThrowError('composite validation error: 1 error(s) thrown.\n' +
-        'main error: depositAmount must be greater than 0');
+    expect(() => {
+      return new PointGainLog(
+        userAgg.user.uid,
+        new GainReason('gained_by_admin'),
+        new Amount(-10),
+        CreatedAt.create(),
+      );
+    }).toThrowError('composite validation error: 1 error(s) thrown.\n' +
+      'main error: amount must be greater than 0');
   });
 
   it('should withdraw positive amount', async () => {
@@ -51,7 +68,14 @@ describe('user-domain aggregate test', () => {
       [],
     );
 
-    userAgg.withdraw('lost_by_admin', 10);
+    const log = new PointLossLog(
+      userAgg.user.uid,
+      new LossReason('lost_by_admin'),
+      new Amount(10),
+      CreatedAt.create(),
+    );
+
+    userAgg.withdraw(log);
 
     expect(userAgg.user.balance.amount).toEqual(0);
   });
@@ -67,9 +91,15 @@ describe('user-domain aggregate test', () => {
       [],
     );
 
-    expect(() => userAgg.withdraw('lost_by_admin', -10))
-      .toThrowError('composite validation error: 1 error(s) thrown.\n' +
-        'main error: withdrawAmount must be greater than 0');
+    expect(() => {
+      return new PointLossLog(
+        userAgg.user.uid,
+        new LossReason('lost_by_admin'),
+        new Amount(-10),
+        CreatedAt.create(),
+      );
+    }).toThrowError('composite validation error: 1 error(s) thrown.\n' +
+      'main error: amount must be greater than 0');
   });
 
   it('should not withdraw more than current balance', async () => {
@@ -83,9 +113,16 @@ describe('user-domain aggregate test', () => {
       [],
     );
 
-    expect(() => userAgg.withdraw('lost_by_admin', 20))
-      .toThrowError('composite validation error: 1 error(s) thrown.\n' +
-        'main error: withdrawAmount must be less than 10');
+    expect(() => {
+      const log = new PointLossLog(
+        userAgg.user.uid,
+        new LossReason('lost_by_admin'),
+        new Amount(20),
+        CreatedAt.create(),
+      );
+      userAgg.withdraw(log);
+    }).toThrowError('composite validation error: 1 error(s) thrown.\n' +
+      'main error: withdrawAmount must be less than 10');
   });
 
   it('should change their credential', async () => {
