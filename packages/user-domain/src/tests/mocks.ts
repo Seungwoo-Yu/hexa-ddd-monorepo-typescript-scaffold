@@ -1,6 +1,6 @@
 import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
 import { IPointLog, PointLossLog, PointGainLog } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
-import { PickType } from '@hexa/common/types.ts';
+import { OmitFuncs, PickType } from '@hexa/common/types.ts';
 import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
 import { IUserCommand } from '@hexa/user-domain/domains/repositories/commands/user.command.ts';
 import { IUserQuery, PointLogOptions } from '@hexa/user-domain/domains/repositories/queries/user.query.ts';
@@ -76,12 +76,31 @@ export class InMemoryUserRepo implements IUserCommand, IUserQuery {
     return this.totalBalance;
   }
 
-  public async createPointLog(log: PointGainLog | PointLossLog): Promise<void> {
+  public async createPointLog(log: Omit<OmitFuncs<PointGainLog>, 'createdAt'>): Promise<PointGainLog>;
+  public async createPointLog(log: Omit<OmitFuncs<PointLossLog>, 'createdAt'>): Promise<PointLossLog>;
+  public async createPointLog(
+    _log: Omit<OmitFuncs<PointGainLog | PointLossLog>, 'createdAt'>,
+  ): Promise<PointGainLog | PointLossLog> {
+    const log =
+      GainReason.isClassOf(_log.reason)
+        ? new PointGainLog(
+          _log.userUid,
+          _log.reason,
+          _log.amount,
+          CreatedAt.create(),
+        )
+        : new PointLossLog(
+          _log.userUid,
+          _log.reason,
+          _log.amount,
+          CreatedAt.create(),
+        );
     const userPointLogs = this.pointLogs.get(log.userUid) ?? [];
 
     userPointLogs.push(log);
-
     this.pointLogs.set(log.userUid, userPointLogs);
+
+    return log;
   }
 
   private async readPointGainLogs(

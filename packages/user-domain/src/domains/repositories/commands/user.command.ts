@@ -11,5 +11,7 @@ export interface IUserCommand {
   updateUser(userAgg: UserAgg): Promise<void>,
   deleteUser(userUid: PickType<User, 'uid'>): Promise<void>,
   updateBalanceStat(amount: Amount, reason: GainReason | LossReason): Promise<void>,
-  createPointLog(log: PointGainLog | PointLossLog): Promise<void>,
+  createPointLog(log: Omit<OmitFuncs<PointGainLog>, 'createdAt'>): Promise<PointGainLog>,
+  createPointLog(log: Omit<OmitFuncs<PointLossLog>, 'createdAt'>): Promise<PointLossLog>,
+  createPointLog(log: Omit<OmitFuncs<PointGainLog | PointLossLog>, 'createdAt'>): Promise<PointGainLog | PointLossLog>,
 }
