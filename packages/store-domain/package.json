@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@hexa/common": "file:../common",
-    "immutable": "^4.3.0",
+    "immutable": "^4.3.1",
     "luxon": "^3.3.0",
     "ulidx": "^2.0.0",
     "zod": "^3.21.4"
