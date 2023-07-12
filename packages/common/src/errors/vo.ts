@@ -12,13 +12,13 @@ export class MaxLengthError extends Error {
 
 export class MinValueError extends Error {
   constructor(minValue: number | bigint = 0, name = 'variable') {
-    super(name + ' must be greater than ' + minValue);
+    super(name + ' must be greater than or equal to ' + minValue);
   }
 }
 
 export class MaxValueError extends Error {
   constructor(maxValue: number | bigint = 0, name = 'variable') {
-    super(name + ' must be less than ' + maxValue);
+    super(name + ' must be less than or equal to ' + maxValue);
   }
 }
 

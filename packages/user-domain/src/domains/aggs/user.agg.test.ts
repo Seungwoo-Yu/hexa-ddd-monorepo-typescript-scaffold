@@ -122,7 +122,7 @@ describe('user-domain aggregate test', () => {
       );
       userAgg.withdraw(log);
     }).toThrowError('composite validation error: 1 error(s) thrown.\n' +
-      'main error: withdrawAmount must be less than 10');
+      'main error: withdrawAmount must be less than or equal to 10');
   });
 
   it('should change their credential', async () => {
