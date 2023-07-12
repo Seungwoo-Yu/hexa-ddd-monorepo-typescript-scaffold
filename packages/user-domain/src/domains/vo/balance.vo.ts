@@ -4,6 +4,7 @@ import { unifyZodMessages } from '@hexa/common/utils.ts';
 import { CompositeValError } from '@hexa/common/errors/composite.ts';
 import { AssertStaticInterface } from '@hexa/common/decorators.ts';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
+import { Amount } from '@hexa/user-domain/domains/vo/amount.vo.ts';
 
 @AssertStaticInterface<ClassOf<Balance>>()
 @AssertStaticInterface<Validatable>()
@@ -14,23 +15,13 @@ export class Balance implements Equality {
     Balance.validate(this);
   }
 
-  public deposit(depositAmount: number) {
-    const result = z.number({ errorMap: unifyZodMessages('depositAmount') })
-      .int()
-      .gte(0)
-      .safeParse(depositAmount);
-
-    if (!result.success) {
-      throw CompositeValError.fromZodError(result.error);
-    }
-
-    return new Balance(this.amount + depositAmount);
+  public deposit(depositAmount: Amount) {
+    return new Balance(this.amount + depositAmount.amount);
   }
 
-  public withdraw(withdrawAmount: number) {
+  public withdraw(_withdrawAmount: Amount) {
+    const withdrawAmount = _withdrawAmount.amount;
     const result = z.number({ errorMap: unifyZodMessages('withdrawAmount') })
-      .int()
-      .gte(0)
       .lte(this.amount)
       .safeParse(withdrawAmount);
 
