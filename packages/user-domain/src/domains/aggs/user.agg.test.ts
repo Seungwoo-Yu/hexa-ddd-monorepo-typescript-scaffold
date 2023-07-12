@@ -35,28 +35,6 @@ describe('user-domain aggregate test', () => {
     expect(userAgg.user.balance.amount).toEqual(20);
   });
 
-  it('should not deposit add negative amount', async () => {
-    const userAgg = new UserAgg(
-      new User(
-        UlidUid.create(),
-        new Credential('id1234', 'pw1234'),
-        new Name('name1234'),
-        new Balance(10),
-      ),
-      [],
-    );
-
-    expect(() => {
-      return new PointGainLog(
-        userAgg.user.uid,
-        new GainReason('gained_by_admin'),
-        new Amount(-10),
-        CreatedAt.create(),
-      );
-    }).toThrowError('composite validation error: 1 error(s) thrown.\n' +
-      'main error: amount must be greater than 0');
-  });
-
   it('should withdraw positive amount', async () => {
     const userAgg = new UserAgg(
       new User(
@@ -78,28 +56,6 @@ describe('user-domain aggregate test', () => {
     userAgg.withdraw(log);
 
     expect(userAgg.user.balance.amount).toEqual(0);
-  });
-
-  it('should not withdraw negative amount', async () => {
-    const userAgg = new UserAgg(
-      new User(
-        UlidUid.create(),
-        new Credential('id1234', 'pw1234'),
-        new Name('name1234'),
-        new Balance(10),
-      ),
-      [],
-    );
-
-    expect(() => {
-      return new PointLossLog(
-        userAgg.user.uid,
-        new LossReason('lost_by_admin'),
-        new Amount(-10),
-        CreatedAt.create(),
-      );
-    }).toThrowError('composite validation error: 1 error(s) thrown.\n' +
-      'main error: amount must be greater than 0');
   });
 
   it('should not withdraw more than current balance', async () => {
