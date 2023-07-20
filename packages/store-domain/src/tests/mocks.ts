@@ -44,7 +44,12 @@ export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
   }
 
   public async createStore(_store: Omit<OmitFuncs<Store>, 'uid'>) {
-    const createdStore = new Store(new IntegerUid(this.incrIntFactory.next()), _store.name, _store.description, _store.adminUid);
+    const createdStore = new Store(
+      new IntegerUid(this.incrIntFactory.next()),
+      _store.name,
+      _store.description,
+      _store.adminUid,
+    );
     const storeAgg = await StoreFactory.create(createdStore, []);
 
     this.stores.set(createdStore.uid, storeAgg);
