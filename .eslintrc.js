@@ -61,6 +61,7 @@ module.exports = {
         'comma-dangle': 'off',
         'eol-last': ['error', 'always'],
         indent: ['error', 2],
+        'max-len': ['error', { code: 120 }],
         'n/no-missing-import': 'off',
         'no-unused-vars': 'off',
         'object-curly-spacing': ['error', 'always'],
@@ -128,6 +129,7 @@ module.exports = {
         'comma-dangle': 'off',
         'eol-last': ['error', 'always'],
         indent: ['error', 2],
+        'max-len': ['error', { code: 120 }],
         'n/no-missing-import': 'off',
         'no-unused-vars': 'off',
         'object-curly-spacing': ['error', 'always'],
@@ -162,6 +164,7 @@ module.exports = {
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
     indent: ['error', 2],
+    'max-len': ['error', { code: 120 }],
     'n/no-missing-import': 'off',
     'n/no-unpublished-require': ['error', {
       allowModules: ['ts-jest'],
