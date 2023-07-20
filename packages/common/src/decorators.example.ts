@@ -1,5 +1,5 @@
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { ClassOf } from '@hexa/common/interfaces.ts';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { ClassOf } from '@hexa/common/interfaces';
 
 // noinspection JSUnusedGlobalSymbols
 @AssertStaticInterface<ClassOf<ClassOfExample>>()

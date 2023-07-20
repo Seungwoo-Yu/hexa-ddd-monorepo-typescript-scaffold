@@ -1,4 +1,4 @@
-import { Enum } from '@hexa/common/types.ts';
+import { Enum } from '@hexa/common/types';
 import {
   addIssueToContext,
   ParseInput,

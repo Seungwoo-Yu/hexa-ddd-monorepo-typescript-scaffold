@@ -1,10 +1,10 @@
-import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { Enum } from '@hexa/common/types.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
+import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { Enum } from '@hexa/common/types';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 import { z } from 'zod';
-import { unifyZodMessages } from '@hexa/common/utils.ts';
-import { CompositeValError } from '@hexa/common/errors/composite.ts';
+import { unifyZodMessages } from '@hexa/common/utils';
+import { CompositeValError } from '@hexa/common/errors/composite';
 
 export const PointLossReason = [
   'bought_item',

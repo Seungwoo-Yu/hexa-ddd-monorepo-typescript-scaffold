@@ -1,10 +1,10 @@
-import { Balance } from '@hexa/user-domain/domains/vo/balance.vo.ts';
-import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
-import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
-import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { ClassOf, Validatable } from '@hexa/common/interfaces.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
+import { Balance } from '@hexa/user-domain/domains/vo/balance.vo';
+import { Credential } from '@hexa/user-domain/domains/vo/credential.vo';
+import { Name } from '@hexa/user-domain/domains/vo/name.vo';
+import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { ClassOf, Validatable } from '@hexa/common/interfaces';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 
 @AssertStaticInterface<ClassOf<User>>()
 @AssertStaticInterface<Validatable>()

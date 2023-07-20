@@ -1,15 +1,15 @@
-import { StoreFactory, StoreIdNotMatchedError } from '@hexa/store-domain/domains/factories/store.factory.ts';
-import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg.ts';
-import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
-import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo.ts';
-import { IncrIntegerFactory } from '@hexa/common/utils.ts';
-import { StoreName } from '@hexa/store-domain/domains/vo/store-name.vo.ts';
-import { StoreDesc } from '@hexa/store-domain/domains/vo/store-desc.vo.ts';
-import { UlidUid } from '@hexa/store-domain/domains/vo/ulid-uid.vo.ts';
-import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
-import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo.ts';
-import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo.ts';
-import { Price } from '@hexa/store-domain/domains/vo/price.vo.ts';
+import { StoreFactory, StoreIdNotMatchedError } from '@hexa/store-domain/domains/factories/store.factory';
+import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg';
+import { Store } from '@hexa/store-domain/domains/entities/store.entity';
+import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo';
+import { IncrIntegerFactory } from '@hexa/common/utils';
+import { StoreName } from '@hexa/store-domain/domains/vo/store-name.vo';
+import { StoreDesc } from '@hexa/store-domain/domains/vo/store-desc.vo';
+import { UlidUid } from '@hexa/store-domain/domains/vo/ulid-uid.vo';
+import { Item } from '@hexa/store-domain/domains/entities/item.entity';
+import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo';
+import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo';
+import { Price } from '@hexa/store-domain/domains/vo/price.vo';
 
 describe('store-domain factory test', () => {
   it('should be generated', async () => {

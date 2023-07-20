@@ -1,12 +1,12 @@
-import { PickType } from '@hexa/common/types.ts';
-import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
-import { Price } from '@hexa/store-domain/domains/vo/price.vo.ts';
-import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo.ts';
-import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo.ts';
-import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo.ts';
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { ClassOf, Validatable } from '@hexa/common/interfaces.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
+import { PickType } from '@hexa/common/types';
+import { Store } from '@hexa/store-domain/domains/entities/store.entity';
+import { Price } from '@hexa/store-domain/domains/vo/price.vo';
+import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo';
+import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo';
+import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { ClassOf, Validatable } from '@hexa/common/interfaces';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 
 @AssertStaticInterface<ClassOf<Item>>()
 @AssertStaticInterface<Validatable>()

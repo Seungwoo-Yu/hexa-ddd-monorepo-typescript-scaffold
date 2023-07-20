@@ -1,11 +1,11 @@
-import { InMemoryUserRepo } from '@hexa/user-domain/tests/mocks.ts';
-import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg.ts';
-import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
-import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
-import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
-import { Balance } from '@hexa/user-domain/domains/vo/balance.vo.ts';
-import { UserService } from '@hexa/user-domain/domains/services/user.service.ts';
-import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
+import { InMemoryUserRepo } from '@hexa/user-domain/tests/mocks';
+import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg';
+import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo';
+import { Credential } from '@hexa/user-domain/domains/vo/credential.vo';
+import { Name } from '@hexa/user-domain/domains/vo/name.vo';
+import { Balance } from '@hexa/user-domain/domains/vo/balance.vo';
+import { UserService } from '@hexa/user-domain/domains/services/user.service';
+import { User } from '@hexa/user-domain/domains/entities/user.entity';
 
 describe('user-domain service test', () => {
   it('should deposit', async () => {

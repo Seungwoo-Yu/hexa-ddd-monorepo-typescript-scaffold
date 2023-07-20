@@ -163,6 +163,9 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     indent: ['error', 2],
     'n/no-missing-import': 'off',
+    'n/no-unpublished-require': ['error', {
+      allowModules: ['ts-jest'],
+    }],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'object-curly-spacing': ['error', 'always'],
     'quote-props': ['error', 'as-needed'],

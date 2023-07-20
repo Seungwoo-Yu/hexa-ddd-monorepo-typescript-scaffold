@@ -1,9 +1,9 @@
-import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
+import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces';
 import { z } from 'zod';
-import { unifyZodMessages } from '@hexa/common/utils.ts';
-import { CompositeValError } from '@hexa/common/errors/composite.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
+import { unifyZodMessages } from '@hexa/common/utils';
+import { CompositeValError } from '@hexa/common/errors/composite';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface';
+import { AssertStaticInterface } from '@hexa/common/decorators';
 
 @AssertStaticInterface<ClassOf<StoreDesc>>()
 @AssertStaticInterface<Validatable>()

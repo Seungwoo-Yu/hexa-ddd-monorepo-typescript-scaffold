@@ -1,12 +1,12 @@
-import { InMemoryStoreRepo } from '../../tests/mocks';
-import { StoreService } from './store.service';
-import { StoreName } from '../vo/store-name.vo';
-import { StoreDesc } from '../vo/store-desc.vo';
-import { UlidUid } from '../vo/ulid-uid.vo';
-import { ItemName } from '../vo/item-name.vo';
-import { ItemDesc } from '../vo/item-desc.vo';
-import { Price } from '../vo/price.vo';
-import { IntegerUid } from '../vo/integer-uid.vo';
+import { InMemoryStoreRepo } from '@hexa/store-domain/tests/mocks';
+import { StoreService } from '@hexa/store-domain/domains/services/store.service';
+import { StoreDesc } from '@hexa/store-domain/domains/vo/store-desc.vo';
+import { StoreName } from '@hexa/store-domain/domains/vo/store-name.vo';
+import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo';
+import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo';
+import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo';
+import { Price } from '@hexa/store-domain/domains/vo/price.vo';
+import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo';
 
 describe('store-domain service test', () => {
   it('should create store with items', async () => {

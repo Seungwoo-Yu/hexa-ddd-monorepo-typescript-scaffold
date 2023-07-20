@@ -1,9 +1,9 @@
-import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
-import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
-import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg.ts';
-import { IFactory } from '@hexa/common/interfaces.ts';
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { PickType } from '@hexa/common/types.ts';
+import { Store } from '@hexa/store-domain/domains/entities/store.entity';
+import { Item } from '@hexa/store-domain/domains/entities/item.entity';
+import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg';
+import { IFactory } from '@hexa/common/interfaces';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { PickType } from '@hexa/common/types';
 
 export class StoreIdNotMatchedError extends Error {
   constructor(
