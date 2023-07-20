@@ -1,14 +1,14 @@
-import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import { IPointLog, PointLossLog, PointGainLog } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
-import { OmitFuncs, PickType } from '@hexa/common/types.ts';
-import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo.ts';
-import { IUserCommand } from '@hexa/user-domain/domains/repositories/commands/user.command.ts';
-import { IUserQuery, PointLogOptions } from '@hexa/user-domain/domains/repositories/queries/user.query.ts';
-import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg.ts';
-import { Amount } from '@hexa/user-domain/domains/vo/amount.vo.ts';
-import { GainReason } from '@hexa/user-domain/domains/vo/gain-reason.vo.ts';
-import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo.ts';
-import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo.ts';
+import { User } from '@hexa/user-domain/domains/entities/user.entity';
+import { IPointLog, PointLossLog, PointGainLog } from '@hexa/user-domain/domains/vo/point-log.vo';
+import { OmitFuncs, PickType } from '@hexa/common/types';
+import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo';
+import { IUserCommand } from '@hexa/user-domain/domains/repositories/commands/user.command';
+import { IUserQuery, PointLogOptions } from '@hexa/user-domain/domains/repositories/queries/user.query';
+import { UserAgg } from '@hexa/user-domain/domains/aggs/user.agg';
+import { Amount } from '@hexa/user-domain/domains/vo/amount.vo';
+import { GainReason } from '@hexa/user-domain/domains/vo/gain-reason.vo';
+import { LossReason } from '@hexa/user-domain/domains/vo/loss-reason.vo';
+import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo';
 
 export class InMemoryPointGainLog extends PointGainLog {
   constructor(

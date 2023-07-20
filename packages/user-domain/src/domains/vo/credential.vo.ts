@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
-import { CompositeValError } from '@hexa/common/errors/composite.ts';
-import { unifyZodMessages } from '@hexa/common/utils.ts';
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
+import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces';
+import { CompositeValError } from '@hexa/common/errors/composite';
+import { unifyZodMessages } from '@hexa/common/utils';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 
 @AssertStaticInterface<ClassOf<Credential>>()
 @AssertStaticInterface<Validatable>()

@@ -1,9 +1,9 @@
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { ClassOf, Equality, IFactory, Validatable } from '@hexa/common/interfaces.ts';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { ClassOf, Equality, IFactory, Validatable } from '@hexa/common/interfaces';
 import { DateTime } from 'luxon';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
-import { unifyZodMessages, ZodDateTime } from '@hexa/common/utils.ts';
-import { CompositeValError } from '@hexa/common/errors/composite.ts';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface';
+import { unifyZodMessages, ZodDateTime } from '@hexa/common/utils';
+import { CompositeValError } from '@hexa/common/errors/composite';
 
 @AssertStaticInterface<ClassOf<CreatedAt>>()
 @AssertStaticInterface<Validatable>()

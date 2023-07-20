@@ -6,7 +6,7 @@ import {
   MaxValueError, MinElementLenError,
   MinLengthError,
   MinValueError, InvalidUTCTimezoneError, UndefOrNullVarError, UnexpectedTypeError, InvalidDateTimeError,
-} from '@hexa/common/errors/vo.ts';
+} from '@hexa/common/errors/vo';
 
 export class CompositeValError extends Error {
   constructor(

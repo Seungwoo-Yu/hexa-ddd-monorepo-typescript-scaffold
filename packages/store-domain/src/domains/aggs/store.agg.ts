@@ -1,6 +1,6 @@
-import { Store } from '@hexa/store-domain/domains/entities/store.entity.ts';
-import { Item } from '@hexa/store-domain/domains/entities/item.entity.ts';
-import { PickNestedType, PickType } from '@hexa/common/types.ts';
+import { Store } from '@hexa/store-domain/domains/entities/store.entity';
+import { Item } from '@hexa/store-domain/domains/entities/item.entity';
+import { PickNestedType, PickType } from '@hexa/common/types';
 import { OrderedMap } from 'immutable';
 
 export class DuplicatedItemIdError extends Error {

@@ -1,4 +1,4 @@
-import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo.ts';
+import { CreatedAt } from '@hexa/user-domain/domains/vo/created-at.vo';
 import { DateTime } from 'luxon';
 
 describe('create-at vo test', () => {

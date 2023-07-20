@@ -1,4 +1,4 @@
-import { Amount } from './amount.vo';
+import { Amount } from '@hexa/user-domain/domains/vo/amount.vo';
 
 describe('amount vo test', () => {
   it('should create successfully', () => {

@@ -1,10 +1,10 @@
-import { ClassOf, Equality, IFactory, Validatable } from '@hexa/common/interfaces.ts';
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
+import { ClassOf, Equality, IFactory, Validatable } from '@hexa/common/interfaces';
+import { AssertStaticInterface } from '@hexa/common/decorators';
 import { isValid as isValidUlid, ulid } from 'ulidx';
 import { z } from 'zod';
-import { unifyZodMessages } from '@hexa/common/utils.ts';
-import { CompositeValError } from '@hexa/common/errors/composite.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
+import { unifyZodMessages } from '@hexa/common/utils';
+import { CompositeValError } from '@hexa/common/errors/composite';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 
 @AssertStaticInterface<ClassOf<UlidUid>>()
 @AssertStaticInterface<Validatable>()

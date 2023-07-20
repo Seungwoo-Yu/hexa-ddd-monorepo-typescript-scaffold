@@ -1,7 +1,7 @@
-import { User } from '@hexa/user-domain/domains/entities/user.entity.ts';
-import { PointGainLog, IPointLog, PointLossLog } from '@hexa/user-domain/domains/vo/point-log.vo.ts';
-import { Credential } from '@hexa/user-domain/domains/vo/credential.vo.ts';
-import { Name } from '@hexa/user-domain/domains/vo/name.vo.ts';
+import { User } from '@hexa/user-domain/domains/entities/user.entity';
+import { PointGainLog, IPointLog, PointLossLog } from '@hexa/user-domain/domains/vo/point-log.vo';
+import { Credential } from '@hexa/user-domain/domains/vo/credential.vo';
+import { Name } from '@hexa/user-domain/domains/vo/name.vo';
 
 export class UserAgg {
   constructor(

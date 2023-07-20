@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces.ts';
-import { unifyZodMessages } from '@hexa/common/utils.ts';
-import { CompositeValError } from '@hexa/common/errors/composite.ts';
-import { AssertStaticInterface } from '@hexa/common/decorators.ts';
-import { UndefOrNullParamError } from '@hexa/common/errors/interface.ts';
-import { Amount } from '@hexa/user-domain/domains/vo/amount.vo.ts';
+import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces';
+import { unifyZodMessages } from '@hexa/common/utils';
+import { CompositeValError } from '@hexa/common/errors/composite';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { UndefOrNullParamError } from '@hexa/common/errors/interface';
+import { Amount } from '@hexa/user-domain/domains/vo/amount.vo';
 
 @AssertStaticInterface<ClassOf<Balance>>()
 @AssertStaticInterface<Validatable>()
