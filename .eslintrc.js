@@ -3,12 +3,6 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:n/recommended',
-    'plugin:import/recommended',
-    'plugin:promise/recommended',
-  ],
   overrides: [
     {
       files: ['dist/**/*.js'],
@@ -152,27 +146,31 @@ module.exports = {
         },
       },
     },
+    {
+      extends: [
+        'eslint:recommended',
+        'plugin:n/recommended',
+        'plugin:import/recommended',
+        'plugin:promise/recommended',
+      ],
+      files: ['**/*.js'],
+      plugins: [
+        'import',
+        'jest',
+        'promise',
+      ],
+      rules: {
+        'comma-dangle': ['error', 'always-multiline'],
+        indent: ['error', 2],
+        'max-len': ['error', { code: 120 }],
+        'n/no-missing-require': 'off',
+        'n/no-unpublished-require': 'off',
+        'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        'object-curly-spacing': ['error', 'always'],
+        'quote-props': ['error', 'as-needed'],
+        quotes: ['error', 'single'],
+        semi: ['error', 'always'],
+      },
+    },
   ],
-  parserOptions: {
-    ecmaVersion: 2020,
-  },
-  plugins: [
-    'import',
-    'jest',
-    'promise',
-  ],
-  rules: {
-    'comma-dangle': ['error', 'always-multiline'],
-    indent: ['error', 2],
-    'max-len': ['error', { code: 120 }],
-    'n/no-missing-import': 'off',
-    'n/no-unpublished-require': ['error', {
-      allowModules: ['ts-jest'],
-    }],
-    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    'object-curly-spacing': ['error', 'always'],
-    'quote-props': ['error', 'as-needed'],
-    quotes: ['error', 'single'],
-    semi: ['error', 'always'],
-  },
 };
