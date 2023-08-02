@@ -126,7 +126,7 @@ export class InMemoryUserRepo implements IUserCommand, IUserQuery {
     }
 
     const startIdx = filteredLogs.findIndex(log => {
-      return log.index === options.lastId;
+      return log.index === options.cursor;
     });
 
     return startIdx > -1
@@ -156,7 +156,7 @@ export class InMemoryUserRepo implements IUserCommand, IUserQuery {
     }
 
     const startIdx = castedLogs.findIndex(log => {
-      return log.index === options.lastId;
+      return log.index === options.cursor;
     });
 
     return startIdx > -1
@@ -187,7 +187,7 @@ export class InMemoryUserRepo implements IUserCommand, IUserQuery {
     }
 
     const startIdx = filteredLogs.findIndex(log => {
-      return log.index === options.lastId;
+      return log.index === options.cursor;
     });
 
     return startIdx > -1
