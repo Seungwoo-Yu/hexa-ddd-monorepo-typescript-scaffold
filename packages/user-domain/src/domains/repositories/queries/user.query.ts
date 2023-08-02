@@ -14,10 +14,10 @@ export type PointLogOptions = {
   amount?: number,
   offset: number,
 } | {
-  searchOption: 'lastId',
+  searchOption: 'cursor',
   filteredBy?: 'gain' | 'loss',
   amount?: number,
-  lastId: number,
+  cursor: number,
 };
 
 export interface IUserQuery {
