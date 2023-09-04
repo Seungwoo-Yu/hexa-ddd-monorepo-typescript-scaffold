@@ -6,12 +6,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@types/luxon": "^3.3.1",
-    "@types/node": "^20.4.4",
-    "typescript": "^5.1.6"
+    "@types/luxon": "^3.3.2",
+    "@types/node": "^20.5.9",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
-    "luxon": "^3.3.0",
-    "zod": "^3.21.4"
+    "luxon": "^3.4.2",
+    "zod": "^3.22.2"
   }
 }
