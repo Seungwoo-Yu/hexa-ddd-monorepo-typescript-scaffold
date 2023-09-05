@@ -12,7 +12,8 @@
     "packages/common",
     "packages/order-context",
     "packages/store-domain",
-    "packages/user-domain"
+    "packages/user-domain",
+    "packages/user-stat-context"
   ],
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",
