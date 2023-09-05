@@ -1,9 +1,9 @@
-import { OrderLine, RefundedOrderLineError } from './order-line.entity';
+import { OrderLine, RefundedOrderLineError } from '@hexa/order-context/domains/entities/order-line.entity';
 import { IncrIntegerFactory } from '@hexa/common/utils';
-import { IntegerUid } from '../vo/integer-uid.vo';
-import { PriceDetail } from '../vo/price-detail.vo';
-import { RefundReason } from '../vo/refund-reason.vo';
-import { CreatedAt } from '../vo/created-at.vo';
+import { IntegerUid } from '@hexa/order-context/domains/vo/integer-uid.vo';
+import { PriceDetail } from '@hexa/order-context/domains/vo/price-detail.vo';
+import { RefundReason } from '@hexa/order-context/domains/vo/refund-reason.vo';
+import { CreatedAt } from '@hexa/order-context/domains/vo/created-at.vo';
 
 describe('order-context order-line entity test', () => {
   it('should refund successfully', () => {
