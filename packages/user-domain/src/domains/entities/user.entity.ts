@@ -38,6 +38,14 @@ export class User {
     this.name = name;
   }
 
+  public changeBalance(balance: Balance) {
+    if (this.balance.equals(balance)) {
+      throw new Error('balance is not changed');
+    }
+
+    this.balance = balance;
+  }
+
   public static isClassOf(target: unknown): target is User {
     try {
       User.validate(target);
