@@ -9,7 +9,8 @@
       "@hexa/common/*": ["packages/common/src/*"],
       "@hexa/order-context/*": ["packages/order-context/src/*"],
       "@hexa/store-domain/*": ["packages/store-domain/src/*"],
-      "@hexa/user-domain/*": ["packages/user-domain/src/*"]
+      "@hexa/user-domain/*": ["packages/user-domain/src/*"],
+      "@hexa/user-stat-context/*": ["packages/user-stat-context/src/*"]
     },
     "outDir": "./dist",
     "esModuleInterop": true,

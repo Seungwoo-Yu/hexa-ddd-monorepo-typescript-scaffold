@@ -1,0 +1,20 @@
+{
+  "name": "@hexa/user-stat-context",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.3.2",
+    "@types/node": "^20.5.9",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@hexa/common": "file:../common",
+    "immutable": "^4.3.4",
+    "luxon": "^3.4.2",
+    "ulidx": "^2.1.0",
+    "zod": "^3.22.2"
+  }
+}
