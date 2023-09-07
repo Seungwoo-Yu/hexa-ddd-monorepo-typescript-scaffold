@@ -1,4 +1,4 @@
-import { User } from '@hexa/user-domain/domains/entities/user.entity';
+import { User } from '@hexa/user-context/domains/entities/user.entity';
 import { OmitFuncs, PickType } from '@hexa/common/types';
 
 export interface IUserCommand {

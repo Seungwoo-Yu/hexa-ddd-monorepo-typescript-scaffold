@@ -2,7 +2,7 @@ import { InMemoryStoreRepo } from '@hexa/store-domain/tests/mocks';
 import { StoreService } from '@hexa/store-domain/domains/services/store.service';
 import { StoreDesc } from '@hexa/store-domain/domains/vo/store-desc.vo';
 import { StoreName } from '@hexa/store-domain/domains/vo/store-name.vo';
-import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo';
+import { UlidUid } from '@hexa/user-context/domains/vo/ulid-uid.vo';
 import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo';
 import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo';
 import { Price } from '@hexa/store-domain/domains/vo/price.vo';

@@ -4,7 +4,7 @@ import { unifyZodMessages } from '@hexa/common/utils';
 import { CompositeValError } from '@hexa/common/errors/composite';
 import { AssertStaticInterface } from '@hexa/common/decorators';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
-import { Amount } from '@hexa/user-domain/domains/vo/amount.vo';
+import { Amount } from '@hexa/user-context/domains/vo/amount.vo';
 
 @AssertStaticInterface<ClassOf<Balance>>()
 @AssertStaticInterface<Validatable>()
