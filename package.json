@@ -11,6 +11,7 @@
     "packages/base",
     "packages/common",
     "packages/order-context",
+    "packages/order-stat-context",
     "packages/store-domain",
     "packages/user-domain",
     "packages/user-stat-context"
