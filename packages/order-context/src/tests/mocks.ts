@@ -14,7 +14,7 @@ import { OrderStoit } from '@hexa/order-context/domains/entities/order-stoit.ent
 export class InMemoryOrderRepo implements IOrderCommand, IOrderQuery {
   private readonly orderMap: Map<PickNestedType<Order, ['uid', 'uid']>, Order> = new Map();
   private readonly orderAggMap: Map<PickNestedType<Order, ['uid', 'uid']>, OrderAgg> = new Map();
-  private stoits: OrderedMap<PickNestedType<OrderStoit, ['uid', 'uid']>, OrderStoit> = OrderedMap();
+  private stoits: OrderStoit[] = [];
   private stores: OrderedMap<PickNestedType<OrderStore, ['uid', 'uid']>, OrderStore> = OrderedMap();
 
   constructor(
@@ -70,7 +70,7 @@ export class InMemoryOrderRepo implements IOrderCommand, IOrderQuery {
       stoit.storeUid,
     ));
 
-    this.stoits = OrderedMap(stoits.map(stoit => [stoit.uid.uid, stoit]));
+    this.stoits = stoits;
 
     return stoits;
   }

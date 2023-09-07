@@ -38,20 +38,18 @@ export class NoOrderLineFoundError extends Error {
 
 export class OrderAgg {
   private lineIdxMap = OrderedMap<PickNestedType<OrderLine, ['uid', 'uid']>, number>();
-  public readonly stoits: OrderStoit[];
   public readonly stores: OrderStore[];
 
   constructor(
     public readonly order: Order,
     public readonly lines: OrderLine[],
-    _stoits: OrderedMap<PickNestedType<OrderStoit, ['uid', 'uid']>, OrderStoit>,
+    public readonly stoits: OrderStoit[],
     _stores: OrderedMap<PickNestedType<OrderStore, ['uid', 'uid']>, OrderStore>,
   ) {
     if (this.lines.length === 0) {
       throw new EmptyOrderLineError();
     }
 
-    this.stoits = _stoits.valueSeq().toArray();
     this.stores = _stores.valueSeq().toArray();
 
     this.stoits.forEach(stoit => {
