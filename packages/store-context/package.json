@@ -1,5 +1,5 @@
 {
-  "name": "@hexa/store-domain",
+  "name": "@hexa/store-context",
   "version": "1.0.0",
   "description": "",
   "scripts": {

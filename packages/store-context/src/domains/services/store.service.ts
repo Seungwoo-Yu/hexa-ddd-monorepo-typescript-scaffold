@@ -1,7 +1,7 @@
-import { IStoreCommand } from '@hexa/store-domain/domains/repositories/commands/store.command';
-import { IStoreQuery } from '@hexa/store-domain/domains/repositories/queries/store.query';
-import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg';
-import { Store } from '@hexa/store-domain/domains/entities/store.entity';
+import { IStoreCommand } from '@hexa/store-context/domains/repositories/commands/store.command';
+import { IStoreQuery } from '@hexa/store-context/domains/repositories/queries/store.query';
+import { StoreAgg } from '@hexa/store-context/domains/aggs/store.agg';
+import { Store } from '@hexa/store-context/domains/entities/store.entity';
 import { Item } from '../entities/item.entity';
 import { StoreFactory } from '../factories/store.factory';
 import { OmitFuncs, PickType } from '@hexa/common/types';
