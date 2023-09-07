@@ -1,5 +1,5 @@
-import { Store } from '@hexa/store-domain/domains/entities/store.entity';
-import { Item } from '@hexa/store-domain/domains/entities/item.entity';
+import { Store } from '@hexa/store-context/domains/entities/store.entity';
+import { Item } from '@hexa/store-context/domains/entities/item.entity';
 import { PickNestedType, PickType } from '@hexa/common/types';
 import { OrderedMap } from 'immutable';
 

@@ -1,7 +1,7 @@
-import { Store } from '@hexa/store-domain/domains/entities/store.entity';
-import { Item } from '@hexa/store-domain/domains/entities/item.entity';
+import { Store } from '@hexa/store-context/domains/entities/store.entity';
+import { Item } from '@hexa/store-context/domains/entities/item.entity';
 import { OmitFuncs, PickType } from '@hexa/common/types';
-import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg';
+import { StoreAgg } from '@hexa/store-context/domains/aggs/store.agg';
 
 export interface IStoreCommand {
   createStore(store: Omit<OmitFuncs<Store>, 'uid'>): Promise<PickType<Store, 'uid'>>,

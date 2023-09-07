@@ -1,7 +1,7 @@
-import { UlidUid } from '@hexa/store-domain/domains/vo/ulid-uid.vo';
-import { StoreDesc } from '@hexa/store-domain/domains/vo/store-desc.vo';
-import { StoreName } from '@hexa/store-domain/domains/vo/store-name.vo';
-import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo';
+import { UlidUid } from '@hexa/store-context/domains/vo/ulid-uid.vo';
+import { StoreDesc } from '@hexa/store-context/domains/vo/store-desc.vo';
+import { StoreName } from '@hexa/store-context/domains/vo/store-name.vo';
+import { IntegerUid } from '@hexa/store-context/domains/vo/integer-uid.vo';
 import { AssertStaticInterface } from '@hexa/common/decorators';
 import { ClassOf, Validatable } from '@hexa/common/interfaces';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';

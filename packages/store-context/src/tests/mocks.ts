@@ -1,12 +1,12 @@
-import { Store } from '@hexa/store-domain/domains/entities/store.entity';
-import { Item } from '@hexa/store-domain/domains/entities/item.entity';
+import { Store } from '@hexa/store-context/domains/entities/store.entity';
+import { Item } from '@hexa/store-context/domains/entities/item.entity';
 import { OmitFuncs, PickType } from '@hexa/common/types';
-import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg';
+import { StoreAgg } from '@hexa/store-context/domains/aggs/store.agg';
 import { IncrIntegerFactory } from '@hexa/common/utils';
-import { IStoreQuery } from '@hexa/store-domain/domains/repositories/queries/store.query';
-import { IStoreCommand } from '@hexa/store-domain/domains/repositories/commands/store.command';
-import { StoreFactory } from '@hexa/store-domain/domains/factories/store.factory';
-import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo';
+import { IStoreQuery } from '@hexa/store-context/domains/repositories/queries/store.query';
+import { IStoreCommand } from '@hexa/store-context/domains/repositories/commands/store.command';
+import { StoreFactory } from '@hexa/store-context/domains/factories/store.factory';
+import { IntegerUid } from '@hexa/store-context/domains/vo/integer-uid.vo';
 
 export class InMemoryStoreRepo implements IStoreQuery, IStoreCommand {
   private readonly incrIntFactory = new IncrIntegerFactory();

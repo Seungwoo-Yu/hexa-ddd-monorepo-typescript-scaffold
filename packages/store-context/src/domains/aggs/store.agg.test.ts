@@ -1,14 +1,14 @@
-import { StoreName } from '@hexa/store-domain/domains/vo/store-name.vo';
-import { StoreDesc } from '@hexa/store-domain/domains/vo/store-desc.vo';
-import { UlidUid } from '@hexa/store-domain/domains/vo/ulid-uid.vo';
-import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo';
-import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo';
-import { Price } from '@hexa/store-domain/domains/vo/price.vo';
-import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg';
-import { Store } from '@hexa/store-domain/domains/entities/store.entity';
+import { StoreName } from '@hexa/store-context/domains/vo/store-name.vo';
+import { StoreDesc } from '@hexa/store-context/domains/vo/store-desc.vo';
+import { UlidUid } from '@hexa/store-context/domains/vo/ulid-uid.vo';
+import { ItemName } from '@hexa/store-context/domains/vo/item-name.vo';
+import { ItemDesc } from '@hexa/store-context/domains/vo/item-desc.vo';
+import { Price } from '@hexa/store-context/domains/vo/price.vo';
+import { StoreAgg } from '@hexa/store-context/domains/aggs/store.agg';
+import { Store } from '@hexa/store-context/domains/entities/store.entity';
 import { IncrIntegerFactory } from '@hexa/common/utils';
-import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo';
-import { Item } from '@hexa/store-domain/domains/entities/item.entity';
+import { IntegerUid } from '@hexa/store-context/domains/vo/integer-uid.vo';
+import { Item } from '@hexa/store-context/domains/entities/item.entity';
 
 describe('store-domain aggregate test', () => {
   it('should add items', () => {

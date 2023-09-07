@@ -1,6 +1,6 @@
-import { StoreAgg } from '@hexa/store-domain/domains/aggs/store.agg';
+import { StoreAgg } from '@hexa/store-context/domains/aggs/store.agg';
 import { PickType } from '@hexa/common/types';
-import { Store } from '@hexa/store-domain/domains/entities/store.entity';
+import { Store } from '@hexa/store-context/domains/entities/store.entity';
 
 export interface IStoreQuery {
   readById(id: PickType<Store, 'uid'>): Promise<StoreAgg | undefined>,

@@ -1,9 +1,9 @@
 import { PickType } from '@hexa/common/types';
-import { Store } from '@hexa/store-domain/domains/entities/store.entity';
-import { Price } from '@hexa/store-domain/domains/vo/price.vo';
-import { ItemDesc } from '@hexa/store-domain/domains/vo/item-desc.vo';
-import { ItemName } from '@hexa/store-domain/domains/vo/item-name.vo';
-import { IntegerUid } from '@hexa/store-domain/domains/vo/integer-uid.vo';
+import { Store } from '@hexa/store-context/domains/entities/store.entity';
+import { Price } from '@hexa/store-context/domains/vo/price.vo';
+import { ItemDesc } from '@hexa/store-context/domains/vo/item-desc.vo';
+import { ItemName } from '@hexa/store-context/domains/vo/item-name.vo';
+import { IntegerUid } from '@hexa/store-context/domains/vo/integer-uid.vo';
 import { AssertStaticInterface } from '@hexa/common/decorators';
 import { ClassOf, Validatable } from '@hexa/common/interfaces';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
