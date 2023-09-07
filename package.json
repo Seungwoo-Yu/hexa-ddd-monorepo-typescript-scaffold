@@ -12,6 +12,7 @@
     "packages/common",
     "packages/order-context",
     "packages/order-stat-context",
+    "packages/store-admin-context",
     "packages/store-context",
     "packages/user-context",
     "packages/user-stat-context"
