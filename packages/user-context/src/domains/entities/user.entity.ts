@@ -1,7 +1,7 @@
-import { Balance } from '@hexa/user-domain/domains/vo/balance.vo';
-import { Credential } from '@hexa/user-domain/domains/vo/credential.vo';
-import { Name } from '@hexa/user-domain/domains/vo/name.vo';
-import { UlidUid } from '@hexa/user-domain/domains/vo/ulid-uid.vo';
+import { Balance } from '@hexa/user-context/domains/vo/balance.vo';
+import { Credential } from '@hexa/user-context/domains/vo/credential.vo';
+import { Name } from '@hexa/user-context/domains/vo/name.vo';
+import { UlidUid } from '@hexa/user-context/domains/vo/ulid-uid.vo';
 import { AssertStaticInterface } from '@hexa/common/decorators';
 import { ClassOf, Validatable } from '@hexa/common/interfaces';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
