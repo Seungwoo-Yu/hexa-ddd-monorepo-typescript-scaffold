@@ -47,7 +47,7 @@ describe('order-context order aggregate test', () => {
     const agg = new OrderAgg(
       order,
       lines,
-      OrderedMap([[stoit.uid.uid, stoit]]),
+      [stoit],
       OrderedMap([[store.uid.uid, store]]),
     );
 
@@ -90,7 +90,7 @@ describe('order-context order aggregate test', () => {
     expect(() => new OrderAgg(
       order,
       lines,
-      OrderedMap([[stoit.uid.uid, stoit]]),
+      [stoit],
       OrderedMap([[store.uid.uid, store]]),
     )).toThrowError(new NoOrderStoreFoundError(stoit.storeUid));
   });
@@ -134,7 +134,7 @@ describe('order-context order aggregate test', () => {
     expect(() => new OrderAgg(
       order,
       lines,
-      OrderedMap([[stoit.uid.uid, stoit]]),
+      [stoit],
       OrderedMap([[store.uid.uid, store]]),
     )).toThrowError(new DuplicatedOrderLineIdError(duplicatedUid));
   });
@@ -170,7 +170,7 @@ describe('order-context order aggregate test', () => {
     const agg = new OrderAgg(
       order,
       lines,
-      OrderedMap([[stoit.uid.uid, stoit]]),
+      [stoit],
       OrderedMap([[store.uid.uid, store]]),
     );
 
@@ -215,7 +215,7 @@ describe('order-context order aggregate test', () => {
     const agg = new OrderAgg(
       order,
       lines,
-      OrderedMap([[stoit.uid.uid, stoit]]),
+      [stoit],
       OrderedMap([[store.uid.uid, store]]),
     );
 
