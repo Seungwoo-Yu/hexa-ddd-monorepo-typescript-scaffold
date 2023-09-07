@@ -1,14 +1,14 @@
-import { User } from '@hexa/user-context/domains/entities/user.entity';
-import { PickType } from '@hexa/common/types';
 import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces';
+import { PickType } from '@hexa/common/types';
+import { Amount } from '@hexa/user-stat-context/domains/vo/amount.vo';
+import { CreatedAt } from '@hexa/user-stat-context/domains/vo/created-at.vo';
+import { User } from '@hexa/user-stat-context/domains/entities/user.entity';
 import { AssertStaticInterface } from '@hexa/common/decorators';
-import { UndefOrNullVarError } from '@hexa/common/errors/vo';
-import { Amount } from '@hexa/user-context/domains/vo/amount.vo';
+import { GainReason } from '@hexa/user-stat-context/domains/vo/gain-reason.vo';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
-import { GainReason } from '@hexa/user-context/domains/vo/gain-reason.vo';
-import { CreatedAt } from '@hexa/user-context/domains/vo/created-at.vo';
-import { UlidUid } from '@hexa/user-context/domains/vo/ulid-uid.vo';
-import { LossReason } from '@hexa/user-context/domains/vo/loss-reason.vo';
+import { UndefOrNullVarError } from '@hexa/common/errors/vo';
+import { UlidUid } from '@hexa/user-stat-context/domains/vo/ulid-uid.vo';
+import { LossReason } from '@hexa/user-stat-context/domains/vo/loss-reason.vo';
 
 export interface IPointLog extends Equality {
   userUid: PickType<User, 'uid'>,

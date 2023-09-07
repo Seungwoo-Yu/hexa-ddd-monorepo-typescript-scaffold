@@ -5,7 +5,7 @@ import { GainReason, PointGainReason } from '@hexa/user-stat-context/domains/vo/
 import { LossReason, PointLossReason } from '@hexa/user-stat-context/domains/vo/loss-reason.vo';
 import { CreatedAt } from '@hexa/user-stat-context/domains/vo/created-at.vo';
 import { PointGainLog, PointLossLog } from '@hexa/user-stat-context/domains/vo/point-log.vo';
-import { Amount } from '@hexa/user-context/domains/vo/amount.vo';
+import { Amount } from '@hexa/user-stat-context/domains/vo/amount.vo';
 
 export class UserService {
   constructor(

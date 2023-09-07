@@ -1,5 +1,5 @@
-import { CreatedAt } from '@hexa/order-context/domains/vo/created-at.vo';
 import { DateTime } from 'luxon';
+import { CreatedAt } from '@hexa/order-stat-context/domains/vo/created-at.vo';
 
 describe('create-at vo test', () => {
   it('should create', () => {

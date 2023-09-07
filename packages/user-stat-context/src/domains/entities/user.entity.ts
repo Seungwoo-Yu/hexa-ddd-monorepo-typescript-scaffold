@@ -1,7 +1,7 @@
-import { UlidUid } from '@hexa/user-context/domains/vo/ulid-uid.vo';
 import { ClassOf, Validatable } from '@hexa/common/interfaces';
 import { AssertStaticInterface } from '@hexa/common/decorators';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
+import { UlidUid } from '@hexa/user-stat-context/domains/vo/ulid-uid.vo';
 
 @AssertStaticInterface<ClassOf<User>>()
 @AssertStaticInterface<Validatable>()
