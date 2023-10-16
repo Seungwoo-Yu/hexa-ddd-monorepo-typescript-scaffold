@@ -1,22 +1,17 @@
 import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces';
-import { AssertStaticInterface } from '@hexa/common/decorators';
-import { Enum } from '@hexa/common/types';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 import { z } from 'zod';
 import { unifyZodMessages } from '@hexa/common/utils';
 import { CompositeValError } from '@hexa/common/errors/composite';
+import { AssertStaticInterface } from '@hexa/common/decorators';
 
-export const PointGainReason = [
-  'gained_by_admin',
-] as const;
-
-@AssertStaticInterface<ClassOf<GainReason>>()
+@AssertStaticInterface<ClassOf<IntegerUid>>()
 @AssertStaticInterface<Validatable>()
-export class GainReason implements Equality {
+export class IntegerUid implements Equality {
   constructor(
-    public readonly reason: Enum<typeof PointGainReason>,
+    public readonly uid: number,
   ) {
-    GainReason.validate(this);
+    IntegerUid.validate(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,12 +20,12 @@ export class GainReason implements Equality {
       throw new UndefOrNullParamError('other');
     }
 
-    return this.reason === other.reason;
+    return this.uid === other.uid;
   }
 
-  public static isClassOf(target: unknown): target is GainReason {
+  public static isClassOf(target: unknown): target is IntegerUid {
     try {
-      GainReason.validate(target);
+      IntegerUid.validate(target);
     } catch (ignored) {
       return false;
     }
@@ -41,12 +36,12 @@ export class GainReason implements Equality {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static validate(target: any) {
     if (target == null) {
-      throw new UndefOrNullParamError('GainReason');
+      throw new UndefOrNullParamError('IntegerUid');
     }
 
-    const result = z.enum(PointGainReason, {
-      errorMap: unifyZodMessages('reason'),
-    }).safeParse(target.reason);
+    const result = z.number({ errorMap: unifyZodMessages('uid') })
+      .int()
+      .safeParse(target.uid);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);

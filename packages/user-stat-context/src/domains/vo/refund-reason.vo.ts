@@ -1,23 +1,23 @@
-import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces';
 import { AssertStaticInterface } from '@hexa/common/decorators';
-import { Enum } from '@hexa/common/types';
+import { ClassOf, Equality, Validatable } from '@hexa/common/interfaces';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
-import { z } from 'zod';
 import { unifyZodMessages } from '@hexa/common/utils';
+import { z } from 'zod';
 import { CompositeValError } from '@hexa/common/errors/composite';
+import { Enum } from '@hexa/common/types';
 
-export const PointLossReason = [
-  'bought_item',
-  'lost_by_admin',
+export const OrderRefundReason = [
+  'requested_by_user',
+  'requested_by_store_admin',
 ] as const;
 
-@AssertStaticInterface<ClassOf<LossReason>>()
+@AssertStaticInterface<ClassOf<RefundReason>>()
 @AssertStaticInterface<Validatable>()
-export class LossReason implements Equality {
+export class RefundReason implements Equality {
   constructor(
-    public readonly reason: Enum<typeof PointLossReason>,
+    public readonly reason: Enum<typeof OrderRefundReason>,
   ) {
-    LossReason.validate(this);
+    RefundReason.validate(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,9 +29,9 @@ export class LossReason implements Equality {
     return this.reason === other.reason;
   }
 
-  public static isClassOf(target: unknown): target is LossReason {
+  public static isClassOf(target: unknown): target is RefundReason {
     try {
-      LossReason.validate(target);
+      RefundReason.validate(target);
     } catch (ignored) {
       return false;
     }
@@ -42,15 +42,15 @@ export class LossReason implements Equality {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static validate(target: any) {
     if (target == null) {
-      throw new UndefOrNullParamError('LossReason');
+      throw new UndefOrNullParamError('RefundReason');
     }
 
-    const result = z.enum(PointLossReason, {
+    const reasonResult = z.enum(OrderRefundReason, {
       errorMap: unifyZodMessages('reason'),
     }).safeParse(target.reason);
 
-    if (!result.success) {
-      throw CompositeValError.fromZodError(result.error);
+    if (!reasonResult.success) {
+      throw CompositeValError.fromZodError(reasonResult.error);
     }
   }
 }

@@ -6,6 +6,8 @@ import { OrderLine } from '@hexa/order-context/domains/entities/order-line.entit
 import { OrderStoit } from '@hexa/order-context/domains/entities/order-stoit.entity';
 import { OrderStore } from '@hexa/order-context/domains/entities/order-store.entity';
 import { OrderFactory } from '@hexa/order-context/domains/factories/order.factory';
+import { CreatedAt } from '@hexa/order-context/domains/vo/created-at.vo';
+import { IntegerUid } from '@hexa/order-context/domains/vo/integer-uid.vo';
 
 export class OrderService {
   constructor(
@@ -20,26 +22,16 @@ export class OrderService {
     stoits: OrderStoit[],
     stores: OrderStore[],
   ) {
-    const [orderUid, createdAt] = await this.orderCommand.createOrder(_order);
-    const lineUids = await this.orderCommand.createOrderLines(_lines.map(line => {
-      return {
-        orderUid: orderUid,
-        storeUid: line.storeUid,
-        stoitUid: line.stoitUid,
-        priceDetail: line.priceDetail,
-        refundReason: line.refundReason,
-        refundCreatedAt: line.refundCreatedAt,
-      };
-    }));
+    const nextId = await this.orderQuery.nextId();
     const order = new Order(
-      orderUid,
+      nextId,
       _order.userUid,
-      createdAt,
+      CreatedAt.create(),
     );
     const lines = _lines.map((line, index) => {
       return new OrderLine(
-        lineUids[index],
-        order.uid,
+        new IntegerUid(index + 1),
+        nextId,
         line.storeUid,
         line.stoitUid,
         line.priceDetail,
@@ -47,7 +39,10 @@ export class OrderService {
         line.refundCreatedAt,
       );
     });
+    const orderAgg = OrderFactory.create(order, lines, stoits, stores);
 
-    return OrderFactory.create(order, lines, stoits, stores);
+    await this.orderCommand.create(orderAgg);
+
+    return orderAgg;
   }
 }

@@ -1,10 +1,10 @@
 import { AssertStaticInterface } from '@hexa/common/decorators';
 import { ClassOf, Validatable } from '@hexa/common/interfaces';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
-import { IntegerUid } from '@hexa/order-stat-context/domains/vo/integer-uid.vo';
-import { PriceDetail } from '@hexa/order-stat-context/domains/vo/price-detail.vo';
-import { RefundReason } from '@hexa/order-stat-context/domains/vo/refund-reason.vo';
-import { CreatedAt } from '@hexa/order-stat-context/domains/vo/created-at.vo';
+import { IntegerUid } from '@hexa/user-stat-context/domains/vo/integer-uid.vo';
+import { CreatedAt } from '@hexa/user-stat-context/domains/vo/created-at.vo';
+import { PriceDetail } from '@hexa/user-stat-context/domains/vo/price-detail.vo';
+import { RefundReason } from '@hexa/user-stat-context/domains/vo/refund-reason.vo';
 
 @AssertStaticInterface<ClassOf<OrderLine>>()
 @AssertStaticInterface<Validatable>()
@@ -13,6 +13,7 @@ export class OrderLine {
     public readonly uid: IntegerUid,
     public readonly storeUid: IntegerUid,
     public readonly priceDetail: PriceDetail,
+    public readonly orderCreatedAt: CreatedAt,
     public readonly refundReason?: RefundReason,
     public readonly refundCreatedAt?: CreatedAt,
   ) {
@@ -50,6 +51,11 @@ export class OrderLine {
       throw new UndefOrNullParamError('priceDetail');
     }
     PriceDetail.validate(expected.priceDetail);
+
+    if (expected.orderCreatedAt == null) {
+      throw new UndefOrNullParamError('orderCreatedAt');
+    }
+    CreatedAt.validate(expected.orderCreatedAt);
 
     if (expected.refundReason != null) {
       RefundReason.validate(expected.refundReason);

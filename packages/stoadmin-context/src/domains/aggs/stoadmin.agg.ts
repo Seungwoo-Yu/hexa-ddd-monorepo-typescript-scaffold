@@ -4,6 +4,6 @@ import { Store } from '@hexa/stoadmin-context/domains/entities/stoadmin-store.en
 export class StoadminAgg {
   constructor(
     public readonly stoadmin: Stoadmin,
-    public readonly stores: Store[],
+    public readonly stores: Store[] = [],
   ) {}
 }

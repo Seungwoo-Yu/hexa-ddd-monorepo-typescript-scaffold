@@ -1,13 +1,15 @@
 import { Store } from '@hexa/store-context/domains/entities/store.entity';
 import { Item } from '@hexa/store-context/domains/entities/item.entity';
-import { PickNestedType, PickType } from '@hexa/common/types';
+import { OmitFuncs, PickNestedType, PickType } from '@hexa/common/types';
 import { OrderedMap } from 'immutable';
+import { IntegerUid } from '@hexa/store-context/domains/vo/integer-uid.vo';
 
-export class DuplicatedItemIdError extends Error {
+export class StoreIdNotMatchedError extends Error {
   constructor(
-    itemId: PickType<Item, 'uid'>,
+    storeId: PickType<Item, 'uid'>,
+    invalidStoreId: PickType<Item, 'uid'>,
   ) {
-    super('item id ' + itemId.uid + ' is duplicated');
+    super(`store ${invalidStoreId.uid} found in item is not matched with store ${storeId.uid} while inserting`);
   }
 }
 
@@ -17,19 +19,33 @@ export class StoreAgg {
 
   constructor(
     public readonly store: Store,
-    items: Item[],
+    items: Omit<OmitFuncs<Item>, 'uid'>[] = [],
   ) {
     this.addItems(items);
   }
 
-  public addItems(items: Item[]) {
-    items.forEach(item => {
-      if (this.itemIdxMap.has(item.uid.uid)) {
-        throw new DuplicatedItemIdError(item.uid);
+  public addItems(_items: Omit<OmitFuncs<Item>, 'uid'>[]) {
+    _items.forEach(item => {
+      if (!this.store.uid.equals(item.storeUid)) {
+        throw new StoreIdNotMatchedError(this.store.uid, item.storeUid);
       }
+    });
+
+    const items = _items.map(_item => {
+      const prevId = this.items.length === 0 ? 0 : this.items[this.items.length - 1].uid.uid;
+      const item = new Item(
+        new IntegerUid(prevId + 1),
+        _item.name,
+        _item.description,
+        _item.price,
+        _item.storeUid,
+      );
 
       this.itemIdxMap = this.itemIdxMap.set(item.uid.uid, item);
+
+      return item;
     });
+
     this.items.push(...items);
   }
 

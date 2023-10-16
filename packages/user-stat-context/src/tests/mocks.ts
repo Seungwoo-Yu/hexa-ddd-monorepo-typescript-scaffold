@@ -8,6 +8,7 @@ import { LossReason } from '@hexa/user-stat-context/domains/vo/loss-reason.vo';
 import { IUserCommand } from '@hexa/user-stat-context/domains/repositories/commands/user.command';
 import { IUserQuery, PointLogOptions } from '@hexa/user-stat-context/domains/repositories/queries/user.query';
 import { UserAgg } from '@hexa/user-stat-context/domains/aggs/user.agg';
+import { IncrIntegerFactory } from '@hexa/common/utils';
 
 export class InMemoryPointGainLog extends PointGainLog {
   constructor(
@@ -34,8 +35,7 @@ export class InMemoryPointLossLog extends PointLossLog {
 }
 
 export class InMemoryUserRepo implements IUserCommand, IUserQuery {
-  private totalBalance = 0;
-  private increment = 0;
+  private readonly incrIntegerFactory: IncrIntegerFactory = new IncrIntegerFactory();
   private readonly uidToIndexMap: Map<PickType<User, 'uid'>, number>;
   private readonly users: Map<number, UserAgg>;
 
@@ -43,33 +43,10 @@ export class InMemoryUserRepo implements IUserCommand, IUserQuery {
     defaultUsers: UserAgg[] = [],
   ) {
     this.users = new Map(defaultUsers.map(userAgg => {
-      return [this.increment++, new UserAgg(userAgg.user, [...userAgg.pointLogs])];
+      return [this.incrIntegerFactory.next(), new UserAgg(userAgg.user, [...userAgg.pointLogs])];
     }));
     const entries = Array.from(this.users.entries());
     this.uidToIndexMap = new Map(entries.map(([index, userAgg]) => [userAgg.user.uid, index]));
-    entries.forEach(([_, agg]) => {
-      agg.pointLogs.forEach(log => {
-        if (PointGainLog.isClassOf(log)) {
-          this.totalBalance += log.amount.amount;
-        }
-
-        if (PointLossLog.isClassOf(log)) {
-          this.totalBalance -= log.amount.amount;
-        }
-      });
-    });
-  }
-
-  public async updateBalanceStat(amount: Amount, reason: GainReason | LossReason) {
-    if (GainReason.isClassOf(reason)) {
-      this.totalBalance += amount.amount;
-    } else {
-      this.totalBalance -= amount.amount;
-    }
-  }
-
-  public getStat() {
-    return this.totalBalance;
   }
 
   private async readPointGainLogs(

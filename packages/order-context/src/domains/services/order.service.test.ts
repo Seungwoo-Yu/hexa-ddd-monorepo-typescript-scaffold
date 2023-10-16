@@ -39,7 +39,7 @@ describe('order-context order service test', () => {
 
     expect(orderAgg.order.uid.uid).toStrictEqual(2);
     expect(orderAgg.lines.length).toStrictEqual(1);
-    expect(orderAgg.lines[0].uid.uid).toStrictEqual(3);
+    expect(orderAgg.lines[0].uid.uid).toStrictEqual(1);
     expect(orderAgg.stores.length).toStrictEqual(1);
     expect(orderAgg.stores[0].uid.uid).toStrictEqual(stores[0].uid.uid);
     expect(orderAgg.stoits.length).toStrictEqual(1);

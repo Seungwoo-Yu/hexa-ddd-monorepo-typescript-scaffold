@@ -2,6 +2,7 @@ import { IStoadminCommand } from '@hexa/stoadmin-context/domains/repositories/co
 import { Stoadmin } from '@hexa/stoadmin-context/domains/entities/stoadmin.entity';
 import { OmitFuncs } from '@hexa/common/types';
 import { StoadminFactory } from '@hexa/stoadmin-context/domains/factories/stoadmin.factory';
+import { UlidUid } from '@hexa/stoadmin-context/domains/vo/ulid-uid.vo';
 
 export class StoadminService {
   constructor(
@@ -10,13 +11,15 @@ export class StoadminService {
   }
 
   public async create(_stoadmin: Omit<OmitFuncs<Stoadmin>, 'uid'>) {
-    const stoadminUid = await this.stoadminCommand.create(_stoadmin);
     const stoadmin = new Stoadmin(
-      stoadminUid,
+      UlidUid.create(),
       _stoadmin.credential,
       _stoadmin.name,
     );
+    const stoadminAgg = StoadminFactory.create(stoadmin);
 
-    return StoadminFactory.create(stoadmin);
+    await this.stoadminCommand.create(stoadminAgg);
+
+    return stoadminAgg;
   }
 }
