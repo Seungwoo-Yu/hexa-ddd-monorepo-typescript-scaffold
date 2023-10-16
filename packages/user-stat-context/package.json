@@ -7,14 +7,14 @@
   },
   "devDependencies": {
     "@types/luxon": "^3.3.2",
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.8.6",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "@hexa/common": "file:../common",
     "immutable": "^4.3.4",
-    "luxon": "^3.4.2",
-    "ulidx": "^2.1.0",
-    "zod": "^3.22.2"
+    "luxon": "^3.4.3",
+    "ulidx": "^2.2.1",
+    "zod": "^3.22.4"
   }
 }
