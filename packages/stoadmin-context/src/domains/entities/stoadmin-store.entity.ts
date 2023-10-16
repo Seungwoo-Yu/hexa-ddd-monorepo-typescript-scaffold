@@ -27,10 +27,9 @@ export class Store {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
-      throw new UndefOrNullParamError('Item');
+      throw new UndefOrNullParamError('Store');
     }
     const expected = target as Store;
 

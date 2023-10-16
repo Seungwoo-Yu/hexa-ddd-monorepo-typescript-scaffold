@@ -20,13 +20,13 @@ export class LossReason implements Equality {
     LossReason.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as LossReason;
 
-    return this.reason === other.reason;
+    return this.reason === expected.reason;
   }
 
   public static isClassOf(target: unknown): target is LossReason {
@@ -39,15 +39,15 @@ export class LossReason implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('LossReason');
     }
+    const expected = target as LossReason;
 
     const result = z.enum(PointLossReason, {
       errorMap: unifyZodMessages('reason'),
-    }).safeParse(target.reason);
+    }).safeParse(expected.reason);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);

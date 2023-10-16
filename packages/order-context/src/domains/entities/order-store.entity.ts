@@ -24,8 +24,7 @@ export class OrderStore {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('OrderStore');
     }
@@ -37,7 +36,7 @@ export class OrderStore {
     IntegerUid.validate(expected.uid);
 
     const nameResult = z.string({ errorMap: unifyZodMessages('name') })
-      .nonempty()
+      .min(1)
       .safeParse(expected.name);
 
     if (!nameResult.success) {

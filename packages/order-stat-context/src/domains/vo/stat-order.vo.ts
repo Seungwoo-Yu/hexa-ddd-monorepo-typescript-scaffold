@@ -16,17 +16,16 @@ export class StatOrder implements Equality {
   ) {
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
-    const statOrder: StatOrder = other;
+    const expected = other as StatOrder;
 
-    return this.sales === statOrder.sales &&
-      this.salesVolume === statOrder.salesVolume &&
-      this.netSales === statOrder.salesVolume &&
-      this.netSalesVolume === statOrder.netSalesVolume;
+    return this.sales === expected.sales &&
+      this.salesVolume === expected.salesVolume &&
+      this.netSales === expected.salesVolume &&
+      this.netSalesVolume === expected.netSalesVolume;
   }
 
   public static isClassOf(target: unknown): target is StatOrder {
@@ -39,12 +38,11 @@ export class StatOrder implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('StatOrder');
     }
-    const expected: StatOrder = target;
+    const expected = target as StatOrder;
 
     const salesResult = z.number({ errorMap: unifyZodMessages('sales') })
       .int()

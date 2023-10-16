@@ -14,13 +14,13 @@ export class Name implements Equality {
     Name.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as Name;
 
-    return this.nickname === other.nickname;
+    return this.nickname === expected.nickname;
   }
 
   public static isClassOf(target: unknown): target is Name {
@@ -33,11 +33,11 @@ export class Name implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('Name');
     }
+    const expected = target as Name;
 
     const result = z.string({ errorMap: unifyZodMessages('nickname') })
       .min(5)
@@ -46,11 +46,10 @@ export class Name implements Equality {
         (id) => id === encodeURIComponent(id),
         'nickname contains unacceptable characters',
       )
-      .safeParse(target.nickname);
+      .safeParse(expected.nickname);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);
     }
   }
 }
-

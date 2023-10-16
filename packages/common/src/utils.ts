@@ -11,8 +11,7 @@ import {
 } from 'zod';
 import { DateTime } from 'luxon';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isValidOfEnum<T extends readonly unknown[]>(enumList: T, value: any): value is Enum<T> {
+export function isValidOfEnum<T extends readonly unknown[]>(enumList: T, value: unknown): value is Enum<T> {
   return enumList.indexOf(value) > -1;
 }
 

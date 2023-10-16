@@ -15,13 +15,13 @@ export class CreatedAt implements Equality {
     CreatedAt.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as CreatedAt;
 
-    return this.dateTime.equals(other);
+    return this.dateTime.equals(expected.dateTime);
   }
 
   public static create() {
@@ -38,14 +38,14 @@ export class CreatedAt implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
-    if (target?.dateTime == null) {
+  public static validate(target: unknown) {
+    if (target == null) {
       throw new UndefOrNullParamError('CreatedAt');
     }
+    const expected = target as CreatedAt;
 
     const result = ZodDateTime.create('createdAt', name => ({ errorMap: unifyZodMessages(name) }))
-      .isUTC().safeParse(target.dateTime);
+      .isUTC().safeParse(expected.dateTime);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);

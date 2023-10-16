@@ -19,16 +19,16 @@ export class PriceDetail implements Equality {
     PriceDetail.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as PriceDetail;
 
-    return this.itemPrice === other.itemPrice
-      && this.discountPrice === other.discountPrice
-      && this.tax === other.tax
-      && this.finalPrice === other.finalPrice;
+    return this.itemPrice === expected.itemPrice
+      && this.discountPrice === expected.discountPrice
+      && this.tax === expected.tax
+      && this.finalPrice === expected.finalPrice;
   }
 
   public static isClassOf(target: unknown): target is PriceDetail {
@@ -41,16 +41,16 @@ export class PriceDetail implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('PriceDetail');
     }
+    const expected = target as PriceDetail;
 
     const itemResult = z.number({ errorMap: unifyZodMessages('itemPrice') })
       .int()
       .min(0)
-      .safeParse(target.itemPrice);
+      .safeParse(expected.itemPrice);
 
     if (!itemResult.success) {
       throw CompositeValError.fromZodError(itemResult.error);
@@ -59,8 +59,8 @@ export class PriceDetail implements Equality {
     const discountResult = z.number({ errorMap: unifyZodMessages('discountPrice') })
       .int()
       .min(0)
-      .max(target.itemPrice ?? 0)
-      .safeParse(target.itemPrice);
+      .max(expected.itemPrice ?? 0)
+      .safeParse(expected.itemPrice);
 
     if (!discountResult.success) {
       throw CompositeValError.fromZodError(discountResult.error);
@@ -68,7 +68,7 @@ export class PriceDetail implements Equality {
 
     const taxResult = z.number({ errorMap: unifyZodMessages('tax') })
       .min(0)
-      .safeParse(target.itemPrice);
+      .safeParse(expected.itemPrice);
 
     if (!taxResult.success) {
       throw CompositeValError.fromZodError(taxResult.error);
