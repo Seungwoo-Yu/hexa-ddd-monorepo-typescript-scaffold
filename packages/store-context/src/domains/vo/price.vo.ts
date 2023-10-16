@@ -11,23 +11,16 @@ export class Price implements Equality {
   constructor(
     public readonly amount: number,
   ) {
-    const result = z.number({ errorMap: unifyZodMessages('uid') })
-      .int()
-      .min(1000)
-      .safeParse(amount);
-
-    if (!result.success) {
-      throw CompositeValError.fromZodError(result.error);
-    }
+    Price.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as Price;
 
-    return this.amount === other.amount;
+    return this.amount === expected.amount;
   }
 
   public static isClassOf(target: unknown): target is Price {
@@ -40,16 +33,16 @@ export class Price implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('Price');
     }
+    const expected = target as Price;
 
     const result = z.number({ errorMap: unifyZodMessages('uid') })
       .int()
       .min(1000)
-      .safeParse(target.amount);
+      .safeParse(expected.amount);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);

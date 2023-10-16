@@ -18,8 +18,7 @@ export interface Validatable {
    * @throws {InvalidEnumError} will be thrown when expected enum does not contain target
    * @throws {UndefOrNullParamError} will be thrown when target is either undefined or null
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  validate(target: any): void,
+  validate(target: unknown): void,
 }
 
 export interface Equality {
@@ -27,6 +26,5 @@ export interface Equality {
    * @param other something to check if this is equal to it
    * @throws {UndefOrNullParamError} will be thrown when other is either undefined or null
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  equals(other: any): boolean,
+  equals(other: unknown): boolean,
 }

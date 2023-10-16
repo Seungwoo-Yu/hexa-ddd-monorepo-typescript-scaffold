@@ -14,13 +14,13 @@ export class StoreDesc implements Equality {
     StoreDesc.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as StoreDesc;
 
-    return this.desc === other.desc;
+    return this.desc === expected.desc;
   }
 
   public static isClassOf(target: unknown): target is StoreDesc {
@@ -33,18 +33,17 @@ export class StoreDesc implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('StoreDesc');
     }
+    const expected = target as StoreDesc;
 
     const result = z.string({ errorMap: unifyZodMessages('uid') })
-      .nonempty()
       .min(10)
       .max(100)
       .refine(desc => desc.match(/(\r\n|\r|\n)/g)?.length ?? 0 < 6)
-      .safeParse(target.desc);
+      .safeParse(expected.desc);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);

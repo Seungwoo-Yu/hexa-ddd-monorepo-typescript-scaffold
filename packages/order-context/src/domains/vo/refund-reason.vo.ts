@@ -20,13 +20,13 @@ export class RefundReason implements Equality {
     RefundReason.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as RefundReason;
 
-    return this.reason === other.reason;
+    return this.reason === expected.reason;
   }
 
   public static isClassOf(target: unknown): target is RefundReason {
@@ -39,15 +39,15 @@ export class RefundReason implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('RefundReason');
     }
+    const expected = target as RefundReason;
 
     const reasonResult = z.enum(OrderRefundReason, {
       errorMap: unifyZodMessages('reason'),
-    }).safeParse(target.reason);
+    }).safeParse(expected.reason);
 
     if (!reasonResult.success) {
       throw CompositeValError.fromZodError(reasonResult.error);

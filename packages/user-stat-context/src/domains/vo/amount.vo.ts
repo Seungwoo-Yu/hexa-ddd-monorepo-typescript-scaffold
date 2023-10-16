@@ -14,13 +14,13 @@ export class Amount implements Equality {
     Amount.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as Amount;
 
-    return this.amount === other.amount;
+    return this.amount === expected.amount;
   }
 
   public static isClassOf(target: unknown): target is Amount {
@@ -33,16 +33,16 @@ export class Amount implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('Amount');
     }
+    const expected = target as Amount;
 
     const result = z.number({ errorMap: unifyZodMessages('amount') })
       .int()
       .min(1)
-      .safeParse(target.amount);
+      .safeParse(expected.amount);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);

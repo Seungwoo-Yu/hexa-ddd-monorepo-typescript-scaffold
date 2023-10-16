@@ -29,18 +29,18 @@ export class PointGainLog implements IPointLog {
     PointGainLog.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
-    if (other?.createdAt == null) {
+  public equals(other: unknown): boolean {
+    if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as PointGainLog;
 
-    return this.userUid.equals(other.userUid) &&
-      this.reason.equals(other.reason) && this.amount.equals(other.amount) &&
-      this.createdAt.equals(other.createdAt);
+    return this.userUid.equals(expected.userUid) &&
+      this.reason.equals(expected.reason) &&
+      this.amount.equals(expected.amount) &&
+      this.createdAt.equals(expected.createdAt);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static isClassOf(target: unknown): target is PointGainLog {
     try {
       PointGainLog.validate(target);
@@ -51,18 +51,16 @@ export class PointGainLog implements IPointLog {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullVarError('PointGainLog');
     }
+    const expected = target as PointGainLog;
 
-    const assumed = target as PointGainLog;
-
-    UlidUid.validate(assumed.userUid);
-    GainReason.validate(assumed.reason);
-    Amount.validate(assumed.amount);
-    CreatedAt.validate(assumed.createdAt);
+    UlidUid.validate(expected.userUid);
+    GainReason.validate(expected.reason);
+    Amount.validate(expected.amount);
+    CreatedAt.validate(expected.createdAt);
   }
 }
 
@@ -79,17 +77,18 @@ export class PointLossLog implements IPointLog {
     PointLossLog.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
-    if (other?.createdAt == null) {
+  public equals(other: unknown): boolean {
+    if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as PointLossLog;
 
-    return this.userUid.equals(other.userUid) && this.reason.equals(other.reason) &&
-      this.amount.equals(other.amount) && this.createdAt.equals(other.createdAt);
+    return this.userUid.equals(expected.userUid) &&
+      this.reason.equals(expected.reason) &&
+      this.amount.equals(expected.amount) &&
+      this.createdAt.equals(expected.createdAt);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static isClassOf(target: unknown): target is PointLossLog {
     try {
       PointLossLog.validate(target);
@@ -100,17 +99,15 @@ export class PointLossLog implements IPointLog {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('PointLossLog');
     }
+    const expected = target as PointLossLog;
 
-    const assumed = target as PointLossLog;
-
-    UlidUid.validate(assumed.userUid);
-    LossReason.validate(assumed.reason);
-    Amount.validate(assumed.amount);
-    CreatedAt.validate(assumed.createdAt);
+    UlidUid.validate(expected.userUid);
+    LossReason.validate(expected.reason);
+    Amount.validate(expected.amount);
+    CreatedAt.validate(expected.createdAt);
   }
 }

@@ -32,13 +32,13 @@ export class Balance implements Equality {
     return new Balance(this.amount - withdrawAmount);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as Balance;
 
-    return this.amount === other.amount;
+    return this.amount === expected.amount;
   }
 
   public static isClassOf(target: unknown): target is Balance {
@@ -51,16 +51,16 @@ export class Balance implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('Balance');
     }
+    const expected = target as Balance;
 
     const result = z.number({ errorMap: unifyZodMessages('amount') })
       .int()
       .gte(0)
-      .safeParse(target.amount);
+      .safeParse(expected.amount);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);

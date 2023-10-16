@@ -14,13 +14,13 @@ export class IntegerUid implements Equality {
     IntegerUid.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as IntegerUid;
 
-    return this.uid === other.uid;
+    return this.uid === expected.uid;
   }
 
   public static isClassOf(target: unknown): target is IntegerUid {
@@ -33,15 +33,15 @@ export class IntegerUid implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('IntegerUid');
     }
+    const expected = target as IntegerUid;
 
     const result = z.number({ errorMap: unifyZodMessages('uid') })
       .int()
-      .safeParse(target.uid);
+      .safeParse(expected.uid);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);

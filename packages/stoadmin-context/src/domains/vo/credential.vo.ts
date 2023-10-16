@@ -19,13 +19,13 @@ export class Credential implements Equality {
     return new Credential(this.id, newPassword);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as Credential;
 
-    return this.id === other.id && this.password === other.password;
+    return this.id === expected.id && this.password === expected.password;
   }
 
   public static isClassOf(target: unknown): target is Credential {
@@ -38,32 +38,30 @@ export class Credential implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('Credential');
     }
+    const expected = target as Credential;
 
     const idResult = z.string({ errorMap: unifyZodMessages('id') })
-      .nonempty()
       .min(1)
       .max(30)
       .refine(
         (id) => id === encodeURIComponent(id),
         'id contains unacceptable characters',
-      ).safeParse(target.id);
+      ).safeParse(expected.id);
 
     if (!idResult.success) {
       throw CompositeValError.fromZodError(idResult.error);
     }
 
     const pwResult = z.string({ errorMap: unifyZodMessages('password') })
-      .nonempty()
       .min(1)
       .refine(
         (id) => id === encodeURIComponent(id),
         'password contains unacceptable characters',
-      ).safeParse(target.password);
+      ).safeParse(expected.password);
 
     if (!pwResult.success) {
       throw CompositeValError.fromZodError(pwResult.error);

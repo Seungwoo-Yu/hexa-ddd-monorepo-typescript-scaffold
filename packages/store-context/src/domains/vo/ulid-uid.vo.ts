@@ -16,13 +16,13 @@ export class UlidUid implements Equality {
     UlidUid.validate(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public equals(other: any): boolean {
+  public equals(other: unknown): boolean {
     if (other == null) {
       throw new UndefOrNullParamError('other');
     }
+    const expected = other as UlidUid;
 
-    return this.uid === other.uid;
+    return this.uid === expected.uid;
   }
 
   public static create() {
@@ -39,16 +39,16 @@ export class UlidUid implements Equality {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static validate(target: any) {
+  public static validate(target: unknown) {
     if (target == null) {
       throw new UndefOrNullParamError('UlidUid');
     }
+    const expected = target as UlidUid;
 
     const result = z.string({ errorMap: unifyZodMessages('uid') })
-      .nonempty()
+      .min(1)
       .refine(_uid => isValidUlid(_uid))
-      .safeParse(target.uid);
+      .safeParse(expected.uid);
 
     if (!result.success) {
       throw CompositeValError.fromZodError(result.error);
