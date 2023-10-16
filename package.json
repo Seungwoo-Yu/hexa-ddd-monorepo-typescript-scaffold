@@ -8,8 +8,8 @@
   },
   "workspaces": [
     "packages/admin",
-    "packages/base",
     "packages/common",
+    "packages/mainland",
     "packages/order-context",
     "packages/order-stat-context",
     "packages/store-admin-context",
