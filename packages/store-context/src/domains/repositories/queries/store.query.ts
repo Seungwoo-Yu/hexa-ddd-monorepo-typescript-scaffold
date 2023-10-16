@@ -3,6 +3,7 @@ import { PickType } from '@hexa/common/types';
 import { Store } from '@hexa/store-context/domains/entities/store.entity';
 
 export interface IStoreQuery {
+  nextId(): Promise<PickType<Store, 'uid'>>,
   readById(id: PickType<Store, 'uid'>): Promise<StoreAgg | undefined>,
   exists(id: PickType<Store, 'uid'>): Promise<boolean>,
 }
