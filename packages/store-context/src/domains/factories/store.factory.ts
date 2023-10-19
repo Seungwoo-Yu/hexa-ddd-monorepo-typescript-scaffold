@@ -4,19 +4,25 @@ import { Store } from '@hexa/store-context/domains/entities/store.entity';
 import { Item } from '../entities/item.entity';
 import { OmitFuncs } from '@hexa/common/types';
 import { StoreAgg } from '@hexa/store-context/domains/aggs/store.agg';
+import { AssertStaticInterface } from '@hexa/common/decorators';
+import { GeneratorOf } from '@hexa/common/interfaces';
 
-export class StoreService {
-  constructor(
-    private readonly storeQuery: IStoreQuery,
-    private readonly storeCommand: IStoreCommand,
+@AssertStaticInterface<GeneratorOf<StoreAgg>>()
+export class StoreFactory {
+  public static async create(
+    store: Store,
+    items: Omit<OmitFuncs<Item>, 'uid'>[] = [],
   ) {
+    return new StoreAgg(store, items);
   }
 
-  public async create(
+  public static async generate(
+    storeQuery: IStoreQuery,
+    storeCommand: IStoreCommand,
     _store: Omit<OmitFuncs<Store>, 'uid'>,
     items: Omit<OmitFuncs<Item>, 'uid' | 'storeUid'>[] = [],
   ) {
-    const nextId = await this.storeQuery.nextId();
+    const nextId = await storeQuery.nextId();
     const storeAgg = new StoreAgg(
       new Store(nextId, _store.name, _store.description, _store.adminUid),
       items.map(item => ({
@@ -27,7 +33,7 @@ export class StoreService {
       })),
     );
 
-    await this.storeCommand.create(storeAgg);
+    await storeCommand.create(storeAgg);
 
     return storeAgg;
   }
