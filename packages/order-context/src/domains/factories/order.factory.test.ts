@@ -14,6 +14,7 @@ import { OrderLine } from '@hexa/order-context/domains/entities/order-line.entit
 import { OrderStore } from '@hexa/order-context/domains/entities/order-store.entity';
 import { OrderStoit } from '@hexa/order-context/domains/entities/order-stoit.entity';
 import { PriceDetail } from '@hexa/order-context/domains/vo/price-detail.vo';
+import { InMemoryOrderRepo } from '@hexa/order-context/tests/mocks';
 
 describe('order-context order factory test', () => {
   it('should create successfully', () => {
@@ -226,5 +227,46 @@ describe('order-context order factory test', () => {
     expect(() => {
       OrderFactory.create(order, orderLines, [stoit], [store, store]); // This will occur error
     }).toThrowError(new DuplicatedStoreUidError(store.uid));
+  });
+
+  it('should generate successfully', async () => {
+    const repo = new InMemoryOrderRepo();
+    const stores = repo.setOrderStores([
+      {
+        name: 'store',
+        adminUid: UlidUid.create(),
+      },
+    ]);
+    const stoits = repo.setOrderStoits([
+      {
+        name: 'store item',
+        description: 'description',
+        storeUid: stores[0].uid,
+      },
+    ]);
+    const orderAgg = await OrderFactory.generate(
+      repo,
+      repo,
+      {
+        userUid: UlidUid.create(),
+      },
+      [
+        {
+          storeUid: stores[0].uid,
+          stoitUid: stoits[0].uid,
+          priceDetail: new PriceDetail(10000),
+        },
+      ],
+      stoits,
+      stores,
+    );
+
+    expect(orderAgg.order.uid.uid).toStrictEqual(2);
+    expect(orderAgg.lines.length).toStrictEqual(1);
+    expect(orderAgg.lines[0].uid.uid).toStrictEqual(1);
+    expect(orderAgg.stores.length).toStrictEqual(1);
+    expect(orderAgg.stores[0].uid.uid).toStrictEqual(stores[0].uid.uid);
+    expect(orderAgg.stoits.length).toStrictEqual(1);
+    expect(orderAgg.stoits[0].uid.uid).toStrictEqual(stoits[0].uid.uid);
   });
 });
