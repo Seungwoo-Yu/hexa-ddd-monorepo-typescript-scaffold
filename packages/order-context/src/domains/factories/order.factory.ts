@@ -1,12 +1,16 @@
 import { AssertStaticInterface } from '@hexa/common/decorators';
-import { FactoryOf } from '@hexa/common/interfaces';
+import { GeneratorOf } from '@hexa/common/interfaces';
 import { OrderAgg } from '@hexa/order-context/domains/aggs/order.agg';
 import { Order } from '@hexa/order-context/domains/entities/order.entity';
 import { OrderLine } from '@hexa/order-context/domains/entities/order-line.entity';
 import { OrderStoit } from '@hexa/order-context/domains/entities/order-stoit.entity';
 import { OrderStore } from '@hexa/order-context/domains/entities/order-store.entity';
-import { PickNestedType, PickType } from '@hexa/common/types';
+import { OmitFuncs, PickNestedType, PickType } from '@hexa/common/types';
 import { OrderedMap } from 'immutable';
+import { IOrderQuery } from '@hexa/order-context/domains/repositories/queries/order.query';
+import { IOrderCommand } from '@hexa/order-context/domains/repositories/commands/order.command';
+import { CreatedAt } from '@hexa/order-context/domains/vo/created-at.vo';
+import { IntegerUid } from '@hexa/order-context/domains/vo/integer-uid.vo';
 
 export class NoOrderLineError extends Error {
   constructor(orderUid: PickType<Order, 'uid'>) {
@@ -49,7 +53,7 @@ export class DuplicatedStoreUidError extends Error {
   }
 }
 
-@AssertStaticInterface<FactoryOf<OrderAgg>>()
+@AssertStaticInterface<GeneratorOf<OrderAgg>>()
 export class OrderFactory {
   public static create(
     order: Order,
@@ -96,5 +100,37 @@ export class OrderFactory {
     });
 
     return new OrderAgg(order, lines, stoits, stores);
+  }
+
+  public static async generate(
+    orderQuery: IOrderQuery,
+    orderCommand: IOrderCommand,
+    _order: Omit<OmitFuncs<Order>, 'uid' | 'createdAt'>,
+    _lines: Omit<OmitFuncs<OrderLine>, 'uid' | 'orderUid'>[],
+    stoits: OrderStoit[],
+    stores: OrderStore[],
+  ) {
+    const nextId = await orderQuery.nextId();
+    const order = new Order(
+      nextId,
+      _order.userUid,
+      CreatedAt.create(),
+    );
+    const lines = _lines.map((line, index) => {
+      return new OrderLine(
+        new IntegerUid(index + 1),
+        nextId,
+        line.storeUid,
+        line.stoitUid,
+        line.priceDetail,
+        line.refundReason,
+        line.refundCreatedAt,
+      );
+    });
+    const orderAgg = OrderFactory.create(order, lines, stoits, stores);
+
+    await orderCommand.create(orderAgg);
+
+    return orderAgg;
   }
 }
