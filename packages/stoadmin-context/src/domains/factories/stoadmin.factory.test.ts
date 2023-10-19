@@ -7,6 +7,8 @@ import { IntegerUid } from '@hexa/stoadmin-context/domains/vo/integer-uid.vo';
 import { StoreName } from '@hexa/stoadmin-context/domains/vo/store-name.vo';
 import { StoreDesc } from '@hexa/stoadmin-context/domains/vo/store-desc.vo';
 import { StoadminFactory, StoadminIdNotMatchedError } from '@hexa/stoadmin-context/domains/factories/stoadmin.factory';
+import { InMemoryStoadminRepo } from '@hexa/stoadmin-context/tests/mocks';
+import { OmitFuncs } from '@hexa/common/types';
 
 describe('store-domain factory test', () => {
   it('should be generated', async () => {
@@ -49,5 +51,21 @@ describe('store-domain factory test', () => {
 
     expect(() => StoadminFactory.create(stoadmin, [store]))
       .toThrowError(new StoadminIdNotMatchedError(stoadmin.uid, store.uid, store.adminUid));
+  });
+
+  it('should generate stoadmin', async () => {
+    const repo = new InMemoryStoadminRepo();
+    const stoadminRaw: Omit<OmitFuncs<Stoadmin>, 'uid'> = {
+      credential: new Credential(
+        'id1234',
+        'pw1234',
+      ),
+      name: new StoadminName('adminName'),
+    };
+    const stoadmin = await StoadminFactory.generate(repo, stoadminRaw);
+
+    expect(stoadmin.stoadmin.uid).toBeDefined();
+    expect(stoadmin.stoadmin.credential.id).toStrictEqual(stoadminRaw.credential.id);
+    expect(stoadmin.stoadmin.name.nickname).toStrictEqual(stoadminRaw.name.nickname);
   });
 });
