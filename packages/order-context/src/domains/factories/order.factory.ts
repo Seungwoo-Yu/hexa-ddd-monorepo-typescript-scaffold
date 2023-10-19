@@ -1,5 +1,5 @@
 import { AssertStaticInterface } from '@hexa/common/decorators';
-import { IFactory } from '@hexa/common/interfaces';
+import { FactoryOf } from '@hexa/common/interfaces';
 import { OrderAgg } from '@hexa/order-context/domains/aggs/order.agg';
 import { Order } from '@hexa/order-context/domains/entities/order.entity';
 import { OrderLine } from '@hexa/order-context/domains/entities/order-line.entity';
@@ -49,7 +49,7 @@ export class DuplicatedStoreUidError extends Error {
   }
 }
 
-@AssertStaticInterface<IFactory<OrderAgg>>()
+@AssertStaticInterface<FactoryOf<OrderAgg>>()
 export class OrderFactory {
   public static create(
     order: Order,

@@ -1,4 +1,4 @@
-import { ClassOf, Equality, IFactory, Validatable } from '@hexa/common/interfaces';
+import { ClassOf, Equality, FactoryOf, Validatable } from '@hexa/common/interfaces';
 import { AssertStaticInterface } from '@hexa/common/decorators';
 import { isValid as isValidUlid, ulid } from 'ulidx';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 
 @AssertStaticInterface<ClassOf<UlidUid>>()
 @AssertStaticInterface<Validatable>()
-@AssertStaticInterface<IFactory<UlidUid>>()
+@AssertStaticInterface<FactoryOf<UlidUid>>()
 export class UlidUid implements Equality {
   constructor(
     public readonly uid: string,

@@ -1,5 +1,5 @@
 import { AssertStaticInterface } from '@hexa/common/decorators';
-import { ClassOf, Equality, IFactory, Validatable } from '@hexa/common/interfaces';
+import { ClassOf, Equality, FactoryOf, Validatable } from '@hexa/common/interfaces';
 import { DateTime } from 'luxon';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 import { unifyZodMessages, ZodDateTime } from '@hexa/common/utils';
@@ -7,7 +7,7 @@ import { CompositeValError } from '@hexa/common/errors/composite';
 
 @AssertStaticInterface<ClassOf<CreatedAt>>()
 @AssertStaticInterface<Validatable>()
-@AssertStaticInterface<IFactory<CreatedAt>>()
+@AssertStaticInterface<FactoryOf<CreatedAt>>()
 export class CreatedAt implements Equality {
   constructor(
     public readonly dateTime: DateTime,

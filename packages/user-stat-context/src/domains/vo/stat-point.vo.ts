@@ -1,5 +1,5 @@
 import { AssertStaticInterface } from '@hexa/common/decorators';
-import { ClassOf, Equality, IFactory, Validatable } from '@hexa/common/interfaces';
+import { ClassOf, Equality, FactoryOf, Validatable } from '@hexa/common/interfaces';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 import { z } from 'zod';
 import { unifyZodMessages } from '@hexa/common/utils';
@@ -7,7 +7,7 @@ import { CompositeValError } from '@hexa/common/errors/composite';
 
 @AssertStaticInterface<ClassOf<StatPoint>>()
 @AssertStaticInterface<Validatable>()
-@AssertStaticInterface<IFactory<StatPoint>>()
+@AssertStaticInterface<FactoryOf<StatPoint>>()
 export class StatPoint implements Equality {
   constructor(
     public readonly charged: number,
