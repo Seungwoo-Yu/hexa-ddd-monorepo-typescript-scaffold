@@ -6,6 +6,10 @@ export interface FactoryOf<T extends object> {
   create(...args: never[]): T | Promise<T>,
 }
 
+export interface GeneratorOf<T extends object> extends FactoryOf<T> {
+  generate(...args: never[]): T | Promise<T>,
+}
+
 export interface Validatable {
   /**
    * @param target something to check if it is valid or not
