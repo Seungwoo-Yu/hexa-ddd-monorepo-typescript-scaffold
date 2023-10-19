@@ -1,5 +1,5 @@
 import { AssertStaticInterface } from '@hexa/common/decorators';
-import { IFactory } from '@hexa/common/interfaces';
+import { FactoryOf } from '@hexa/common/interfaces';
 import { StoadminAgg } from '@hexa/stoadmin-context/domains/aggs/stoadmin.agg';
 import { Stoadmin } from '@hexa/stoadmin-context/domains/entities/stoadmin.entity';
 import { Store } from '@hexa/stoadmin-context/domains/entities/stoadmin-store.entity';
@@ -16,7 +16,7 @@ export class StoadminIdNotMatchedError extends Error {
   }
 }
 
-@AssertStaticInterface<IFactory<StoadminAgg>>()
+@AssertStaticInterface<FactoryOf<StoadminAgg>>()
 export class StoadminFactory {
   public static create(stoadmin: Stoadmin, stores: Store[] = []) {
     stores.forEach(store => {

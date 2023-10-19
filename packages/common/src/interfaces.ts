@@ -2,7 +2,7 @@ export interface ClassOf<T extends object> {
   isClassOf(target: unknown): target is T,
 }
 
-export interface IFactory<T extends object> {
+export interface FactoryOf<T extends object> {
   create(...args: never[]): T | Promise<T>,
 }
 
