@@ -7,6 +7,7 @@
     "baseUrl": "./",
     "paths": {
       "@hexa/common/*": ["packages/common/src/*"],
+      "@hexa/mainland/*": ["packages/mainland/src/*"],
       "@hexa/order-context/*": ["packages/order-context/src/*"],
       "@hexa/order-stat-context/*": ["packages/order-stat-context/src/*"],
       "@hexa/stoadmin-context/*": ["packages/stoadmin-context/src/*"],
@@ -16,6 +17,8 @@
       "@hexa/user-stat-context/*": ["packages/user-stat-context/src/*"]
     },
     "outDir": "./dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

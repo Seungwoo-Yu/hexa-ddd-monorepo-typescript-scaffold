@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@hexa/common": "file:../common",
-    "@mobily/ts-belt": "^3.13.1",
+    "fp-ts": "^2.16.1",
     "immutable": "^4.3.4",
     "koa": "^2.14.2",
     "pg": "^8.11.3",

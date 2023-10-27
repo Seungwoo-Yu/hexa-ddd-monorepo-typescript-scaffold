@@ -1,3 +1,5 @@
+import { IsolatedScope, Scope } from '@hexa/common/interfaces';
+
 export type ReadOnlyProperty<T, U extends keyof T> = {
   readonly [P in keyof Pick<T, U>]: T[P];
 } & {
@@ -27,3 +29,6 @@ export type FunctionPropertyNames<T> = {
   [K in keyof T]: T[K] extends Function ? K : never;
 }[keyof T];
 export type OmitFuncs<T> = Omit<T, FunctionPropertyNames<T>>;
+export type ConsumedScope<T extends Scope | IsolatedScope> = T extends Scope
+  ? Omit<T, 'runInScope' | 'runInIsolatedScope'>
+  : Omit<T, 'runInIsolatedScope'>;

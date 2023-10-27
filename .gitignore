@@ -330,4 +330,5 @@ tags
 .swc
 
 # Exclude hexagonal out ports
-!packages/**/src/app/ports/out
+!packages/mainland/src/app/ports/out
+!packages/**/src/infra/adapters/out

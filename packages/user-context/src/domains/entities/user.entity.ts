@@ -3,11 +3,12 @@ import { Credential } from '@hexa/user-context/domains/vo/credential.vo';
 import { Name } from '@hexa/user-context/domains/vo/name.vo';
 import { UlidUid } from '@hexa/user-context/domains/vo/ulid-uid.vo';
 import { AssertStaticInterface } from '@hexa/common/decorators';
-import { ClassOf, Validatable } from '@hexa/common/interfaces';
+import { ClassOf, FactoryOf, Validatable } from '@hexa/common/interfaces';
 import { UndefOrNullParamError } from '@hexa/common/errors/interface';
 
 @AssertStaticInterface<ClassOf<User>>()
 @AssertStaticInterface<Validatable>()
+@AssertStaticInterface<FactoryOf<User>>()
 export class User {
   constructor(
     public readonly uid: UlidUid,
@@ -44,6 +45,15 @@ export class User {
     }
 
     this.balance = balance;
+  }
+
+  public static create(credential: Credential, name: Name) {
+    return new User(
+      UlidUid.create(),
+      credential,
+      name,
+      new Balance(0),
+    );
   }
 
   public static isClassOf(target: unknown): target is User {
