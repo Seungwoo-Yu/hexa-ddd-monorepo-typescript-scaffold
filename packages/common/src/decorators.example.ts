@@ -1,16 +1,16 @@
 import { AssertStaticInterface } from '@hexa/common/decorators';
 import { ClassOf } from '@hexa/common/interfaces';
 
-// noinspection JSUnusedGlobalSymbols
+// noinspection JSUnusedGlobalSymbols,SuspiciousTypeOfGuard
 @AssertStaticInterface<ClassOf<ClassOfExample>>()
 class ClassOfExample {
   constructor(
     public b: string,
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static isClassOf(target: any): target is ClassOfExample {
-    return target?.b != null && typeof target.b === 'string' &&
-      target.b !== '';
+  public static isClassOf(target: unknown): target is ClassOfExample {
+    const expected = target as ClassOfExample;
+    return expected?.b != null && typeof expected.b === 'string' &&
+      expected.b !== '';
   }
 }

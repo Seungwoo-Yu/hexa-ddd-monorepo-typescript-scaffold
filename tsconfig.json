@@ -16,6 +16,8 @@
       "@hexa/user-stat-context/*": ["packages/user-stat-context/src/*"]
     },
     "outDir": "./dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
