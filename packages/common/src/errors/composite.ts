@@ -16,6 +16,13 @@ export class CompositeValError extends Error {
       `main error: ${errors[0].message}`);
   }
 
+  // noinspection JSUnusedGlobalSymbols
+  public toJSON() {
+    return {
+      errors: this.errors.map(error => error?.toString?.() ?? error.message),
+    };
+  }
+
   public static fromZodError(error: ZodError) {
     const convertedErrors = error.errors.map(issue => {
       const name = issue.message.indexOf(' ') === -1 ? issue.message : undefined;
