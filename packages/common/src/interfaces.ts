@@ -32,3 +32,11 @@ export interface Equality {
    */
   equals(other: unknown): boolean,
 }
+
+export interface Invocable {
+  invoke(...args: unknown[]): Promise<void>,
+}
+
+export interface Revocable {
+  revoke(...args: unknown[]): Promise<void>,
+}

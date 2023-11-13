@@ -10,6 +10,7 @@ import {
   ZodTypeDef,
 } from 'zod';
 import { DateTime } from 'luxon';
+import { Invocable, Revocable } from '@hexa/common/interfaces';
 
 export function isValidOfEnum<T extends readonly unknown[]>(enumList: T, value: unknown): value is Enum<T> {
   return enumList.indexOf(value) > -1;
@@ -163,4 +164,18 @@ export class IncrIntegerFactory {
   public next() {
     return this.increment++;
   }
+}
+
+export function isInvocable(value: unknown): value is Invocable {
+  const expected = value as Invocable;
+
+  return expected != null && typeof expected === 'object' &&
+    expected.invoke != null && typeof expected.invoke === 'function';
+}
+
+export function isRevocable(value: unknown): value is Revocable {
+  const expected = value as Revocable;
+
+  return expected != null && typeof expected === 'object' &&
+    expected.revoke != null && typeof expected.revoke === 'function';
 }
