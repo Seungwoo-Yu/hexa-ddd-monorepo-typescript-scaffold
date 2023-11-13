@@ -1,8 +1,7 @@
 import { User } from '@hexa/user-context/domains/entities/user.entity';
 import { PickType } from '@hexa/common/types';
-import { UserAgg } from '@hexa/user-stat-context/domains/aggs/user.agg';
 
 export interface IUserQuery {
-  readByUid(uid: PickType<User, 'uid'>): Promise<UserAgg>,
+  readByUid(uid: PickType<User, 'uid'>): Promise<User | undefined>,
   exists(uid: PickType<User, 'uid'>): Promise<boolean>,
 }
