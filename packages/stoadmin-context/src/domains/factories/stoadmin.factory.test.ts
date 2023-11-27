@@ -1,6 +1,6 @@
 import { Stoadmin } from '@hexa/stoadmin-context/domains/entities/stoadmin.entity';
 import { UlidUid } from '@hexa/stoadmin-context/domains/vo/ulid-uid.vo';
-import { Credential } from '@hexa/stoadmin-context/domains/vo/credential.vo';
+import { Credential, CredentialId, CredentialPassword } from '@hexa/stoadmin-context/domains/vo/credential.vo';
 import { StoadminName } from '@hexa/stoadmin-context/domains/vo/stoadmin-name.vo';
 import { Store } from '@hexa/stoadmin-context/domains/entities/stoadmin-store.entity';
 import { IntegerUid } from '@hexa/stoadmin-context/domains/vo/integer-uid.vo';
@@ -15,8 +15,8 @@ describe('store-domain factory test', () => {
     const stoadmin = new Stoadmin(
       UlidUid.create(),
       new Credential(
-        'id12345',
-        'pw12345',
+        new CredentialId('id12345'),
+        new CredentialPassword('pw12345'),
       ),
       new StoadminName('admin1'),
     );
@@ -37,8 +37,8 @@ describe('store-domain factory test', () => {
     const stoadmin = new Stoadmin(
       UlidUid.create(),
       new Credential(
-        'id12345',
-        'pw12345',
+        new CredentialId('id12345'),
+        new CredentialPassword('pw12345'),
       ),
       new StoadminName('admin2'),
     );
@@ -57,8 +57,8 @@ describe('store-domain factory test', () => {
     const repo = new InMemoryStoadminRepo();
     const stoadminRaw: Omit<OmitFuncs<Stoadmin>, 'uid'> = {
       credential: new Credential(
-        'id1234',
-        'pw1234',
+        new CredentialId('id1234'),
+        new CredentialPassword('pw1234'),
       ),
       name: new StoadminName('adminName'),
     };
