@@ -3,6 +3,6 @@ import { Stoadmin } from '@hexa/stoadmin-context/domains/entities/stoadmin.entit
 import { StoadminAgg } from '@hexa/stoadmin-context/domains/aggs/stoadmin.agg';
 
 export interface IStoadminQuery {
-  readById(id: PickType<Stoadmin, 'uid'>): Promise<StoadminAgg | undefined>,
-  exists(id: PickType<Stoadmin, 'uid'>): Promise<boolean>,
+  readByUid(uid: PickType<Stoadmin, 'uid'>): Promise<StoadminAgg | undefined>,
+  exists(uid: PickType<Stoadmin, 'uid'>): Promise<boolean>,
 }
