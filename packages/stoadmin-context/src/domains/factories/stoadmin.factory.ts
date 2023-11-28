@@ -6,6 +6,8 @@ import { Store } from '@hexa/stoadmin-context/domains/entities/stoadmin-store.en
 import { OmitFuncs, PickType } from '@hexa/common/types';
 import { UlidUid } from '@hexa/stoadmin-context/domains/vo/ulid-uid.vo';
 import { IStoadminCommand } from '@hexa/stoadmin-context/domains/repositories/commands/stoadmin.command';
+import { IStoadminQuery } from '@hexa/stoadmin-context/domains/repositories/queries/stoadmin.query';
+import { Credential } from '@hexa/stoadmin-context/domains/vo/credential.vo';
 
 export class StoadminIdNotMatchedError extends Error {
   constructor(
@@ -15,6 +17,14 @@ export class StoadminIdNotMatchedError extends Error {
   ) {
     super('store admin ' + invalidStoadminId.uid + ' found in store ' + storeId.uid +
       ' is not matched with store admin ' + stoadminId.uid);
+  }
+}
+
+export class StoadminIdDuplicatedError extends Error {
+  constructor(
+    stoadminId: PickType<Credential, 'id'>,
+  ) {
+    super('id ' + stoadminId + ' is duplicated');
   }
 }
 
@@ -30,7 +40,15 @@ export class StoadminFactory {
     return new StoadminAgg(stoadmin, stores);
   }
 
-  public static async generate(stoadminCommand: IStoadminCommand, _stoadmin: Omit<OmitFuncs<Stoadmin>, 'uid'>) {
+  public static async generate(
+    stoadminQuery: IStoadminQuery,
+    stoadminCommand: IStoadminCommand,
+    _stoadmin: Omit<OmitFuncs<Stoadmin>, 'uid'>,
+  ) {
+    if (await stoadminQuery.existsById(_stoadmin.credential.id)) {
+      throw new StoadminIdDuplicatedError(_stoadmin.credential.id);
+    }
+
     const stoadmin = new Stoadmin(
       UlidUid.create(),
       _stoadmin.credential,

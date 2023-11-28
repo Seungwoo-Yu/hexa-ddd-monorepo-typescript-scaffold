@@ -6,7 +6,11 @@ import { Store } from '@hexa/stoadmin-context/domains/entities/stoadmin-store.en
 import { IntegerUid } from '@hexa/stoadmin-context/domains/vo/integer-uid.vo';
 import { StoreName } from '@hexa/stoadmin-context/domains/vo/store-name.vo';
 import { StoreDesc } from '@hexa/stoadmin-context/domains/vo/store-desc.vo';
-import { StoadminFactory, StoadminIdNotMatchedError } from '@hexa/stoadmin-context/domains/factories/stoadmin.factory';
+import {
+  StoadminFactory,
+  StoadminIdDuplicatedError,
+  StoadminIdNotMatchedError,
+} from '@hexa/stoadmin-context/domains/factories/stoadmin.factory';
 import { InMemoryStoadminRepo } from '@hexa/stoadmin-context/tests/mocks';
 import { OmitFuncs } from '@hexa/common/types';
 
@@ -62,10 +66,32 @@ describe('store-domain factory test', () => {
       ),
       name: new StoadminName('adminName'),
     };
-    const stoadmin = await StoadminFactory.generate(repo, stoadminRaw);
+    const stoadmin = await StoadminFactory.generate(repo, repo, stoadminRaw);
 
     expect(stoadmin.stoadmin.uid).toBeDefined();
     expect(stoadmin.stoadmin.credential.id).toStrictEqual(stoadminRaw.credential.id);
     expect(stoadmin.stoadmin.name.nickname).toStrictEqual(stoadminRaw.name.nickname);
+  });
+
+  it('should not be generated because ids are duplicated', async () => {
+    const repo = new InMemoryStoadminRepo();
+    const stoadminRaw1: Omit<OmitFuncs<Stoadmin>, 'uid'> = {
+      credential: new Credential(
+        new CredentialId('id1234'), // This will occur error
+        new CredentialPassword('pw1234'),
+      ),
+      name: new StoadminName('adminName'),
+    };
+    const stoadminRaw2: Omit<OmitFuncs<Stoadmin>, 'uid'> = {
+      credential: new Credential(
+        new CredentialId('id1234'), // This will occur error
+        new CredentialPassword('pw1234'),
+      ),
+      name: new StoadminName('adminName'),
+    };
+
+    await StoadminFactory.generate(repo, repo, stoadminRaw1);
+    await expect(() => StoadminFactory.generate(repo, repo, stoadminRaw2))
+      .rejects.toThrow(new StoadminIdDuplicatedError(stoadminRaw2.credential.id));
   });
 });
