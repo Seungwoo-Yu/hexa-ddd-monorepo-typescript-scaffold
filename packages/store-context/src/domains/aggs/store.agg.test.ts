@@ -163,6 +163,6 @@ describe('store-domain aggregate test', () => {
     ];
 
     expect(() => storeAgg.addItems(items))
-      .toThrowError(new StoreIdNotMatchedError(storeAgg.store.uid, items[1].storeUid));
+      .toThrow(new StoreIdNotMatchedError(storeAgg.store.uid, items[1].storeUid));
   });
 });

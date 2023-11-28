@@ -50,7 +50,7 @@ describe('store-domain factory test', () => {
     );
 
     expect(() => StoadminFactory.create(stoadmin, [store]))
-      .toThrowError(new StoadminIdNotMatchedError(stoadmin.uid, store.uid, store.adminUid));
+      .toThrow(new StoadminIdNotMatchedError(stoadmin.uid, store.uid, store.adminUid));
   });
 
   it('should generate stoadmin', async () => {

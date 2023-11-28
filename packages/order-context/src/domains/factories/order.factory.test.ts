@@ -75,7 +75,7 @@ describe('order-context order factory test', () => {
     );
 
     expect(() => OrderFactory.create(order, [], [stoit], [store])) // This will occur error
-      .toThrowError(new NoOrderLineError(order.uid));
+      .toThrow(new NoOrderLineError(order.uid));
   });
 
   it('should not create because there are no stoits', () => {
@@ -101,7 +101,7 @@ describe('order-context order factory test', () => {
     ];
 
     expect(() => OrderFactory.create(order, orderLines, [], [store]))
-      .toThrowError(new NoOrderStoitError(order.uid));
+      .toThrow(new NoOrderStoitError(order.uid));
   });
 
   it('should not create because there are no stores', () => {
@@ -128,7 +128,7 @@ describe('order-context order factory test', () => {
     ];
 
     expect(() => OrderFactory.create(order, orderLines, [stoit], []))
-      .toThrowError(new NoOrderStoreError(order.uid));
+      .toThrow(new NoOrderStoreError(order.uid));
   });
 
   it('should not create because order uids are not matched', () => {
@@ -160,7 +160,7 @@ describe('order-context order factory test', () => {
     ];
 
     expect(() => OrderFactory.create(order, orderLines, [stoit], [store]))
-      .toThrowError(new OrderUidNotMatchedError(order.uid, orderLines[0].uid, orderLines[0].orderUid));
+      .toThrow(new OrderUidNotMatchedError(order.uid, orderLines[0].uid, orderLines[0].orderUid));
   });
 
   it('should not create because stoit uids are duplicated', () => {
@@ -193,7 +193,7 @@ describe('order-context order factory test', () => {
 
     expect(() => {
       OrderFactory.create(order, orderLines, [stoit, stoit], [store]); // This will occur error
-    }).toThrowError(new DuplicatedStoitUidError(stoit.uid));
+    }).toThrow(new DuplicatedStoitUidError(stoit.uid));
   });
 
   it('should not create because store uids are duplicated', () => {
@@ -226,7 +226,7 @@ describe('order-context order factory test', () => {
 
     expect(() => {
       OrderFactory.create(order, orderLines, [stoit], [store, store]); // This will occur error
-    }).toThrowError(new DuplicatedStoreUidError(store.uid));
+    }).toThrow(new DuplicatedStoreUidError(store.uid));
   });
 
   it('should generate successfully', async () => {

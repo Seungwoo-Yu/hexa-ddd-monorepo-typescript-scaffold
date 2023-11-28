@@ -92,7 +92,7 @@ describe('order-context order aggregate test', () => {
       lines,
       [stoit],
       OrderedMap([[store.uid.uid, store]]),
-    )).toThrowError(new NoOrderStoreFoundError(stoit.storeUid));
+    )).toThrow(new NoOrderStoreFoundError(stoit.storeUid));
   });
 
   it('should not create because there are duplicated order line uids', function () {
@@ -136,7 +136,7 @@ describe('order-context order aggregate test', () => {
       lines,
       [stoit],
       OrderedMap([[store.uid.uid, store]]),
-    )).toThrowError(new DuplicatedOrderLineIdError(duplicatedUid));
+    )).toThrow(new DuplicatedOrderLineIdError(duplicatedUid));
   });
 
   it('should refund successfully', function () {
@@ -224,6 +224,6 @@ describe('order-context order aggregate test', () => {
     expect(() => agg.refund(
       uidNotUsed, // This will occur error
       new RefundReason('requested_by_user'),
-    )).toThrowError(new NoOrderLineFoundError(uidNotUsed));
+    )).toThrow(new NoOrderLineFoundError(uidNotUsed));
   });
 });

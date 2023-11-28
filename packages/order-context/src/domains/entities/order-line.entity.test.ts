@@ -41,6 +41,6 @@ describe('order-context order-line entity test', () => {
 
     expect(() => line.refund(
       new RefundReason('requested_by_store_admin'),
-    )).toThrowError(new RefundedOrderLineError(line.uid));
+    )).toThrow(new RefundedOrderLineError(line.uid));
   });
 });

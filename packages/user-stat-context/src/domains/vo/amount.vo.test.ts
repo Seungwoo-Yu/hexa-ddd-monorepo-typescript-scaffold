@@ -8,12 +8,12 @@ describe('amount vo test', () => {
   });
 
   it('should not create because it is less than', function () {
-    expect(() => new Amount(0)).toThrowError('composite validation error: 1 error(s) thrown.\n' +
+    expect(() => new Amount(0)).toThrow('composite validation error: 1 error(s) thrown.\n' +
       'main error: amount must be greater than or equal to 1');
   });
 
   it('should not create because it cannot be negative value', function () {
-    expect(() => new Amount(-1)).toThrowError('composite validation error: 1 error(s) thrown.\n' +
+    expect(() => new Amount(-1)).toThrow('composite validation error: 1 error(s) thrown.\n' +
       'main error: amount must be greater than or equal to 1');
   });
 });
