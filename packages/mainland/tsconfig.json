@@ -1,4 +1,14 @@
 {
     "extends": "../../tsconfig.json",
-    "compilerOptions": {}
+    "compilerOptions": {
+        "paths": {
+            "@hexa/common/*": ["packages/common/src/*"],
+            "@hexa/mainland/*": ["packages/mainland/src/*"],
+            "@hexa/order-context/*": ["packages/order-context/src/*"],
+            "@hexa/order-stat-context/*": ["packages/order-stat-context/src/*"],
+            "@hexa/store-context/*": ["packages/store-context/src/*"],
+            "@hexa/user-context/*": ["packages/user-context/src/*"],
+            "@hexa/user-stat-context/*": ["packages/user-stat-context/src/*"]
+        }
+    }
 }

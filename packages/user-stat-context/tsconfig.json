@@ -1,4 +1,9 @@
 {
     "extends": "../../tsconfig.json",
-    "compilerOptions": {}
+    "compilerOptions": {
+        "paths": {
+            "@hexa/common/*": ["packages/common/src/*"],
+            "@hexa/user-stat-context/*": ["packages/user-stat-context/src/*"]
+        }
+    }
 }

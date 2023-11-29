@@ -5,16 +5,6 @@
     "rootDir": "./",
     "moduleResolution": "node",
     "baseUrl": "./",
-    "paths": {
-      "@hexa/common/*": ["packages/common/src/*"],
-      "@hexa/order-context/*": ["packages/order-context/src/*"],
-      "@hexa/order-stat-context/*": ["packages/order-stat-context/src/*"],
-      "@hexa/stoadmin-context/*": ["packages/stoadmin-context/src/*"],
-      "@hexa/store-context/*": ["packages/store-context/src/*"],
-      "@hexa/sysadmin-context/*": ["packages/sysadmin-context/src/*"],
-      "@hexa/user-context/*": ["packages/user-context/src/*"],
-      "@hexa/user-stat-context/*": ["packages/user-stat-context/src/*"]
-    },
     "outDir": "./dist",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
