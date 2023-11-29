@@ -1,10 +1,16 @@
 const { pathsToModuleNameMapper } = require('ts-jest');
-const { compilerOptions } = require('./tsconfig.json');
+const { compilerOptions: { baseUrl } } = require('./tsconfig.json');
+const { compilerOptions: { paths } } = require('./tsconfig.path.json');
 
-/** @type {import('jest').Config} */
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   transform: {
-    '^.+\\.(t|j)sx?$': 'ts-jest',
+    '^.+\\.(t|j)sx?$': [
+      'ts-jest',
+      {
+        tsconfig: 'tsconfig.path.json',
+      },
+    ],
   },
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
@@ -26,6 +32,6 @@ module.exports = {
     '<rootDir>/dist/',
     '<rootDir>/packages/.+/src/tests/mocks.ts',
   ],
-  modulePaths: [compilerOptions.baseUrl],
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+  modulePaths: [baseUrl],
+  moduleNameMapper: pathsToModuleNameMapper(paths),
 };
