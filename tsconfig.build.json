@@ -1,4 +1,4 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.path.json",
   "exclude": ["node_modules", "packages/**/*.test.ts", "packages/**/*.example.ts", "packages/**/tests/mocks.ts"]
 }
