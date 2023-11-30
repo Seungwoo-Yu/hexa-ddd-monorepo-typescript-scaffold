@@ -9,14 +9,17 @@
     "@types/koa": "^2.13.12",
     "@types/node": "^20.10.0",
     "@types/pg": "^8.10.9",
+    "@types/yargs": "^17.0.32",
     "typescript": "^5.3.2"
   },
   "dependencies": {
     "@hexa/common": "file:../common",
+    "dotenv": "^16.3.1",
     "fp-ts": "^2.16.1",
     "immutable": "^4.3.4",
     "koa": "^2.14.2",
     "pg": "^8.11.3",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "yargs": "^17.7.2"
   }
 }
