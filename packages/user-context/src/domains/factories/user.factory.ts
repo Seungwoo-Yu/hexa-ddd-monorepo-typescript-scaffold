@@ -12,7 +12,12 @@ export class UserIdDuplicatedError extends Error {
   constructor(
     stoadminId: PickType<Credential, 'id'>,
   ) {
-    super('id ' + stoadminId + ' is duplicated');
+    super('id ' + stoadminId.id + ' is duplicated');
+  }
+
+  // noinspection JSUnusedGlobalSymbols
+  public toJSON() {
+    return this.toString();
   }
 }
 

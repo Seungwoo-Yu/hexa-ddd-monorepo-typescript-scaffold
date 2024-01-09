@@ -5,7 +5,7 @@ const { compilerOptions: { paths } } = require('./tsconfig.path.json');
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   transform: {
-    '^.+\\.(t|j)sx?$': [
+    '^.+\\.(tsx?|jsx)$': [
       'ts-jest',
       {
         tsconfig: 'tsconfig.path.json',
